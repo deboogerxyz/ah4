@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,8 +10,6 @@
 
 #include "memory.h"
 
-#define DT_THISPROCNUM 0
-
 typedef struct LinkMap LinkMap;
 struct LinkMap {
 	ElfW(Addr) addr;
@@ -21,11 +18,11 @@ struct LinkMap {
 	LinkMap *next;
 	LinkMap *prev;
 	LinkMap *real;
-	Lmid_t ns;
+	long int ns;
 	struct libname_list *moduleName;
-	ElfW(Dyn) *info[DT_NUM + DT_THISPROCNUM + DT_VERSIONTAGNUM + DT_EXTRANUM + DT_VALNUM + DT_ADDRNUM];
+	ElfW(Dyn) *info[DT_NUM + DT_VERSIONTAGNUM + DT_EXTRANUM + DT_VALNUM + DT_ADDRNUM];
 	const ElfW(Phdr) *phdr;
-	// ...
+	// ... 
 };
 
 Memory memory;
