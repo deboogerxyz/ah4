@@ -9,4 +9,3 @@ typedef struct {
 extern Memory memory;
 
 void memory_init(void);
-void memory_cleanUp(void);

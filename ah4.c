@@ -17,5 +17,4 @@ void __attribute__((destructor)) onUnload(void)
 {
 	hooks_cleanUp();
 	netvars_cleanUp();
-	memory_cleanUp();
 }
