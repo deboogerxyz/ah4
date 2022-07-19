@@ -11,7 +11,7 @@
 
 typedef struct NetVar NetVar;
 struct NetVar {
-	const char *name;
+	char name[128];
 	int offset;
 
 	NetVar *next;
@@ -37,13 +37,7 @@ static void dump(const char *className, RecvTable *recvTable, int offset)
 		if (!netVar)
 			continue;
 
-		char *name = malloc(128);
-		if (!name)
-			continue;
-
-		snprintf(name, 128, "%s->%s", className, prop->name);
-
-		netVar->name = name;
+		snprintf(netVar->name, 128, "%s->%s", className, prop->name);
 		netVar->offset = prop->offset + offset;
 
 		int j = hash(netVar->name) % NETVARS_LEN;
