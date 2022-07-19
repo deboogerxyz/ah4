@@ -8,13 +8,13 @@
 #include "sdk.h"
 
 #define HOOK(vmt, oldVMT, newVMT) \
-        oldVMT = vmt; \
+        { oldVMT = vmt; \
         int len = getTableLength((void **)vmt); \
         newVMT = malloc(len * sizeof(void *)); \
         if (!newVMT) \
         	return; \
         memcpy(newVMT, (void **)vmt - 2, len * sizeof(void *)); \
-        *(void **)&vmt = newVMT + 2;
+        *(void **)&vmt = newVMT + 2; }
 
 #define UNHOOK(vmt, oldVMT, newVMT) \
         if (!newVMT) \
@@ -52,13 +52,9 @@ void frameStageNotify(Client *this, FrameStage stage)
 void hooks_init(void)
 {
 	HOOK(interfaces.client->vmt, oldClientVMT, newClientVMT)
-
 	interfaces.client->vmt->frameStageNotify = frameStageNotify;
 
-	{
 	HOOK(memory.clientMode->vmt, oldClientModeVMT, newClientModeVMT)
-	}
-
 	memory.clientMode->vmt->createMove = createMove;
 }
 
