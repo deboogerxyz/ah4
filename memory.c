@@ -22,7 +22,7 @@ struct LinkMap {
 	LinkMap *prev;
 	LinkMap *real;
 	Lmid_t ns;
-	struct libname_list *libraryNames;
+	struct libname_list *moduleName;
 	ElfW(Dyn) *info[DT_NUM + DT_THISPROCNUM + DT_VERSIONTAGNUM + DT_EXTRANUM + DT_VALNUM + DT_ADDRNUM];
 	const ElfW(Phdr) *phdr;
 	// ...
