@@ -8,8 +8,10 @@ typedef struct {
 	float x, y, z;
 } Vector;
 
+typedef struct RecvProp RecvProp;
+
 typedef struct {
-	char pad0[8];
+	const RecvProp *recvProp;
 	union {
 		float f;
 		long i;
@@ -23,23 +25,31 @@ typedef struct {
 typedef void (*RecvProxy)(RecvProxyData *, void *, void *);
 
 typedef struct RecvTable RecvTable;
-typedef struct {
+struct RecvProp {
 	const char *name;
 	int type;
-	char pad0[36];
-	RecvProxy recvProxy;
-	char pad1[8];
+	int flags;
+	int stringBufferSize;
+	int insideArray;
+	const void *extraData;
+	RecvProp *arrayProp;
+	void *arrayLengthProxy;
+	RecvProxy proxy;
+	void *dataTableProxy;
 	RecvTable *recvTable;
 	int offset;
-	char pad2[16];
-} RecvProp;
+	int elementStride;
+	int elementCount;
+	const char *parrentArrayPropName;
+} ;
 
 struct RecvTable {
 	RecvProp *props;
 	int propCount;
-	char pad0[8];
+	void *decoder;
 	const char *name;
-	char pad1[2];
+	bool isInitialized;
+	bool isInMainList;
 };
 
 typedef enum {
@@ -90,9 +100,12 @@ typedef enum {
 	ClassID_Tec9 = 269
 } ClassID;
 
+typedef void *Entity;
+
 typedef struct ClientClass ClientClass;
 struct ClientClass {
-	char pad0[16];
+	Entity *(*createFunction)(int, int);
+	void *createEventFunction;
 	const char *name;
 	RecvTable *recvTable;
 	ClientClass *next;
@@ -139,7 +152,7 @@ typedef enum {
 } UserCmdButtons;
 
 typedef struct {
-	char pad0[8];
+	void *vmt;
 	int commandNumber;
 	int tickCount;
 	Vector viewAngles;
@@ -148,7 +161,10 @@ typedef struct {
 	float sideMove;
 	float upMove;
 	UserCmdButtons buttons;
-	char pad1[13];
+	int impulse;
+	int weaponSelect;
+	int weaponSubtype;
+	int randomSeed;
 	short mousedx;
 	short mousedy;
 	char hasBeenPredicted;
