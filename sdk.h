@@ -186,4 +186,4 @@ struct ClientMode {
 	ClientModeVMT *vmt;
 };
 
-#endif /* SDK_H_ */
+#endif // SDK_H_
