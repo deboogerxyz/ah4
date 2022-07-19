@@ -4,4 +4,5 @@ SRC = \
       utils.c \
       memory.c \
       netvars.c \
-      hooks.c
+      hooks.c \
+      ubsan.c

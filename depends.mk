@@ -4,3 +4,4 @@ utils.o: utils.h
 memory.o: memory.h sdk.h utils.h
 netvars.o: netvars.h interfaces.h sdk.h utils.h
 hooks.o: hooks.h
+ubsan.o: ubsan.h
