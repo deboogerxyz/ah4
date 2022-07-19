@@ -11,16 +11,16 @@
         { oldVMT = vmt; \
         int len = getTableLength((void **)vmt); \
         newVMT = malloc(len * sizeof(void *)); \
-        if (!newVMT) \
-        	return; \
-        memcpy(newVMT, (void **)vmt - 2, len * sizeof(void *)); \
-        *(void **)&vmt = newVMT + 2; }
+        if (newVMT) { \
+        	memcpy(newVMT, (void **)vmt - 2, len * sizeof(void *)); \
+        	*(void **)&vmt = newVMT + 2; \
+	} }
 
 #define UNHOOK(vmt, oldVMT, newVMT) \
-        if (!newVMT) \
-        	return; \
-        *(void **)&vmt = oldVMT; \
-        free(newVMT);
+        if (oldVMT) \
+        	*(void **)&vmt = oldVMT; \
+        if (newVMT) \
+        	free(newVMT);
 
 ClientVMT *oldClientVMT, **newClientVMT;
 ClientModeVMT *oldClientModeVMT, **newClientModeVMT;
