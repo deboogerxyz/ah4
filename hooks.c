@@ -23,6 +23,7 @@
         free(newVMT);
 
 ClientVMT *oldClientVMT, **newClientVMT;
+ClientModeVMT *oldClientModeVMT, **newClientModeVMT;
 
 static int getTableLength(void **vmt)
 {
@@ -36,6 +37,10 @@ static int getTableLength(void **vmt)
 
 bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 {
+	bool result = oldClientModeVMT->createMove(this, inputSampleTime, cmd);
+	if (!cmd->commandNumber)
+		return result;
+
 	return 0;
 }
 
@@ -49,9 +54,16 @@ void hooks_init(void)
 	HOOK(interfaces.client->vmt, oldClientVMT, newClientVMT)
 
 	interfaces.client->vmt->frameStageNotify = frameStageNotify;
+
+	{
+	HOOK(memory.clientMode->vmt, oldClientModeVMT, newClientModeVMT)
+	}
+
+	memory.clientMode->vmt->createMove = createMove;
 }
 
 void hooks_cleanUp(void)
 {
+	UNHOOK(memory.clientMode->vmt, oldClientModeVMT, newClientModeVMT)
 	UNHOOK(interfaces.client->vmt, oldClientVMT, newClientVMT)
 }
