@@ -70,5 +70,4 @@ void memory_init(void)
 
 	*(void **)&memory.clientMode = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);
 	*(void **)&memory.setClantag = relativeToAbsolute(find("engine_client.so", "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
-
 }
