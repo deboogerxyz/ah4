@@ -9,7 +9,6 @@
 #include "interfaces.h"
 
 #include "memory.h"
-#include "sdk.h"
 
 typedef struct LinkMap LinkMap;
 struct LinkMap {
