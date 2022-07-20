@@ -146,9 +146,9 @@ typedef enum {
 typedef struct Client Client;
 
 typedef struct {
-	void (*pad0[8])();
+	PAD(void *, 8)
 	ClientClass *(*getAllClasses)(Client *);
-	void (*pad1[28])();
+	PAD(void *, 28)
 	void (*frameStageNotify)(Client *, FrameStage stage);
 	int (*dispatchUserMessage)(Client *, int type, int flags, int size, void *data);
 } ClientVMT;
@@ -193,12 +193,12 @@ typedef struct {
 typedef struct ClientMode ClientMode;
 
 typedef struct {
-	void (*pad0[18])();
+	PAD(void *, 18)
 	bool (*shouldDrawFog)(ClientMode *);
 	void (*overrideView)(ClientMode *);
-	void (*pad1[5])();
+	PAD(void *, 5)
 	bool (*createMove)(ClientMode *, float, UserCmd *cmd);
-	void (*pad2[19])();
+	PAD(void *, 19)
 	void (*doPostScreenEffects)(ClientMode *, void *);
 } ClientModeVMT;
 
