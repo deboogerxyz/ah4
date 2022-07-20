@@ -9,6 +9,7 @@
 #include "interfaces.h"
 
 #include "memory.h"
+#include "sdk.h"
 
 typedef struct LinkMap LinkMap;
 struct LinkMap {
@@ -67,4 +68,5 @@ void memory_init(void)
 
 	*(void **)&memory.clientMode = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);
 	*(void **)&memory.setClantag = relativeToAbsolute(find(ENGINE_SO, "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
+	*(void **)&memory.localPlayer = relativeToAbsolute(find(CLIENT_SO, "\x83\xFF\xFF\x48\x8B\x05") + 6);
 }

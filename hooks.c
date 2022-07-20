@@ -46,6 +46,8 @@ bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 void frameStageNotify(Client *this, FrameStage stage)
 {
+	memory.debugMsg("%llu\n", *memory.localPlayer);
+
 	oldClientVMT->frameStageNotify(this, stage);
 }
 
