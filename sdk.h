@@ -4,6 +4,22 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define CLIENT_SO             "csgo/bin/linux64/client_client.so"
+#define ENGINE_SO             "engine_client.so"
+#define FILESYSTEM_SO         "filesystem_stdio_client.so"
+#define INPUTSYSTEM_SO        "inputsystem_client.so"
+#define LOCALIZE_SO           "localize_client.so"
+#define MATERIALSYSTEM_SO     "materialsystem_client.so"
+#define PANORAMA_SO           "panorama_gl_client.so"
+#define SERVERBROWSER_SO      "bin/linux64/serverbrowser_client.so"
+#define SOUNDEMITTERSYSTEM_SO "soundemittersystem_client.so"
+#define STUDIORENDER_SO       "studiorender_client.so"
+#define TIER0_SO              "libtier0_client.so"
+#define VGUI2_SO              "vgui2_client.so"
+#define VGUIMATSURFACE_SO     "vguimatsurface_client.so"
+#define VPHYSICS_SO           "vphysics_client.so"
+#define VSTDLIB_SO            "libvstdlib_client.so"
+
 typedef struct {
 	float x, y, z;
 } Vector;

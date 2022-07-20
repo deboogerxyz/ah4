@@ -61,10 +61,10 @@ static void *relativeToAbsolute(void *addr)
 
 void memory_init(void)
 {
-	void *tier0 = dlopen("libtier0_client.so", RTLD_NOLOAD | RTLD_NOW);
+	void *tier0 = dlopen(TIER0_SO, RTLD_NOLOAD | RTLD_NOW);
 	*(void **)&memory.debugMsg = dlsym(tier0, "Msg");
 	dlclose(tier0);
 
 	*(void **)&memory.clientMode = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);
-	*(void **)&memory.setClantag = relativeToAbsolute(find("engine_client.so", "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
+	*(void **)&memory.setClantag = relativeToAbsolute(find(ENGINE_SO, "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
 }
