@@ -125,7 +125,7 @@ typedef void *Entity;
 typedef struct ClientClass ClientClass;
 struct ClientClass {
 	Entity *(*createFunction)(int, int);
-	void *createEventFunction;
+	Entity *(*createEventFunction)(void);
 	const char *name;
 	RecvTable *recvTable;
 	ClientClass *next;
@@ -147,10 +147,10 @@ typedef struct Client Client;
 
 typedef struct {
 	PAD(void *, 8)
-	ClientClass *(*getAllClasses)(Client *);
+	ClientClass *(*getAllClasses)(Client *); // 8
 	PAD(void *, 28)
-	void (*frameStageNotify)(Client *, FrameStage stage);
-	int (*dispatchUserMessage)(Client *, int type, int flags, int size, void *data);
+	void (*frameStageNotify)(Client *, FrameStage stage); // 37
+	int (*dispatchUserMessage)(Client *, int type, int flags, int size, void *data); // 38
 } ClientVMT;
 
 struct Client {
@@ -194,12 +194,12 @@ typedef struct ClientMode ClientMode;
 
 typedef struct {
 	PAD(void *, 18)
-	bool (*shouldDrawFog)(ClientMode *);
-	void (*overrideView)(ClientMode *);
+	bool (*shouldDrawFog)(ClientMode *); // 18
+	void (*overrideView)(ClientMode *); // 19
 	PAD(void *, 5)
-	bool (*createMove)(ClientMode *, float, UserCmd *cmd);
+	bool (*createMove)(ClientMode *, float, UserCmd *cmd); // 25
 	PAD(void *, 19)
-	void (*doPostScreenEffects)(ClientMode *, void *);
+	void (*doPostScreenEffects)(ClientMode *, void *); // 45
 } ClientModeVMT;
 
 struct ClientMode {
