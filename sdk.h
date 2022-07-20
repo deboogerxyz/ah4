@@ -222,6 +222,14 @@ typedef struct {
 
 typedef float Matrix4x4[4][4];
 
+typedef struct {
+	uint64_t caseID;
+	uint32_t headerPrefixLength;
+	uint32_t lockFirstPersonAccountID;
+	bool anonymousPlayerIdentity;
+	PAD(char, 23)
+} DemoPlaybackParameters;
+
 typedef struct Engine Engine;
 
 typedef struct {
@@ -249,13 +257,19 @@ typedef struct {
 	const char *(*getLevelName)(Engine *); // 53
 	PAD(void *, 24)
 	void *(*getNetworkChannel)(Engine *); // 78
-	PAD(void *, 13)
+	PAD(void *, 3)
+	bool (*isPlayingDemo)(Engine *); // 82
+	PAD(void *, 9)
 	bool (*isTakingScreenshot)(Engine *); // 92
-	PAD(void *, 15)
+	PAD(void *, 8)
+	float (*getScreenAspectRatio)(Engine *, int w, int h); // 101
+	PAD(void *, 6)
 	void *(*executeClientCmd)(Engine *, const char *); // 108
 	PAD(void *, 4)
 	void *(*clientCmdUnrestricted)(Engine *, const char *, bool fromConsoleOrKeybind); // 113
-	PAD(void *, 111)
+	PAD(void *, 105)
+	DemoPlaybackParameters *(*getDemoPlaybackParameters)(Engine *); // 219
+	PAD(void *, 5)
 	bool (*isVoiceRecording)(Engine *); // 225
 } EngineVMT;
 
