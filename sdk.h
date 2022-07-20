@@ -120,9 +120,198 @@ typedef enum {
 	ClassID_Tec9 = 269
 } ClassID;
 
-typedef void *Entity;
+typedef struct Collideable Collideable;
+
+typedef struct {
+	PAD(void *, 1)
+	Vector *(*obbMins)(Collideable *); // 1
+	Vector *(*obbMaxs)(Collideable *); // 2
+} CollideableVMT;
+
+struct Collideable {
+	CollideableVMT *vmt;
+};
 
 typedef struct ClientClass ClientClass;
+
+typedef struct Networkable Networkable;
+
+typedef struct {
+	PAD(void *, 2)
+	ClientClass *(*getClientClass)(Networkable *); // 2
+	PAD(void *, 6)
+	bool (*isDormant)(Networkable *); // 9
+	int (*getIndex)(Networkable *); // 10
+} NetworkableVMT;
+
+struct Networkable {
+	NetworkableVMT *vmt;
+};
+
+typedef enum {
+	Team_None,
+	Team_Spectators,
+	Team_TT,
+	Team_CT
+} Team;
+
+typedef enum {
+	ObserverMode_None,
+	ObserverMode_Deathcam,
+	ObserverMode_Freezecam,
+	ObserverMode_Fixed,
+	ObserverMode_InEye,
+	ObserverMode_Chase,
+	ObserverMode_Roaming
+} ObserverMode;
+
+typedef enum {
+	WeaponType_Knife,
+	WeaponType_Pistol,
+	WeaponType_SubMachinegun,
+	WeaponType_Rifle,
+	WeaponType_Shotgun,
+	WeaponType_SniperRifle,
+	WeaponType_Machinegun,
+	WeaponType_C4,
+	WeaponType_Placeholder,
+	WeaponType_Grenade,
+	WeaponType_Unknown,
+	WeaponType_StackableItem,
+	WeaponType_Fists,
+	WeaponType_BreachCharge,
+	WeaponType_BumpMine,
+	WeaponType_Tablet,
+	WeaponType_Melee
+} WeaponType;
+
+typedef struct {
+	PAD(char, 32)
+	int maxClip;
+	PAD(char, 204)
+	const char *name;
+	PAD(char, 72)
+	WeaponType type;
+	PAD(char, 4)
+	int price;
+	float cycleTime;
+	PAD(char, 12)
+	bool fullAuto;
+	PAD(char, 3)
+	int damage;
+	float headshotMultiplier;
+	float armorRatio;
+	int bullets;
+	float penetration;
+	PAD(char, 8)
+	float range;
+	float rangeModifier;
+	PAD(char, 16)
+	bool silencer;
+	PAD(char, 23)
+	float maxSpeed;
+	float maxSpeedAlt;
+	PAD(char, 100)
+	float recoilMagnitude;
+	float recoilMagnitudeAlt;
+	PAD(char, 16)
+	float recoveryTimeStand;
+} WeaponInfo;
+
+typedef struct Entity Entity;
+
+typedef struct {
+	PAD(void *, 3)
+	int *(*getHandle)(Entity *); // 3
+	Collideable *(*getCollideable)(Entity *); // 4
+	Networkable *(*getNetworkable)(Entity *); // 5
+	PAD(void *, 6)
+	Vector *(*getAbsoluteOrigin)(Entity *); // 12
+	PAD(void *, 98)
+	void (*setModelIndex)(Entity *, int); // 111
+	PAD(void *, 10)
+	bool (*getAttachment)(Entity *, int, Vector *origin); // 122
+	PAD(void *, 5)
+	Team (*getTeamNumber)(Entity *); // 128
+	PAD(void *, 38)
+	int (*getHealth)(Entity *); // 167
+	PAD(void *, 40)
+	bool (*isAlive)(Entity *); // 208
+	PAD(void *, 1)
+	bool (*isPlayer)(Entity *); // 210
+	PAD(void *, 7)
+	bool (*isWeapon)(Entity *); // 218
+	PAD(void *, 112)
+	Entity *(*getActiveWeapon)(Entity *); // 331
+	PAD(void *, 16)
+	Vector (*getEyePosition)(Entity *); // 348
+	PAD(void *, 1)
+	int (*getWeaponSubtype)(Entity *); // 350
+	PAD(void *, 6)
+	ObserverMode (*getObserverMode)(Entity *); // 357
+	Entity *(*getObserverTarget)(Entity *); // 358
+	PAD(void *, 50)
+	Vector (*getAimPunch)(Entity *); // 409
+	PAD(void *, 102)
+	float (*getSpread)(Entity *); // 521
+	PAD(void *, 1)
+	WeaponType (*getWeaponType)(Entity *); // 523
+	PAD(void *, 5)
+	WeaponInfo *(*getWeaponInfo)(Entity *); // 529
+	PAD(void *, 6)
+	int (*getMuzzleAttachmentIndex1stPerson)(Entity *, Entity *viewModel); // 536
+	int (*getMuzzleAttachmentIndex3stPerson)(Entity *); // 537
+	PAD(void *, 13)
+	float (*getInaccuracy)(Entity *); // 551
+	void (*updateAccuracyPenalty)(Entity *); // 552
+} EntityVMT;
+
+typedef float Matrix3x4[3][4];
+
+typedef struct {
+	void *handle;
+	char name[260];
+	int loadFlags;
+	int serverCount;
+	int type;
+	int flags;
+	Vector mins, maxs;
+} Model;
+
+typedef struct Renderable Renderable;
+
+typedef struct {
+	Vector origin;
+	Vector angles;
+	PAD(char, 4)
+	const Renderable *renderable;
+	const Model *model;
+	const Matrix3x4 *modelToWorld;
+	const Matrix3x4 *lightingOffset;
+	const Vector *lightingOrigin;
+	int flags;
+	int entityIndex;
+} ModelRenderInfo;
+
+typedef struct {
+	PAD(void *, 8)
+	const Model *(*getModel)(Renderable *); // 8
+	PAD(void *, 23)
+	const Matrix3x4 *(*toWorldTransform)(Renderable *); // 32
+	PAD(void *, 116)
+	bool (*shouldDraw)(Renderable *); // 149
+} RenderableVMT;
+
+struct Renderable {
+	RenderableVMT *vmt;
+};
+
+struct Entity {
+	EntityVMT *vmt;
+	Renderable *renderable;
+	Networkable *networkable;
+};
+
 struct ClientClass {
 	Entity *(*createFunction)(int, int);
 	Entity *(*createEventFunction)(void);
