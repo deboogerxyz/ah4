@@ -32,8 +32,6 @@ int __attribute__((constructor)) onLoad(void)
 
 void __attribute__((destructor)) onUnload(void)
 {
-	pthread_join(thread, 0);
-
 	hooks_cleanUp();
 	netvars_cleanUp();
 }
