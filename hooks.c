@@ -12,18 +12,18 @@
         int len = getTableLength((void **)vmt); \
         newVMT = malloc(len * sizeof(void *)); \
         if (newVMT) { \
-        	memcpy(newVMT, (void **)vmt - 2, len * sizeof(void *)); \
-        	*(void **)&vmt = newVMT + 2; \
+        	memcpy(newVMT, vmt, len * sizeof(void *)); \
+        	vmt = newVMT; \
 	} }
 
 #define UNHOOK(vmt, oldVMT, newVMT) \
         if (oldVMT) \
-        	*(void **)&vmt = oldVMT; \
+        	vmt = oldVMT; \
         if (newVMT) \
         	free(newVMT);
 
-ClientVMT *oldClientVMT, **newClientVMT;
-ClientModeVMT *oldClientModeVMT, **newClientModeVMT;
+ClientVMT *oldClientVMT, *newClientVMT;
+ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
 
 static int getTableLength(void **vmt)
 {
@@ -52,10 +52,10 @@ void frameStageNotify(Client *this, FrameStage stage)
 void hooks_init(void)
 {
 	HOOK(interfaces.client->vmt, oldClientVMT, newClientVMT)
-	interfaces.client->vmt->frameStageNotify = frameStageNotify;
+	newClientVMT->frameStageNotify = frameStageNotify;
 
 	HOOK(memory.clientMode->vmt, oldClientModeVMT, newClientModeVMT)
-	memory.clientMode->vmt->createMove = createMove;
+	newClientModeVMT->createMove = createMove;
 }
 
 void hooks_cleanUp(void)
