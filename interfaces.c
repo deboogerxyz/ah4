@@ -21,5 +21,6 @@ static void *find(const char *moduleName, const char *name)
 
 void interfaces_init(void)
 {
-	interfaces.client = find("csgo/bin/linux64/client_client.so", "VClient018");
+	interfaces.client = find(CLIENT_SO, "VClient018");
+	interfaces.engine = find(ENGINE_SO, "VEngineClient014");
 }

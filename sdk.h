@@ -20,6 +20,10 @@
 #define VPHYSICS_SO           "vphysics_client.so"
 #define VSTDLIB_SO            "libvstdlib_client.so"
 
+#define CAT(a, b)    a##b
+#define PADNAME(x)   CAT(pad, x)
+#define PAD(type, n) type PADNAME(__LINE__)[n];
+
 typedef struct {
 	float x, y, z;
 } Vector;
@@ -200,6 +204,63 @@ typedef struct {
 
 struct ClientMode {
 	ClientModeVMT *vmt;
+};
+
+typedef struct {
+	uint64_t version;
+	uint64_t xuid;
+	char name[128];
+	int userID;
+	char guid[33];
+	uint32_t friendsID;
+	char friendsName[128];
+	bool fakePlayer;
+	bool hltv;
+	int customFiles[4];
+	uint8_t filesDownloaded;
+} PlayerInfo;
+
+typedef float Matrix4x4[4][4];
+
+typedef struct Engine Engine;
+
+typedef struct {
+	PAD(void *, 5)
+	void (*getScreenSize)(Engine *, int *w, int *h); // 5
+	PAD(void *, 2)
+	bool (*getPlayerInfo)(Engine *, int entityIndex, PlayerInfo *); // 8
+	int (*getPlayerForUserID)(Engine *, int); // 9
+	PAD(void *, 2)
+	int (*getLocalPlayer)(Engine *); // 12
+	PAD(void *, 5)
+	void (*getViewAngles)(Engine *, Vector *); // 18
+	void (*setViewAngles)(Engine *, const Vector *); // 19
+	int (*getMaxClients)(Engine *); // 20
+	PAD(void *, 5)
+	bool (*isInGame)(Engine *); // 26
+	bool (*isConnected)(Engine *); // 27
+	PAD(void *, 6)
+	bool (*cullBox)(Engine *, const Vector *mins, const Vector *maxs); // 34
+	PAD(void *, 2)
+	const Matrix4x4 *(*worldToScreenMatrix)(Engine *); // 37
+	PAD(void *, 5)
+	void *(*getBSPTreeQuery)(Engine *); // 43
+	PAD(void *, 9)
+	const char *(*getLevelName)(Engine *); // 53
+	PAD(void *, 24)
+	void *(*getNetworkChannel)(Engine *); // 78
+	PAD(void *, 13)
+	bool (*isTakingScreenshot)(Engine *); // 92
+	PAD(void *, 15)
+	void *(*executeClientCmd)(Engine *, const char *); // 108
+	PAD(void *, 4)
+	void *(*clientCmdUnrestricted)(Engine *, const char *, bool fromConsoleOrKeybind); // 113
+	PAD(void *, 111)
+	bool (*isVoiceRecording)(Engine *); // 225
+} EngineVMT;
+
+struct Engine {
+	EngineVMT *vmt;
 };
 
 #endif // SDK_H_
