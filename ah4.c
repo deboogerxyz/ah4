@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #include <pthread.h>
 
 #include "interfaces.h"
@@ -9,6 +10,10 @@ static pthread_t thread;
 
 static void *routine(void *arg)
 {
+	struct timespec time = {0, 100 * 1000000}; // 100 ms
+	while (!dlopen(SERVERBROWSER_SO, RTLD_NOLOAD | RTLD_NOW))
+		nanosleep(&time, &time);
+
 	interfaces_init();
 	memory_init();
 	netvars_init();
