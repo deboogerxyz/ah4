@@ -294,12 +294,12 @@ typedef struct {
 } ModelRenderInfo;
 
 typedef struct {
-	PAD(void *, 8)
+	PAD(void *, 5)
+	bool (*shouldDraw)(Renderable *); // 5
+	PAD(void *, 2)
 	const Model *(*getModel)(Renderable *); // 8
 	PAD(void *, 23)
 	const Matrix3x4 *(*toWorldTransform)(Renderable *); // 32
-	PAD(void *, 116)
-	bool (*shouldDraw)(Renderable *); // 149
 } RenderableVMT;
 
 struct Renderable {
@@ -308,8 +308,6 @@ struct Renderable {
 
 struct Entity {
 	EntityVMT *vmt;
-	Renderable *renderable;
-	Networkable *networkable;
 };
 
 struct ClientClass {
