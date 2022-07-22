@@ -63,6 +63,7 @@ void memory_init(void)
 {
 	void *tier0 = dlopen(TIER0_SO, RTLD_NOLOAD | RTLD_NOW);
 	*(void **)&memory.debugMsg = dlsym(tier0, "Msg");
+	*(void **)&memory.conColorMsg = dlsym(tier0, "_Z11ConColorMsgRK5ColorPKcz");
 	dlclose(tier0);
 
 	memory.clientMode            = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);

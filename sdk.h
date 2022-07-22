@@ -25,6 +25,10 @@
 #define PAD(type, n) type PADNAME(__LINE__)[n];
 
 typedef struct {
+	uint8_t r, g, b, a;
+} Color;
+
+typedef struct {
 	float x, y, z;
 } Vector;
 
