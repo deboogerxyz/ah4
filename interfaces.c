@@ -13,10 +13,8 @@ static void *find(const char *moduleName, const char *name)
 		return 0;
 
 	void *interface = createInterface(name, 0);
-	if (interface)
-		return interface;
 
-	return 0;
+	return interface;
 }
 
 void interfaces_init(void)
