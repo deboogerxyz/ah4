@@ -7,20 +7,20 @@
 #include "hooks.h"
 #include "sdk.h"
 
-#define HOOK(vmt, oldVMT, newVMT) \
-        { oldVMT = vmt; \
-        int len = getTableLength((void **)vmt); \
-        newVMT = malloc(len * sizeof(void *)); \
-        if (newVMT) { \
-        	memcpy(newVMT, vmt, len * sizeof(void *)); \
-        	vmt = newVMT; \
+#define HOOK(type, vmt) \
+	{ old##type = vmt; \
+	int len = getTableLength((void **)vmt); \
+	new##type = malloc(len * sizeof(void *)); \
+	if (new##type) { \
+		memcpy(new##type, vmt, len * sizeof(void *)); \
+		vmt = new##type; \
 	} }
 
-#define UNHOOK(vmt, oldVMT, newVMT) \
-        if (oldVMT) \
-        	vmt = oldVMT; \
-        if (newVMT) \
-        	free(newVMT);
+#define UNHOOK(type, vmt) \
+	if (old##type) \
+		vmt = old##type; \
+	if (new##type) \
+		free(new##type);
 
 ClientVMT *oldClientVMT, *newClientVMT;
 ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
@@ -51,15 +51,15 @@ void frameStageNotify(Client *this, FrameStage stage)
 
 void hooks_init(void)
 {
-	HOOK(interfaces.client->vmt, oldClientVMT, newClientVMT)
+	HOOK(ClientVMT, interfaces.client->vmt)
 	newClientVMT->frameStageNotify = frameStageNotify;
 
-	HOOK(memory.clientMode->vmt, oldClientModeVMT, newClientModeVMT)
+	HOOK(ClientModeVMT, memory.clientMode->vmt)
 	newClientModeVMT->createMove = createMove;
 }
 
 void hooks_cleanUp(void)
 {
-	UNHOOK(memory.clientMode->vmt, oldClientModeVMT, newClientModeVMT)
-	UNHOOK(interfaces.client->vmt, oldClientVMT, newClientVMT)
+	UNHOOK(ClientVMT, interfaces.client->vmt)
+	UNHOOK(ClientModeVMT, memory.clientMode->vmt)
 }
