@@ -22,7 +22,7 @@ struct LinkMap {
 	struct libname_list *moduleName;
 	ElfW(Dyn) *info[DT_NUM + DT_VERSIONTAGNUM + DT_EXTRANUM + DT_VALNUM + DT_ADDRNUM];
 	const ElfW(Phdr) *phdr;
-	// ... 
+	// ...
 };
 
 Memory memory;
@@ -62,7 +62,7 @@ static void *relativeToAbsolute(void *addr)
 void memory_init(void)
 {
 	void *tier0 = dlopen(TIER0_SO, RTLD_NOLOAD | RTLD_NOW);
-	*(void **)&memory.debugMsg = dlsym(tier0, "Msg");
+	*(void **)&memory.debugMsg    = dlsym(tier0, "Msg");
 	*(void **)&memory.conColorMsg = dlsym(tier0, "_Z11ConColorMsgRK5ColorPKcz");
 	dlclose(tier0);
 
