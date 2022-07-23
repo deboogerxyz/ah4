@@ -25,13 +25,14 @@ static void *routine(void *arg)
 int __attribute__((constructor)) onLoad(void)
 {
 	pthread_create(&thread, 0, routine, 0);
-	pthread_detach(thread);
 
 	return 0;
 }
 
 void __attribute__((destructor)) onUnload(void)
 {
+	pthread_join(thread, 0);
+
 	hooks_cleanUp();
 	netvars_cleanUp();
 }
