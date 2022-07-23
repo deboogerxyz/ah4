@@ -397,6 +397,36 @@ struct ClientMode {
 	ClientModeVMT *vmt;
 };
 
+typedef struct ConVar ConVar;
+
+typedef struct {
+	PAD(void *, 15)
+	float (*getFloat)(ConVar *); // 15
+	int (*getInt)(ConVar *); // 16
+	void (*setString)(ConVar *, const char *); // 17
+	void (*setFloat)(ConVar *, float); // 18
+	void (*setInt)(ConVar *, int); // 19
+} ConVarVMT;
+
+struct ConVar {
+	ConVarVMT *vmt;
+	PAD(char, 48)
+	ConVar *parent;
+	const char *defaultValue;
+	char *string;
+};
+
+typedef struct Cvar Cvar;
+
+typedef struct {
+	PAD(void *, 15)
+	ConVar *(*findVar)(Cvar *, const char *name); // 15
+} CvarVMT;
+
+struct Cvar {
+	CvarVMT *vmt;
+};
+
 typedef struct {
 	uint64_t version;
 	uint64_t xuid;

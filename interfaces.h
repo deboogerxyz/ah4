@@ -2,6 +2,7 @@
 
 typedef struct {
 	Client *client;
+	Cvar *cvar;
 	Engine *engine;
 } Interfaces;
 
