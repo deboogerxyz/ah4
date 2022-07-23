@@ -4,6 +4,7 @@ typedef struct {
 	Client *client;
 	Cvar *cvar;
 	Engine *engine;
+	EntityList *entityList;
 } Interfaces;
 
 extern Interfaces interfaces;

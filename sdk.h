@@ -498,4 +498,18 @@ struct Engine {
 	EngineVMT *vmt;
 };
 
+typedef struct EntityList EntityList;
+
+typedef struct {
+	PAD(void *, 3)
+	Entity *(*getEntity)(EntityList *, int i); // 3
+	Entity *(*getEntityFromHandle)(EntityList *, int *handle); // 4
+	PAD(void *, 1)
+	int *(*getHighestEntityIndex)(EntityList *); // 6
+} EntityListVMT;
+
+struct EntityList {
+	EntityListVMT *vmt;
+};
+
 #endif // SDK_H_
