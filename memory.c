@@ -30,6 +30,8 @@ Memory memory;
 static void *find(const char *moduleName, const char *pattern)
 {
 	LinkMap *linkMap = dlopen(moduleName, RTLD_NOLOAD | RTLD_NOW);
+	if (!linkMap)
+		return 0;
 
 	char *start = (char *)linkMap->real->addr;
 	char *end   = start + linkMap->real->phdr[0].p_memsz;
