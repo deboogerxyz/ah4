@@ -70,7 +70,9 @@ void memory_init(void)
 
 	memory.clientMode            = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);
 	*(void **)&memory.setClantag = relativeToAbsolute(find(ENGINE_SO, "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
+	*(void **)&memory.globalVars = *(void **)relativeToAbsolute(*((void **)interfaces.client->vmt + 11) + 16);
 	memory.moveData              = **(void ***)relativeToAbsolute(find(CLIENT_SO, "\x4C\x8B\x2D????\x0F\xB6\x93") + 3);
 	memory.moveHelper            = **(void ***)relativeToAbsolute(find(CLIENT_SO, "\x48\x8B\x05????\x44\x89\x85????\x48\x8B\x38") + 3);
+	*(void **)&memory.predictionRandomSeed  = *(int **)relativeToAbsolute(find(CLIENT_SO, "\x41\x8D\x56\xFF\x31\xC9") - 14);
 	memory.localPlayer           = relativeToAbsolute(find(CLIENT_SO, "\x83\xFF\xFF\x48\x8B\x05") + 6);
 }

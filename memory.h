@@ -5,8 +5,10 @@ typedef struct {
 	void (*debugMsg)(const char *msg, ...);
 	void (*conColorMsg)(Color *, const char *msg, ...);
 	void (*setClantag)(const char *, const char *);
+	GlobalVars *globalVars;
 	MoveData *moveData;
 	MoveHelper *moveHelper;
+	int *predictionRandomSeed;
 	Entity **localPlayer;
 } Memory;
 

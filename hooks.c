@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "hacks/enginePrediction.h"
+
 #include "memory.h"
 #include "interfaces.h"
 
@@ -40,6 +42,8 @@ bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	bool result = oldClientModeVMT->createMove(this, inputSampleTime, cmd);
 	if (!cmd->commandNumber)
 		return result;
+
+	enginePrediction_run(cmd);
 
 	return 0;
 }

@@ -512,6 +512,18 @@ struct EntityList {
 	EntityListVMT *vmt;
 };
 
+typedef struct {
+	const float realTime;
+	const int frameCount;
+	const float absoluteFrameTime;
+	PAD(char, 4)
+	float currentTime;
+	float frameTime;
+	const int maxClients;
+	const int tickCount;
+	const float intervalPerTick;
+} GlobalVars;
+
 typedef void *MoveData;
 
 typedef struct GameMovement GameMovement;
@@ -550,5 +562,7 @@ typedef struct {
 struct Prediction {
 	PredictionVMT *vmt;
 };
+
+float sdk_getServerTime(UserCmd *cmd);
 
 #endif // SDK_H_
