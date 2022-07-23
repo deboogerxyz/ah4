@@ -33,8 +33,8 @@ static void *find(const char *moduleName, const char *pattern)
 	if (!linkMap)
 		return 0;
 
-	char *start = (char *)linkMap->real->addr;
-	char *end   = start + linkMap->real->phdr[0].p_memsz;
+	char *start = (char *)linkMap->addr;
+	char *end   = start + linkMap->phdr[0].p_memsz;
 
 	dlclose(linkMap);
 
