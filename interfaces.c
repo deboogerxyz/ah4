@@ -19,8 +19,9 @@ static void *find(const char *moduleName, const char *name)
 
 void interfaces_init(void)
 {
-	interfaces.client     = find(CLIENT_SO, "VClient018");
-	interfaces.cvar       = find(VSTDLIB_SO, "VEngineCvar007");
-	interfaces.engine     = find(ENGINE_SO, "VEngineClient014");
-	interfaces.entityList = find(CLIENT_SO, "VClientEntityList003");
+	interfaces.client       = find(CLIENT_SO, "VClient018");
+	interfaces.cvar         = find(VSTDLIB_SO, "VEngineCvar007");
+	interfaces.engine       = find(ENGINE_SO, "VEngineClient014");
+	interfaces.entityList   = find(CLIENT_SO, "VClientEntityList003");
+	interfaces.gameMovement = find(CLIENT_SO, "GameMovement001");
 }

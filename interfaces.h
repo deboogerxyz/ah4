@@ -5,6 +5,7 @@ typedef struct {
 	Cvar *cvar;
 	Engine *engine;
 	EntityList *entityList;
+	GameMovement *gameMovement;
 } Interfaces;
 
 extern Interfaces interfaces;

@@ -512,4 +512,20 @@ struct EntityList {
 	EntityListVMT *vmt;
 };
 
+typedef void *MoveData;
+
+typedef struct GameMovement GameMovement;
+
+typedef struct {
+	PAD(void *, 2)
+	void (*processMovement)(GameMovement *, Entity *, MoveData *); // 2
+	PAD(void *, 1)
+	void (*startTrackPredictionErrors)(GameMovement *, Entity *); // 4
+	void (*finishTrackPredictionErrors)(GameMovement *, Entity *); // 5
+} GameMovementVMT;
+
+struct GameMovement {
+	GameMovementVMT *vmt;
+};
+
 #endif // SDK_H_
