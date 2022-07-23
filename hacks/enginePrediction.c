@@ -14,7 +14,7 @@ void enginePrediction_run(UserCmd *cmd)
 	float oldCurrentTime = memory.globalVars->currentTime;
 	float oldFrameTime   = memory.globalVars->frameTime;
 
-	memory.globalVars->currentTime = sdk_getServerTime(cmd);
+	memory.globalVars->currentTime = sdk_getServerTime(0);
 	memory.globalVars->frameTime   = memory.globalVars->intervalPerTick;
 
 	interfaces.gameMovement->vmt->startTrackPredictionErrors(interfaces.gameMovement, localPlayer);

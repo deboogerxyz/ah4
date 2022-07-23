@@ -43,6 +43,8 @@ bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	if (!cmd->commandNumber)
 		return result;
 
+	sdk_getServerTime(cmd);
+
 	enginePrediction_run(cmd);
 
 	return 0;

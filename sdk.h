@@ -514,7 +514,7 @@ struct EntityList {
 
 typedef struct {
 	const float realTime;
-	const int frameCount;
+	int frameCount;
 	const float absoluteFrameTime;
 	PAD(char, 4)
 	float currentTime;
