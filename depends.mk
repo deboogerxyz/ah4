@@ -6,4 +6,5 @@ memory.o: memory.h sdk.h
 netvars.o: netvars.h interfaces.h sdk.h utils.h
 hooks.o: hooks.h
 ubsan.o: ubsan.h
+config.o: config.h
 enginePrediction.o: enginePrediction.h interfaces.h memory.h sdk.h

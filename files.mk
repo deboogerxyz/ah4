@@ -7,4 +7,5 @@ SRC = \
       netvars.c \
       hooks.c \
       ubsan.c \
+      config.c \
       hacks/enginePrediction.c

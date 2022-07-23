@@ -1,5 +1,5 @@
 # Libraries
-LIBS = -lpthread
+LIBS = -lpthread -lcjson
 
 # Flags
 CPPFLAGS = -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE=200809L
