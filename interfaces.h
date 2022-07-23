@@ -6,6 +6,7 @@ typedef struct {
 	Engine *engine;
 	EntityList *entityList;
 	GameMovement *gameMovement;
+	Prediction *prediction;
 } Interfaces;
 
 extern Interfaces interfaces;

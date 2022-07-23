@@ -24,4 +24,5 @@ void interfaces_init(void)
 	interfaces.engine       = find(ENGINE_SO, "VEngineClient014");
 	interfaces.entityList   = find(CLIENT_SO, "VClientEntityList003");
 	interfaces.gameMovement = find(CLIENT_SO, "GameMovement001");
+	interfaces.prediction   = find(CLIENT_SO, "VClientPrediction001");
 }

@@ -528,4 +528,18 @@ struct GameMovement {
 	GameMovementVMT *vmt;
 };
 
+typedef void *MoveHelper;
+
+typedef struct Prediction Prediction;
+
+typedef struct {
+	PAD(void *, 21)
+	void (*setupMove)(Prediction *, Entity *, UserCmd *, MoveHelper *, MoveData *); // 21
+	void (*finishMove)(Prediction *, Entity *, UserCmd *, MoveData *); // 22
+} PredictionVMT;
+
+struct Prediction {
+	PredictionVMT *vmt;
+};
+
 #endif // SDK_H_
