@@ -5,6 +5,8 @@ typedef struct {
 	void (*debugMsg)(const char *msg, ...);
 	void (*conColorMsg)(Color *, const char *msg, ...);
 	void (*setClantag)(const char *, const char *);
+	MoveData *moveData;
+	MoveHelper *moveHelper;
 	Entity **localPlayer;
 } Memory;
 
