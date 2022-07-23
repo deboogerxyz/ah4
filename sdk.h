@@ -528,7 +528,16 @@ struct GameMovement {
 	GameMovementVMT *vmt;
 };
 
-typedef void *MoveHelper;
+typedef struct MoveHelper MoveHelper;
+
+typedef struct {
+	PAD(void *, 1)
+	void (*setHost)(MoveHelper *, Entity *); // 1
+} MoveHelperVMT;
+
+struct MoveHelper {
+	MoveHelperVMT *vmt;
+};
 
 typedef struct Prediction Prediction;
 
