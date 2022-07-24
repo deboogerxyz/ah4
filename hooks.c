@@ -39,17 +39,17 @@ static int getTableLength(void **vmt)
 	return i;
 }
 
-int pollEvent(SDL_Event *event)
+static int pollEvent(SDL_Event *event)
 {
 	return oldPollEvent(event);
 }
 
-void swapWindow(SDL_Window *window)
+static void swapWindow(SDL_Window *window)
 {
 	oldSwapWindow(window);
 }
 
-bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
+static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 {
 	bool result = oldClientModeVMT->createMove(this, inputSampleTime, cmd);
 	if (!cmd->commandNumber)
@@ -62,7 +62,7 @@ bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	return 0;
 }
 
-void frameStageNotify(Client *this, FrameStage stage)
+static void frameStageNotify(Client *this, FrameStage stage)
 {
 	oldClientVMT->frameStageNotify(this, stage);
 }
