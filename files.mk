@@ -8,4 +8,5 @@ SRC = \
       hooks.c \
       ubsan.c \
       config.c \
+      libs/nuklear.c \
       hacks/enginePrediction.c

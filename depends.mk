@@ -7,4 +7,5 @@ netvars.o: netvars.h interfaces.h sdk.h utils.h
 hooks.o: hooks.h
 ubsan.o: ubsan.h
 config.o: config.h
+nuklear.o: nuklear.h nuklear_sdl_gl3.h
 enginePrediction.o: enginePrediction.h interfaces.h memory.h sdk.h
