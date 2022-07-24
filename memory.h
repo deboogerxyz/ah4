@@ -1,9 +1,14 @@
 #include "sdk.h"
 
+typedef int (*PollEvent)(SDL_Event *);
+typedef void (*SwapWindow)(SDL_Window *);
+
 typedef struct {
 	ClientMode *clientMode;
 	void (*debugMsg)(const char *msg, ...);
 	void (*conColorMsg)(Color *, const char *msg, ...);
+	PollEvent *pollEvent;
+	SwapWindow *swapWindow;
 	void (*setClantag)(const char *, const char *);
 	GlobalVars *globalVars;
 	MoveData *moveData;

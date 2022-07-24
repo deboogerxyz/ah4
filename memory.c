@@ -68,6 +68,11 @@ void memory_init(void)
 	*(void **)&memory.conColorMsg = dlsym(tier0, "_Z11ConColorMsgRK5ColorPKcz");
 	dlclose(tier0);
 
+	void *sdl2 = dlopen("libSDL2-2.0.so.0", RTLD_LAZY | RTLD_NOLOAD);
+	memory.pollEvent  = relativeToAbsolute(dlsym(sdl2, "SDL_PollEvent") + 2);
+	memory.swapWindow = relativeToAbsolute(dlsym(sdl2, "SDL_GL_SwapWindow") + 2);
+	dlclose(sdl2);
+
 	memory.clientMode            = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);
 	*(void **)&memory.setClantag = relativeToAbsolute(find(ENGINE_SO, "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
 	*(void **)&memory.globalVars = *(void **)relativeToAbsolute(*((void **)interfaces.client->vmt + 11) + 16);

@@ -23,6 +23,9 @@
 	if (new##type) \
 		free(new##type);
 
+static PollEvent oldPollEvent;
+static SwapWindow oldSwapWindow;
+
 static ClientVMT *oldClientVMT, *newClientVMT;
 static ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
 
@@ -34,6 +37,16 @@ static int getTableLength(void **vmt)
 		i++;
 
 	return i;
+}
+
+int pollEvent(SDL_Event *event)
+{
+	return oldPollEvent(event);
+}
+
+void swapWindow(SDL_Window *window)
+{
+	oldSwapWindow(window);
 }
 
 bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
@@ -56,6 +69,12 @@ void frameStageNotify(Client *this, FrameStage stage)
 
 void hooks_init(void)
 {
+	oldPollEvent = *memory.pollEvent;
+	*memory.pollEvent = pollEvent;
+
+	oldSwapWindow = *memory.swapWindow;
+	*memory.swapWindow = swapWindow;
+
 	HOOK(ClientVMT, interfaces.client->vmt)
 	newClientVMT->frameStageNotify = frameStageNotify;
 
@@ -67,4 +86,7 @@ void hooks_cleanUp(void)
 {
 	UNHOOK(ClientVMT, interfaces.client->vmt)
 	UNHOOK(ClientModeVMT, memory.clientMode->vmt)
+
+	*memory.swapWindow = oldSwapWindow;
+	*memory.pollEvent  = oldPollEvent;
 }
