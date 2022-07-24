@@ -23,8 +23,8 @@
 	if (new##type) \
 		free(new##type);
 
-ClientVMT *oldClientVMT, *newClientVMT;
-ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
+static ClientVMT *oldClientVMT, *newClientVMT;
+static ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
 
 static int getTableLength(void **vmt)
 {
