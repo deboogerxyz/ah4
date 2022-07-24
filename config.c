@@ -40,6 +40,9 @@ static char *getConfigDir(void)
 
 void config_load(const char *name)
 {
+	if (!*name)
+		return;
+
 	char *dir = getConfigDir();
 	if (!dir)
 		return;
