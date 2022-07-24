@@ -1,3 +1,6 @@
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_video.h>
+
 #include "sdk.h"
 
 typedef int (*PollEvent)(SDL_Event *);
