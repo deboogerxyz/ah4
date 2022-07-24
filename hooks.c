@@ -3,11 +3,10 @@
 
 #include "hacks/enginePrediction.h"
 
-#include "memory.h"
 #include "interfaces.h"
+#include "memory.h"
 
 #include "hooks.h"
-#include "sdk.h"
 
 #define HOOK(type, vmt) \
 	{ old##type = vmt; \
