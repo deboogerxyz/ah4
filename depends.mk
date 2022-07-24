@@ -8,4 +8,5 @@ hooks.o: hooks.h hacks/enginePrediction.h interfaces.h memory.h sdk.h
 ubsan.o: ubsan.h
 config.o: config.h
 libs/nuklear.o: libs/nuklear.h libs/nuklear_sdl_gl3.h
+gui.o: gui.h libs/nuklear.h libs/nuklear_sdl_gl3.h
 hacks/enginePrediction.o: hacks/enginePrediction.h interfaces.h memory.h sdk.h

@@ -1,8 +1,10 @@
+#include <GL/glew.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "hacks/enginePrediction.h"
 
+#include "gui.h"
 #include "interfaces.h"
 #include "memory.h"
 
@@ -41,12 +43,46 @@ static int getTableLength(void **vmt)
 
 static int pollEvent(SDL_Event *event)
 {
-	return oldPollEvent(event);
+	int result = oldPollEvent(event);
+
+	if (result && nk_sdl_handle_event(event) && gui_isOpen)
+		event->type = 0;
+
+	return result;
 }
 
 static void swapWindow(SDL_Window *window)
 {
+	static struct nk_context *ctx;
+	static struct nk_font_atlas *atlas;
+	static SDL_GLContext oldGLctx, GLctx;
+
+	if (!ctx) {
+		oldGLctx = SDL_GL_GetCurrentContext();
+		GLctx = SDL_GL_CreateContext(window);
+
+		glewInit();
+
+		ctx = nk_sdl_init(window);
+
+		nk_sdl_font_stash_begin(&atlas);
+		nk_sdl_font_stash_end();
+
+		nk_style_load_all_cursors(ctx, atlas->cursors);
+	}
+
+	SDL_GL_MakeCurrent(window, GLctx);
+
+	gui_handleToggle(ctx);
+	gui_render(ctx, window);
+
+	nk_sdl_render(NK_ANTI_ALIASING_ON, 512 * 1024, 128 * 1024);
+
+	SDL_GL_MakeCurrent(window, oldGLctx);
+
+	nk_input_begin(ctx);
 	oldSwapWindow(window);
+	nk_input_end(ctx);
 }
 
 static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)

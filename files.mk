@@ -9,4 +9,5 @@ SRC = \
       ubsan.c \
       config.c \
       libs/nuklear.c \
+      gui.c \
       hacks/enginePrediction.c
