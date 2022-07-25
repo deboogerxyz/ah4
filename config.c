@@ -1,4 +1,5 @@
 #include <cjson/cJSON.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <limits.h>
 #include <pwd.h>
@@ -38,6 +39,47 @@ static char *getConfigDir(void)
 	return 0;
 }
 
+int config_getConfigs(char ***configs)
+{
+	char *dir = getConfigDir();
+	if (!dir)
+		return 0;
+
+	char path[PATH_MAX];
+	snprintf(path, PATH_MAX, "%s/ah4", dir);
+
+	free(dir);
+
+	DIR *d = opendir(path);
+	if (!d)
+		return 0;
+
+	int len = 0;
+
+	struct dirent *de;
+	while ((de = readdir(d)))
+		len++;
+
+	*configs = malloc((len - 2) * sizeof(char *));
+
+	int i = 0;
+
+	seekdir(d, 0);
+	while ((de = readdir(d))) {
+		if (!strncmp(de->d_name, ".", PATH_MAX) || !strncmp(de->d_name, "..", PATH_MAX))
+			continue;
+
+		(*configs)[i] = malloc(PATH_MAX);
+		strncpy((*configs)[i++], de->d_name, PATH_MAX);
+	}
+
+	closedir(d);
+
+	return i;
+}
+
+#include "memory.h"
+
 void config_load(const char *name)
 {
 	if (!*name)
@@ -56,6 +98,9 @@ void config_load(const char *name)
 
 	struct stat sb;
 	if (fstat(fd, &sb) < 0)
+		return;
+
+	if (!sb.st_size)
 		return;
 
 	char *buf = mmap(0, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0);

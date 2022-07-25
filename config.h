@@ -3,4 +3,5 @@
 	if (cJSON_IsBool(item)) \
 		var = item->valueint; }
 
+int config_getConfigs(char ***configs);
 void config_load(const char *name);
