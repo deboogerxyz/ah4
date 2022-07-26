@@ -12,6 +12,18 @@
 
 #include "config.h"
 
+#define READ_BOOL(json, name, var) \
+	{ cJSON *item = cJSON_GetObjectItem(json, name); \
+	if (cJSON_IsBool(item)) \
+		var = item->valueint; }
+
+#define READ_INT(json, name, var) \
+	{ cJSON *item = cJSON_GetObjectItem(json, name); \
+	if (cJSON_IsNumber(item)) \
+		var = item->valueint; }
+
+Config config;
+
 static char *getConfigDir(void)
 {
 	char *buf = malloc(PATH_MAX);
@@ -78,8 +90,6 @@ int config_getConfigs(char ***configs)
 	return i;
 }
 
-#include "memory.h"
-
 void config_load(const char *name)
 {
 	if (!*name)
@@ -111,7 +121,9 @@ void config_load(const char *name)
 
 	cJSON *json = cJSON_Parse(buf);
 	if (json) {
-		// ...
+		cJSON *backtrackJson = cJSON_GetObjectItem(json, "Backtrack");
+		READ_BOOL(backtrackJson, "Enabled", config.backtrack.enabled)
+		READ_INT(backtrackJson, "Time limit", config.backtrack.timeLimit)
 
 		cJSON_Delete(json);
 	}

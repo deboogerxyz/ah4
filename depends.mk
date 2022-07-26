@@ -10,4 +10,4 @@ config.o: config.h
 libs/nuklear.o: libs/nuklear.h libs/nuklear_sdl_gl3.h
 gui.o: gui.h libs/nuklear.h libs/nuklear_sdl_gl3.h
 hacks/enginePrediction.o: hacks/enginePrediction.h interfaces.h memory.h sdk.h
-hacks/backtrack.o: hacks/backtrack.h interfaces.h memory.h netvars.h sdk.h libs/cvector.h
+hacks/backtrack.o: hacks/backtrack.h config.h interfaces.h memory.h netvars.h sdk.h libs/cvector.h

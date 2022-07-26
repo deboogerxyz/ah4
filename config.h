@@ -1,7 +1,15 @@
-#define READ_BOOL(json, name, var) \
-	{ cJSON *item = cJSON_GetObjectItem(json, name); \
-	if (cJSON_IsBool(item)) \
-		var = item->valueint; }
+#include <stdbool.h>
+
+typedef struct {
+	bool enabled;
+	int timeLimit;
+} BacktrackConfig;
+
+typedef struct {
+	BacktrackConfig backtrack;
+} Config;
+
+extern Config config;
 
 int config_getConfigs(char ***configs);
 void config_load(const char *name);

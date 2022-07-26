@@ -2,6 +2,7 @@
 
 #include "../libs/cvector.h"
 
+#include "../config.h"
 #include "../interfaces.h"
 #include "../memory.h"
 #include "../netvars.h"
@@ -54,6 +55,9 @@ static bool isValid(float simTime)
 
 void backtrack_update(FrameStage stage)
 {
+	if (!config.backtrack.enabled)
+		return;
+
 	if (stage != RENDER_START)
 		return;
 
@@ -94,7 +98,7 @@ void backtrack_update(FrameStage stage)
 
 		cvector_push_back(records[i], record);
 
-		while (cvector_size(records[i]) > TIME2TICKS(0.2f))
+		while (cvector_size(records[i]) > TIME2TICKS((float)config.backtrack.timeLimit / 1000.0f))
 			cvector_erase(records[i], 0);
 
 		for (int j = 0; j < cvector_size(records[i]); j++)
@@ -105,6 +109,9 @@ void backtrack_update(FrameStage stage)
 
 void backtrack_run(UserCmd *cmd)
 {
+	if (!config.backtrack.enabled)
+		return;
+
 	if (!(cmd->buttons & IN_ATTACK))
 		return;
 
