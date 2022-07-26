@@ -302,7 +302,9 @@ typedef struct {
 	bool (*shouldDraw)(Renderable *); // 5
 	PAD(void *, 2)
 	const Model *(*getModel)(Renderable *); // 8
-	PAD(void *, 23)
+	PAD(void *, 4)
+	bool (*setupBones)(Renderable *, Matrix3x4 *out, int max, int mask, float currentTime); // 13
+	PAD(void *, 18)
 	const Matrix3x4 *(*toWorldTransform)(Renderable *); // 32
 } RenderableVMT;
 
@@ -451,6 +453,19 @@ typedef struct {
 	PAD(char, 23)
 } DemoPlaybackParameters;
 
+typedef struct NetworkChannel NetworkChannel;
+
+typedef struct {
+	PAD(void *, 1)
+	const char *(*getServerAddress)(NetworkChannel *); // 1
+	PAD(void *, 7)
+	float (*getLatency)(NetworkChannel *, int flow); // 9
+} NetworkChannelVMT;
+
+struct NetworkChannel {
+	NetworkChannelVMT *vmt;
+};
+
 typedef struct Engine Engine;
 
 typedef struct {
@@ -477,7 +492,7 @@ typedef struct {
 	PAD(void *, 9)
 	const char *(*getLevelName)(Engine *); // 53
 	PAD(void *, 24)
-	void *(*getNetworkChannel)(Engine *); // 78
+	NetworkChannel *(*getNetworkChannel)(Engine *); // 78
 	PAD(void *, 3)
 	bool (*isPlayingDemo)(Engine *); // 82
 	PAD(void *, 9)
@@ -564,5 +579,12 @@ struct Prediction {
 };
 
 float sdk_getServerTime(UserCmd *cmd);
+Vector Vector_add(Vector a, Vector b);
+Vector Vector_sub(Vector a, Vector b);
+Vector Vector_toAngle(Vector v);
+Vector Vector_normalize(Vector v);
+Vector Vector_calculateAngle(Vector start, Vector end, Vector angle);
+Vector Matrix3x4_origin(Matrix3x4 m);
+Vector Entity_getBonePosition(Entity *entity, int bone);
 
 #endif // SDK_H_

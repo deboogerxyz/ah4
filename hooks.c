@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "hacks/enginePrediction.h"
+#include "hacks/backtrack.h"
 
 #include "gui.h"
 #include "interfaces.h"
@@ -95,11 +96,21 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 	enginePrediction_run(cmd);
 
+	backtrack_run(cmd);
+
 	return 0;
 }
 
 static void frameStageNotify(Client *this, FrameStage stage)
 {
+	static bool once = false;
+	if (!once) {
+		backtrack_init();
+		once = true;
+	}
+
+	backtrack_update(stage);
+
 	oldClientVMT->frameStageNotify(this, stage);
 }
 
