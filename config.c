@@ -62,8 +62,6 @@ int config_getConfigs(char ***configs)
 
 	free(dir);
 
-	mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
-
 	DIR *d = opendir(path);
 	if (!d)
 		return 0;
@@ -146,6 +144,10 @@ void config_save(const char *name)
 		return;
 
 	char path[PATH_MAX];
+	snprintf(path, PATH_MAX, "%s/ah4", dir);
+
+	mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
+
 	snprintf(path, PATH_MAX, "%s/ah4/%s", dir, name);
 
 	free(dir);
