@@ -16,6 +16,13 @@ void gui_handleToggle(struct nk_context *ctx)
 	}
 }
 
+static void renderBacktrackTab(struct nk_context *ctx)
+{
+	nk_layout_row_dynamic(ctx, 25, 1);
+	nk_checkbox_label(ctx, "Enabled", (nk_bool *)&config.backtrack.enabled);
+	nk_property_int(ctx, "Time limit [ms]", 0, &config.backtrack.timeLimit, 200, 1, 1);
+}
+
 static void renderConfigTab(struct nk_context *ctx)
 {
 	char **configs = 0;
@@ -55,13 +62,17 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_NO_SCROLLBAR;
 
 	if (nk_begin(ctx, "ah4", nk_rect(0, 0, 600, 500), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 1);
+		nk_layout_row_dynamic(ctx, 50, 2);
 
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Backtrack"))
 			currentTab = 0;
 
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 1;
+
 		switch (currentTab) {
-		case 0: renderConfigTab(ctx);
+		case 0: renderBacktrackTab(ctx); break;
+		case 1: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);
