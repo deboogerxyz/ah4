@@ -55,6 +55,9 @@ static void renderConfigTab(struct nk_context *ctx)
 
 	if (nk_button_label(ctx, "Load"))
 		config_load(buf);
+
+	if (nk_button_label(ctx, "Save"))
+		config_save(buf);
 }
 
 void gui_render(struct nk_context *ctx, SDL_Window *window)

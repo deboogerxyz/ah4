@@ -110,8 +110,10 @@ void config_load(const char *name)
 	if (fstat(fd, &sb) < 0)
 		return;
 
-	if (!sb.st_size)
+	if (!sb.st_size) {
+		close(fd);
 		return;
+	}
 
 	char *buf = mmap(0, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (!buf) {
@@ -130,4 +132,36 @@ void config_load(const char *name)
 
 	munmap(buf, sb.st_size);
 	close(fd);
+}
+
+void config_save(const char *name)
+{
+	if (!*name)
+		return;
+
+	char *dir = getConfigDir();
+	if (!dir)
+		return;
+
+	char path[PATH_MAX];
+	snprintf(path, PATH_MAX, "%s/ah4/%s", dir, name);
+
+	free(dir);
+
+	FILE *f = fopen(path, "w");
+	if (!f)
+		return;
+
+	cJSON *json = cJSON_CreateObject();
+	if (json) {
+		cJSON *backtrackJson = cJSON_CreateObject();
+		cJSON_AddBoolToObject(backtrackJson, "Enabled", config.backtrack.enabled);
+		cJSON_AddNumberToObject(backtrackJson, "Time limit", config.backtrack.timeLimit);
+		cJSON_AddItemToObject(json, "Backtrack", backtrackJson);
+
+		fprintf(f, cJSON_Print(json));
+		fclose(f);
+
+		cJSON_Delete(json);
+	}
 }
