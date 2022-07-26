@@ -62,6 +62,8 @@ int config_getConfigs(char ***configs)
 
 	free(dir);
 
+	mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
+
 	DIR *d = opendir(path);
 	if (!d)
 		return 0;
