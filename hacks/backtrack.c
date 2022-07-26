@@ -18,8 +18,15 @@ typedef struct {
 	float simTime;
 } Record;
 
+typedef struct {
+	int reliableState;
+	int sequenceNumber;
+	float serverTime;
+} IncomingSequence;
+
 static ConVar *updateRate, *maxUpdateRate, *interp, *interpRatio, *minInterpRatio, *maxInterpRatio, *maxUnlag;
 static Record *records[65] = {0};
+static IncomingSequence *inSequences = {0};
 
 static float getLerp(void)
 {
@@ -177,6 +184,49 @@ void backtrack_run(UserCmd *cmd)
 		return;
 
 	cmd->tickCount = TIME2TICKS(record->simTime + getLerp());
+}
+
+void backtrack_addLatency(NetworkChannel *networkChannel)
+{
+	if (!maxUnlag)
+		return;
+
+	if (!config.backtrack.enabled)
+		return;
+
+	if (config.backtrack.timeLimit <= 200)
+		return;
+
+	float serverTime = sdk_getServerTime(0);
+	float outLatency = networkChannel->vmt->getLatency(networkChannel, 0);
+	float latency    = MAX(0, CLAMP((float)config.backtrack.timeLimit / 1000.0f - 0.2f, 0, maxUnlag->vmt->getFloat(maxUnlag)) - outLatency);
+
+	for (int i = cvector_size(inSequences) - 1; i >= 0; i--)
+		if (serverTime - inSequences[i].serverTime >= latency) {
+			networkChannel->inReliableState  = inSequences[i].reliableState;
+			networkChannel->inSequenceNumber = inSequences[i].sequenceNumber;
+			break;
+		}
+}
+
+void backtrack_updateSequences(NetworkChannel *networkChannel)
+{
+	static int lastInSequenceNumber = 0;
+
+	if (networkChannel->inSequenceNumber != lastInSequenceNumber) {
+		lastInSequenceNumber = networkChannel->inSequenceNumber;
+
+		IncomingSequence inSequence = {
+			.reliableState  = networkChannel->inReliableState,
+			.sequenceNumber = networkChannel->inSequenceNumber,
+			.serverTime     = sdk_getServerTime(0)
+		};
+
+		cvector_push_back(inSequences, inSequence);
+	}
+
+	while (cvector_size(inSequences) > 2048)
+		cvector_erase(inSequences, 0);
 }
 
 void backtrack_init(void)

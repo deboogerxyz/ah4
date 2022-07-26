@@ -12,25 +12,30 @@
 #include "hooks.h"
 
 #define HOOK(type, vmt) \
-	{ old##type = vmt; \
-	int len = getTableLength((void **)vmt); \
-	new##type = malloc(len * sizeof(void *)); \
-	if (new##type) { \
-		memcpy(new##type, vmt, len * sizeof(void *)); \
-		vmt = new##type; \
-	} }
+	do { \
+		old##type = vmt; \
+		int len = getTableLength((void **)vmt); \
+		new##type = malloc(len * sizeof(void *)); \
+		if (new##type) { \
+			memcpy(new##type, vmt, len * sizeof(void *)); \
+			vmt = new##type; \
+		} \
+	} while (0);
 
 #define UNHOOK(type, vmt) \
-	if (old##type) \
-		vmt = old##type; \
-	if (new##type) \
-		free(new##type);
+	do { \
+		if (old##type) \
+			vmt = old##type; \
+		if (new##type) \
+			free(new##type); \
+	} while(0);
 
 static PollEvent oldPollEvent;
 static SwapWindow oldSwapWindow;
 
 static ClientVMT *oldClientVMT, *newClientVMT;
 static ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
+static NetworkChannelVMT *oldNetworkChannelVMT, *newNetworkChannelVMT;
 
 static int getTableLength(void **vmt)
 {
@@ -86,6 +91,24 @@ static void swapWindow(SDL_Window *window)
 	nk_input_end(ctx);
 }
 
+static int sendDatagram(NetworkChannel *networkChannel, void *datagram)
+{
+	if (datagram || !interfaces.engine->vmt->isInGame(interfaces.engine))
+		return oldNetworkChannelVMT->sendDatagram(networkChannel, datagram);
+
+	int oldInReliableState = networkChannel->inReliableState;
+	int oldInSequenceNumber = networkChannel->inSequenceNumber;
+
+	backtrack_addLatency(networkChannel);
+
+	int result = oldNetworkChannelVMT->sendDatagram(networkChannel, datagram);
+
+	networkChannel->inReliableState = oldInReliableState;
+	networkChannel->inSequenceNumber = oldInSequenceNumber;
+
+	return result;
+}
+
 static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 {
 	bool result = oldClientModeVMT->createMove(this, inputSampleTime, cmd);
@@ -93,6 +116,16 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 		return result;
 
 	sdk_getServerTime(cmd);
+
+	NetworkChannel *networkChannel = interfaces.engine->vmt->getNetworkChannel(interfaces.engine);
+	if (networkChannel) {
+		if (newNetworkChannelVMT != networkChannel->vmt) {
+			HOOK(NetworkChannelVMT, networkChannel->vmt)
+			newNetworkChannelVMT->sendDatagram = sendDatagram;
+		}
+
+		backtrack_updateSequences(networkChannel);
+	}
 
 	enginePrediction_run(cmd);
 
@@ -132,6 +165,11 @@ void hooks_init(void)
 void hooks_cleanUp(void)
 {
 	UNHOOK(ClientVMT, interfaces.client->vmt)
+
+	NetworkChannel *networkChannel = interfaces.engine->vmt->getNetworkChannel(interfaces.engine);
+	if (networkChannel)
+		UNHOOK(NetworkChannelVMT, networkChannel->vmt)
+
 	UNHOOK(ClientModeVMT, memory.clientMode->vmt)
 
 	*memory.swapWindow = oldSwapWindow;

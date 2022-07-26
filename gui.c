@@ -20,7 +20,7 @@ static void renderBacktrackTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Enabled", (nk_bool *)&config.backtrack.enabled);
-	nk_property_int(ctx, "Time limit [ms]", 0, &config.backtrack.timeLimit, 200, 1, 1);
+	nk_property_int(ctx, "Time limit [ms]", 0, &config.backtrack.timeLimit, 400, 1, 1);
 }
 
 static void renderConfigTab(struct nk_context *ctx)

@@ -460,10 +460,19 @@ typedef struct {
 	const char *(*getServerAddress)(NetworkChannel *); // 1
 	PAD(void *, 7)
 	float (*getLatency)(NetworkChannel *, int flow); // 9
+	PAD(void *, 37)
+	int (*sendDatagram)(NetworkChannel *, void *datagram); // 47
 } NetworkChannelVMT;
 
 struct NetworkChannel {
 	NetworkChannelVMT *vmt;
+	PAD(char, 36)
+	int outSequenceNumber;
+	int inSequenceNumber;
+	int outSequenceNumberAcknowledge;
+	int outReliableState;
+	int inReliableState;
+	int chokedPackets;
 };
 
 typedef struct Engine Engine;
