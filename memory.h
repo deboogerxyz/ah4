@@ -12,6 +12,7 @@ typedef struct {
 	void (*conColorMsg)(Color *, const char *msg, ...);
 	PollEvent *pollEvent;
 	SwapWindow *swapWindow;
+	bool (*isOtherEnemy)(Entity *, Entity *);
 	void (*setClantag)(const char *, const char *);
 	GlobalVars *globalVars;
 	MoveData *moveData;

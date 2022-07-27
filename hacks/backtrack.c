@@ -81,6 +81,9 @@ void backtrack_update(FrameStage stage)
 		if (!entity)
 			continue;
 
+		if (!memory.isOtherEnemy(localPlayer, entity))
+			continue;
+
 		bool immunity = *(bool *)((char *)entity + netvars_getOffset("CCSPlayer->m_bGunGameImmunity"));
 		if (immunity)
 			continue;
@@ -126,6 +129,9 @@ void backtrack_run(UserCmd *cmd)
 	if (!localPlayer)
 		return;
 
+	if (!localPlayer->vmt->isAlive(localPlayer))
+		return;
+
 	Vector eyePos     = localPlayer->vmt->getEyePosition(localPlayer);
 	Vector aimPunch   = localPlayer->vmt->getAimPunch(localPlayer);
 	Vector viewAngles = Vector_add(cmd->viewAngles, aimPunch);
@@ -138,6 +144,9 @@ void backtrack_run(UserCmd *cmd)
 	for (int i = 1; i <= maxClients; i++) {
 		Entity *entity = interfaces.entityList->vmt->getEntity(interfaces.entityList, i);
 		if (!entity)
+			continue;
+
+		if (!memory.isOtherEnemy(localPlayer, entity))
 			continue;
 
 		bool immunity = *(bool *)((char *)entity + netvars_getOffset("CCSPlayer->m_bGunGameImmunity"));
