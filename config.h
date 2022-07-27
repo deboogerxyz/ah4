@@ -1,6 +1,10 @@
 #include <stdbool.h>
 
 typedef struct {
+	int key;
+} KeyBind;
+
+typedef struct {
 	bool enabled;
 	int timeLimit;
 } BacktrackConfig;

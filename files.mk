@@ -10,5 +10,6 @@ SRC = \
       config.c \
       libs/nuklear.c \
       gui.c \
+      keyBinds.c \
       hacks/enginePrediction.c \
       hacks/backtrack.c

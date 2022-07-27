@@ -536,6 +536,21 @@ struct EntityList {
 	EntityListVMT *vmt;
 };
 
+typedef struct InputSystem InputSystem;
+
+typedef struct {
+	PAD(void *, 15)
+	bool (*isButtonDown)(InputSystem *, int buttonCode); // 15
+	PAD(void *, 23)
+	void (*resetInputState)(InputSystem *); // 39
+	PAD(void *, 5)
+	bool (*virtualKeyToButtonCode)(InputSystem *, int virtualKeyCode); // 45
+} InputSystemVMT;
+
+struct InputSystem {
+	InputSystemVMT *vmt;
+};
+
 typedef struct {
 	const float realTime;
 	int frameCount;
