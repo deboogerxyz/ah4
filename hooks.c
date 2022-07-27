@@ -81,9 +81,12 @@ static void swapWindow(SDL_Window *window)
 	SDL_GL_MakeCurrent(window, GLctx);
 
 	gui_handleToggle(ctx);
-	gui_render(ctx, window);
 
-	nk_sdl_render(NK_ANTI_ALIASING_ON, 512 * 1024, 128 * 1024);
+	if (gui_isOpen) {
+		gui_render(ctx, window);
+
+		nk_sdl_render(NK_ANTI_ALIASING_ON, 512 * 1024, 128 * 1024);
+	}
 
 	SDL_GL_MakeCurrent(window, oldGLctx);
 
