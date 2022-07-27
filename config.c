@@ -22,6 +22,17 @@
 	if (cJSON_IsNumber(item)) \
 		var = item->valueint; }
 
+#define READ_KEYBIND(json, name, var) \
+	{ cJSON *keyBindJson = cJSON_GetObjectItem(json, name); \
+	cJSON *key = cJSON_GetObjectItem(keyBindJson, "Key"); \
+	if (cJSON_IsNumber(key)) \
+		var.key = key->valueint; }
+
+#define WRITE_KEYBIND(json, name, var) \
+	{ cJSON *keyBindJson = cJSON_CreateObject(); \
+	cJSON_AddNumberToObject(keyBindJson, "Key", var.key); \
+	cJSON_AddItemToObject(json, name, keyBindJson); }
+
 Config config;
 
 static char *getConfigDir(void)
@@ -127,6 +138,10 @@ void config_load(const char *name)
 		READ_BOOL(backtrackJson, "Enabled", config.backtrack.enabled)
 		READ_INT(backtrackJson, "Time limit", config.backtrack.timeLimit)
 
+		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
+		READ_BOOL(miscJson, "Jump bug", config.misc.jumpBug)
+		READ_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind);
+
 		cJSON_Delete(json);
 	}
 
@@ -162,6 +177,11 @@ void config_save(const char *name)
 		cJSON_AddBoolToObject(backtrackJson, "Enabled", config.backtrack.enabled);
 		cJSON_AddNumberToObject(backtrackJson, "Time limit", config.backtrack.timeLimit);
 		cJSON_AddItemToObject(json, "Backtrack", backtrackJson);
+
+		cJSON *miscJson = cJSON_CreateObject();
+		cJSON_AddBoolToObject(miscJson, "Jump bug", config.misc.jumpBug);
+		WRITE_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind)
+		cJSON_AddItemToObject(json, "Misc", miscJson);
 
 		fprintf(f, cJSON_Print(json));
 		fclose(f);

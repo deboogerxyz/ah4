@@ -1,4 +1,5 @@
 #include "config.h"
+#include "keyBinds.h"
 
 #include "gui.h"
 
@@ -16,11 +17,25 @@ void gui_handleToggle(struct nk_context *ctx)
 	}
 }
 
+static void keyBindComboBox(struct nk_context *ctx, const char *name, int *value)
+{
+	nk_layout_row_dynamic(ctx, 25, 2);
+	nk_label(ctx, name, NK_TEXT_LEFT);
+	*value = nk_combo(ctx, keyBinds_keys, NK_LEN(keyBinds_keys), *value, 25, nk_vec2(200, 200));
+}
+
 static void renderBacktrackTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Enabled", (nk_bool *)&config.backtrack.enabled);
 	nk_property_int(ctx, "Time limit [ms]", 0, &config.backtrack.timeLimit, 400, 1, 1);
+}
+
+static void renderMiscTab(struct nk_context *ctx)
+{
+	nk_layout_row_dynamic(ctx, 25, 1);
+	nk_checkbox_label(ctx, "Jump bug", (nk_bool *)&config.misc.jumpBug);
+	keyBindComboBox(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind.key);
 }
 
 static void renderConfigTab(struct nk_context *ctx)
@@ -65,17 +80,21 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_NO_SCROLLBAR;
 
 	if (nk_begin(ctx, "ah4", nk_rect(0, 0, 600, 500), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 2);
+		nk_layout_row_dynamic(ctx, 50, 3);
 
 		if (nk_button_label(ctx, "Backtrack"))
 			currentTab = 0;
 
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Misc"))
 			currentTab = 1;
+
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 2;
 
 		switch (currentTab) {
 		case 0: renderBacktrackTab(ctx); break;
-		case 1: renderConfigTab(ctx); break;
+		case 1: renderMiscTab(ctx); break;
+		case 2: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);

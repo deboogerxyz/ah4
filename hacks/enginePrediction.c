@@ -1,13 +1,18 @@
 #include "../interfaces.h"
 #include "../memory.h"
+#include "../netvars.h"
 
 #include "enginePrediction.h"
+
+int enginePrediction_flags = 0;
 
 void enginePrediction_run(UserCmd *cmd)
 {
 	Entity *localPlayer = *memory.localPlayer;
 	if (!localPlayer)
 		return;
+
+	enginePrediction_flags = *(int *)((char *)localPlayer + netvars_getOffset("CBasePlayer->m_fFlags"));
 
 	*memory.predictionRandomSeed = 0;
 

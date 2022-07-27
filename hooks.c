@@ -4,6 +4,7 @@
 
 #include "hacks/enginePrediction.h"
 #include "hacks/backtrack.h"
+#include "hacks/misc.h"
 
 #include "gui.h"
 #include "interfaces.h"
@@ -130,6 +131,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	enginePrediction_run(cmd);
 
 	backtrack_run(cmd);
+	misc_jumpBug(cmd);
 
 	return 0;
 }

@@ -4,11 +4,12 @@ interfaces.o: interfaces.h sdk.h
 utils.o: utils.h
 memory.o: memory.h sdk.h
 netvars.o: netvars.h interfaces.h sdk.h utils.h
-hooks.o: hooks.h hacks/enginePrediction.h interfaces.h memory.h sdk.h
+hooks.o: hooks.h hacks/enginePrediction.h hacks/backtrack.h hacks/misc.h interfaces.h memory.h sdk.h
 ubsan.o: ubsan.h
 config.o: config.h
 libs/nuklear.o: libs/nuklear.h libs/nuklear_sdl_gl3.h
-gui.o: gui.h libs/nuklear.h libs/nuklear_sdl_gl3.h
-keyBinds.o: keyBinds.h interfaces.h sdk.h
-hacks/enginePrediction.o: hacks/enginePrediction.h interfaces.h memory.h sdk.h
+gui.o: gui.h libs/nuklear.h libs/nuklear_sdl_gl3.h keyBinds.h
+keyBinds.o: keyBinds.h interfaces.h sdk.h config.h
+hacks/enginePrediction.o: hacks/enginePrediction.h interfaces.h memory.h netvars.h sdk.h
 hacks/backtrack.o: hacks/backtrack.h config.h interfaces.h memory.h netvars.h sdk.h libs/cvector.h
+hacks/misc.o: hacks/misc.h hacks/enginePrediction.h config.h keyBinds.h memory.h netvars.h sdk.h
