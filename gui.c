@@ -84,7 +84,16 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 {
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_NO_SCROLLBAR;
 
-	if (nk_begin(ctx, "ah4", nk_rect(0, 0, 600, 500), flags)) {
+	int windowWidth, windowHeight;
+	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+
+	const float w = 600;
+	const float h = 500;
+
+	float x = (float)windowWidth / 2 - w / 2;
+	float y = (float)windowHeight / 2 - h / 2;
+
+	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
 		nk_layout_row_dynamic(ctx, 50, 3);
 
 		if (nk_button_label(ctx, "Backtrack"))
