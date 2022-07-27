@@ -101,6 +101,17 @@ int config_getConfigs(char ***configs)
 	return i;
 }
 
+void config_reset(void)
+{
+	config.backtrack.enabled = false;
+	config.backtrack.timeLimit = 0;
+
+	config.misc.jumpBug = 0;
+	config.misc.jumpBugKeyBind.key = 0;
+	config.misc.edgeJump = 0;
+	config.misc.edgeJumpKeyBind.key = 0;
+}
+
 void config_load(const char *name)
 {
 	if (!*name)
@@ -134,6 +145,8 @@ void config_load(const char *name)
 
 	cJSON *json = cJSON_Parse(buf);
 	if (json) {
+		config_reset();
+
 		cJSON *backtrackJson = cJSON_GetObjectItem(json, "Backtrack");
 		READ_BOOL(backtrackJson, "Enabled", config.backtrack.enabled)
 		READ_INT(backtrackJson, "Time limit", config.backtrack.timeLimit)

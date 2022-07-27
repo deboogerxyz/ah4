@@ -27,6 +27,7 @@ typedef struct {
 extern Config config;
 
 int config_getConfigs(char ***configs);
+void config_reset(void);
 void config_load(const char *name);
 void config_save(const char *name);
 
