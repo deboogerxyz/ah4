@@ -119,6 +119,12 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	if (!cmd->commandNumber)
 		return result;
 
+	void *rbp;
+	__asm__ ("mov %%rbp, %0" : "=r" (rbp));
+
+	bool *sendPacket = *(bool **)rbp - 24;
+	(void)sendPacket;
+
 	sdk_getServerTime(cmd);
 
 	NetworkChannel *networkChannel = interfaces.engine->vmt->getNetworkChannel(interfaces.engine);
