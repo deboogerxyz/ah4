@@ -222,6 +222,11 @@ typedef struct {
 	float recoveryTimeStand;
 } WeaponInfo;
 
+typedef enum {
+	MoveType_NoClip = 8,
+	MoveType_Ladder = 8,
+} MoveType;
+
 typedef struct Entity Entity;
 
 typedef struct {
