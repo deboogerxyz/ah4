@@ -36,6 +36,8 @@ static void renderMiscTab(struct nk_context *ctx)
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Jump bug", (nk_bool *)&config.misc.jumpBug);
 	keyBindComboBox(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind.key);
+	nk_checkbox_label(ctx, "Edge jump", (nk_bool *)&config.misc.edgeJump);
+	keyBindComboBox(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind.key);
 }
 
 static void renderConfigTab(struct nk_context *ctx)

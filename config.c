@@ -141,6 +141,8 @@ void config_load(const char *name)
 		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
 		READ_BOOL(miscJson, "Jump bug", config.misc.jumpBug)
 		READ_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind);
+		READ_BOOL(miscJson, "Edge jump", config.misc.edgeJump)
+		READ_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind);
 
 		cJSON_Delete(json);
 	}
@@ -181,6 +183,8 @@ void config_save(const char *name)
 		cJSON *miscJson = cJSON_CreateObject();
 		cJSON_AddBoolToObject(miscJson, "Jump bug", config.misc.jumpBug);
 		WRITE_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind)
+		cJSON_AddBoolToObject(miscJson, "Edge jump", config.misc.edgeJump);
+		WRITE_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind)
 		cJSON_AddItemToObject(json, "Misc", miscJson);
 
 		fprintf(f, cJSON_Print(json));

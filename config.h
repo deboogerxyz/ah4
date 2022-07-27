@@ -15,6 +15,8 @@ typedef struct {
 typedef struct {
 	bool jumpBug;
 	KeyBind jumpBugKeyBind;
+	bool edgeJump;
+	KeyBind edgeJumpKeyBind;
 } MiscConfig;
 
 typedef struct {

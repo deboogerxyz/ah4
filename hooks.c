@@ -132,6 +132,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 	backtrack_run(cmd);
 	misc_jumpBug(cmd);
+	misc_edgeJump(cmd);
 
 	return 0;
 }
