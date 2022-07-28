@@ -119,6 +119,11 @@ const char *keyBinds_keys[] = {
 	"Mouse wheel down"
 };
 
+const char *keyBinds_modes[] = {
+	"On hold",
+	"On toggle"
+};
+
 bool keyBinds_isOn(KeyBind *keyBind)
 {
 	if (!keyBind)

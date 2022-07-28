@@ -17,11 +17,12 @@ void gui_handleToggle(struct nk_context *ctx)
 	}
 }
 
-static void keyBindComboBox(struct nk_context *ctx, const char *name, int *value)
+static void keyBind(struct nk_context *ctx, const char *name, KeyBind *keyBind)
 {
-	nk_layout_row_dynamic(ctx, 25, 2);
+	nk_layout_row_dynamic(ctx, 25, 3);
 	nk_label(ctx, name, NK_TEXT_LEFT);
-	*value = nk_combo(ctx, keyBinds_keys, NK_LEN(keyBinds_keys), *value, 25, nk_vec2(200, 200));
+	keyBind->key = nk_combo(ctx, keyBinds_keys, NK_LEN(keyBinds_keys), keyBind->key, 25, nk_vec2(200, 200));
+	keyBind->mode = nk_combo(ctx, keyBinds_modes, NK_LEN(keyBinds_modes), keyBind->mode, 25, nk_vec2(200, 200));
 }
 
 static void renderBacktrackTab(struct nk_context *ctx)
@@ -35,9 +36,9 @@ static void renderMiscTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Jump bug", (nk_bool *)&config.misc.jumpBug);
-	keyBindComboBox(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind.key);
+	keyBind(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind);
 	nk_checkbox_label(ctx, "Edge jump", (nk_bool *)&config.misc.edgeJump);
-	keyBindComboBox(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind.key);
+	keyBind(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind);
 }
 
 static bool confirmationPopUp(struct nk_context *ctx, const char *confirmText, bool *popupActive)
