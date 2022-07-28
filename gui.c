@@ -40,6 +40,37 @@ static void renderMiscTab(struct nk_context *ctx)
 	keyBindComboBox(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind.key);
 }
 
+static bool confirmationPopUp(struct nk_context *ctx, const char *confirmText, bool *popupActive)
+{
+	bool result = false;
+
+	if (!popupActive || !*popupActive)
+		return false;
+
+	if (nk_popup_begin(ctx, NK_POPUP_DYNAMIC, "Confirmation pop up", NK_WINDOW_NO_SCROLLBAR, nk_rect(100, 100, 200, 100))) {
+		nk_layout_row_dynamic(ctx, 25, 1);
+		nk_label(ctx, "Are you sure?", NK_TEXT_CENTERED);
+
+		nk_layout_row_dynamic(ctx, 30, 2);
+		if (nk_button_label(ctx, confirmText)) {
+			result = true;
+			*popupActive = false;
+			nk_popup_close(ctx);
+		}
+
+		if (nk_button_label(ctx, "Cancel")) {
+			*popupActive = false;
+			nk_popup_close(ctx);
+		}
+
+		nk_popup_end(ctx);
+	} else {
+		*popupActive = false;
+	}
+
+	return result;
+}
+
 static void renderConfigTab(struct nk_context *ctx)
 {
 	char **configs = 0;
@@ -70,13 +101,25 @@ static void renderConfigTab(struct nk_context *ctx)
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, buf, sizeof(buf), nk_filter_ascii);
 
-	if (nk_button_label(ctx, "Load"))
+	static bool loadPopupActive = false;
+	if (*buf && nk_button_label(ctx, "Load"))
+		loadPopupActive = true;
+
+	if (confirmationPopUp(ctx, "Load", &loadPopupActive))
 		config_load(buf);
 
-	if (nk_button_label(ctx, "Save"))
+	static bool savePopupActive = false;
+	if (*buf && nk_button_label(ctx, "Save"))
+		savePopupActive = true;
+
+	if (confirmationPopUp(ctx, "Save", &savePopupActive))
 		config_save(buf);
 
+	static bool resetPopupActive = false;
 	if (nk_button_label(ctx, "Reset"))
+		resetPopupActive = true;
+
+	if (confirmationPopUp(ctx, "Reset", &resetPopupActive))
 		config_reset();
 }
 
