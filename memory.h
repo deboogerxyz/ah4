@@ -8,6 +8,7 @@ typedef void (*SwapWindow)(SDL_Window *);
 
 typedef struct {
 	ClientMode *clientMode;
+	Input *input;
 	void (*debugMsg)(const char *msg, ...);
 	void (*conColorMsg)(Color *, const char *msg, ...);
 	PollEvent *pollEvent;

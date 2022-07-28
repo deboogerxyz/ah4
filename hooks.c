@@ -146,6 +146,11 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	return 0;
 }
 
+static void doPostScreenEffects(ClientMode *this, void *param)
+{
+	oldClientModeVMT->doPostScreenEffects(this, param);
+}
+
 static void frameStageNotify(Client *this, FrameStage stage)
 {
 	static bool once = false;
@@ -172,6 +177,7 @@ void hooks_init(void)
 
 	HOOK(ClientModeVMT, memory.clientMode->vmt)
 	newClientModeVMT->createMove = createMove;
+	newClientModeVMT->doPostScreenEffects = doPostScreenEffects;
 }
 
 void hooks_cleanUp(void)

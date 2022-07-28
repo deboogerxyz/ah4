@@ -74,6 +74,7 @@ void memory_init(void)
 	dlclose(sdl2);
 
 	memory.clientMode            = *(void **)relativeToAbsolute(relativeToAbsolute(*((void **)interfaces.client->vmt + 10) + 12) + 4);
+	memory.input                 = **(void ***)relativeToAbsolute(*((void **)interfaces.client->vmt + 16) + 3);
 	*(void **)&memory.isOtherEnemy = relativeToAbsolute(find(CLIENT_SO, "\xE8????\x84\xC0\x44\x89\xE2") + 1);
 	*(void **)&memory.setClantag = relativeToAbsolute(find(ENGINE_SO, "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
 	*(void **)&memory.globalVars = *(void **)relativeToAbsolute(*((void **)interfaces.client->vmt + 11) + 16);

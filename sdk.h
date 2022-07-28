@@ -404,6 +404,17 @@ struct ClientMode {
 	ClientModeVMT *vmt;
 };
 
+typedef struct {
+	PAD(char, 16)
+	bool isTrackIRAvailable;
+	bool isMouseInitialized;
+	bool isMouseActive;
+	PAD(char, 162)
+	bool IsCameraInThirdPerson;
+	bool cameraMovingWithMouse;
+	Vector cameraOffset;
+} Input;
+
 typedef struct ConVar ConVar;
 
 typedef struct {
