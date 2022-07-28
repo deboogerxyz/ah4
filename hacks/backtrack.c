@@ -156,10 +156,6 @@ void backtrack_run(UserCmd *cmd)
 		if (!entity->vmt->isAlive(entity))
 			continue;
 
-		Networkable *networkable = (Networkable *)(entity + 2);
-		if (networkable->vmt->isDormant(networkable))
-			continue;
-
 		if (cvector_empty(records[i]))
 			continue;
 
