@@ -119,10 +119,27 @@ const char *keyBinds_keys[] = {
 	"Mouse wheel down"
 };
 
-bool keyBinds_isOn(KeyBind keyBind)
+bool keyBinds_isOn(KeyBind *keyBind)
 {
-	if (!keyBind.key)
+	if (!keyBind)
+		return false;
+
+	if (!keyBind->key)
 		return true;
 
-	return interfaces.inputSystem->vmt->isButtonDown(interfaces.inputSystem, keyBind.key);
+	bool down = interfaces.inputSystem->vmt->isButtonDown(interfaces.inputSystem, keyBind->key);
+
+	switch (keyBind->mode) {
+	case 0:
+		keyBind->active = down;
+		break;
+	case 1:
+		if (!keyBind->lastDown && down)
+			keyBind->active ^= 1;
+		break;
+	}
+
+	keyBind->lastDown = down;
+
+	return keyBind->active;
 }

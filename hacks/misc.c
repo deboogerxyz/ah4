@@ -12,7 +12,7 @@ void misc_jumpBug(UserCmd *cmd)
 	if (!config.misc.jumpBug)
 		return;
 
-	if (!keyBinds_isOn(config.misc.jumpBugKeyBind))
+	if (!keyBinds_isOn(&config.misc.jumpBugKeyBind))
 		return;
 
 	Entity *localPlayer = *memory.localPlayer;
@@ -39,7 +39,7 @@ void misc_edgeJump(UserCmd *cmd)
 	if (!config.misc.edgeJump)
 		return;
 
-	if (!keyBinds_isOn(config.misc.edgeJumpKeyBind))
+	if (!keyBinds_isOn(&config.misc.edgeJumpKeyBind))
 		return;
 
 	Entity *localPlayer = *memory.localPlayer;

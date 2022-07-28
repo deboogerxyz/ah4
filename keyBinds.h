@@ -4,4 +4,4 @@
 
 extern const char *keyBinds_keys[114];
 
-bool keyBinds_isOn(KeyBind);
+bool keyBinds_isOn(KeyBind *);

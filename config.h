@@ -5,6 +5,9 @@
 
 typedef struct {
 	int key;
+	int mode;
+	bool active;   // Do not save
+	bool lastDown; // Do not save
 } KeyBind;
 
 typedef struct {

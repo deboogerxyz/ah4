@@ -26,11 +26,15 @@
 	{ cJSON *keyBindJson = cJSON_GetObjectItem(json, name); \
 	cJSON *key = cJSON_GetObjectItem(keyBindJson, "Key"); \
 	if (cJSON_IsNumber(key)) \
-		var.key = key->valueint; }
+		var.key = key->valueint; \
+	cJSON *mode = cJSON_GetObjectItem(keyBindJson, "Mode"); \
+	if (cJSON_IsNumber(mode)) \
+		var.mode = mode->valueint; }
 
 #define WRITE_KEYBIND(json, name, var) \
 	{ cJSON *keyBindJson = cJSON_CreateObject(); \
 	cJSON_AddNumberToObject(keyBindJson, "Key", var.key); \
+	cJSON_AddNumberToObject(keyBindJson, "Mode", var.mode); \
 	cJSON_AddItemToObject(json, name, keyBindJson); }
 
 Config config;
@@ -108,8 +112,10 @@ void config_reset(void)
 
 	config.misc.jumpBug = 0;
 	config.misc.jumpBugKeyBind.key = 0;
+	config.misc.jumpBugKeyBind.mode = 0;
 	config.misc.edgeJump = 0;
 	config.misc.edgeJumpKeyBind.key = 0;
+	config.misc.edgeJumpKeyBind.mode = 0;
 }
 
 void config_load(const char *name)
