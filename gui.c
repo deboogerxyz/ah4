@@ -121,6 +121,9 @@ static void renderConfigTab(struct nk_context *ctx)
 
 	if (confirmationPopUp(ctx, "Reset", &resetPopupActive))
 		config_reset();
+
+	if (nk_button_label(ctx, "Open config directory"))
+		config_openDirectory();
 }
 
 void gui_render(struct nk_context *ctx, SDL_Window *window)

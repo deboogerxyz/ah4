@@ -206,3 +206,17 @@ void config_save(const char *name)
 		cJSON_Delete(json);
 	}
 }
+
+void config_openDirectory(void)
+{
+	char *dir = getConfigDir();
+	if (!dir)
+		return;
+
+	char cmd[512];
+	snprintf(cmd, 512, "xdg-open \"%s/ah4\" &", dir);
+
+	free(dir);
+
+	system(cmd);
+}
