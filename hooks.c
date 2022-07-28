@@ -120,7 +120,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 		return result;
 
 	void *rbp;
-	__asm__ ("mov %%rbp, %0" : "=r" (rbp));
+	__asm__ volatile ("mov %%rbp, %0" : "=r" (rbp));
 
 	bool *sendPacket = *(bool **)rbp - 24;
 	(void)sendPacket;
