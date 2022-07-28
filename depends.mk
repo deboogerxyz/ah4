@@ -4,7 +4,7 @@ interfaces.o: interfaces.h sdk.h
 utils.o: utils.h
 memory.o: memory.h sdk.h
 netvars.o: netvars.h interfaces.h sdk.h utils.h
-hooks.o: hooks.h hacks/enginePrediction.h hacks/backtrack.h hacks/misc.h interfaces.h memory.h sdk.h
+hooks.o: hooks.h hacks/enginePrediction.h hacks/backtrack.h hacks/misc.h interfaces.h memory.h sdk.h utils.h
 ubsan.o: ubsan.h
 config.o: config.h
 libs/nuklear.o: libs/nuklear.h libs/nuklear_sdl_gl3.h

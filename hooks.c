@@ -9,6 +9,7 @@
 #include "gui.h"
 #include "interfaces.h"
 #include "memory.h"
+#include "utils.h"
 
 #include "hooks.h"
 
@@ -142,6 +143,10 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	backtrack_run(cmd);
 	misc_jumpBug(cmd);
 	misc_edgeJump(cmd);
+
+	cmd->viewAngles.x = CLAMP(cmd->viewAngles.x, -89, 89);
+	cmd->viewAngles.y = CLAMP(cmd->viewAngles.y, -180, 180);
+	cmd->viewAngles.z = 0;
 
 	return 0;
 }
