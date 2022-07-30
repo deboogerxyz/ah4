@@ -16,6 +16,6 @@ libah4.so: ${OBJ}
 ${OBJ}: config.mk Makefile
 
 clean:
-	rm -f libah4.so ${OBJ} ${DEPS}
+	rm -f libah4.so ${OBJ} ${DEP}
 
 .PHONY: clean
