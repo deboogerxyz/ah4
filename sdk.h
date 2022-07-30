@@ -141,11 +141,18 @@ typedef struct ClientClass ClientClass;
 typedef struct Networkable Networkable;
 
 typedef struct {
-	PAD(void *, 2)
+	PAD(void *, 1)
+	void (*release)(Networkable *); // 1
 	ClientClass *(*getClientClass)(Networkable *); // 2
-	PAD(void *, 6)
+	PAD(void *, 2)
+	void (*onDataChanged)(Networkable *, int updateType); // 5
+	void (*preDataUpdate)(Networkable *, int updateType); // 6
+	void (*postDataUpdate)(Networkable *, int updateType); // 7
+	PAD(void *, 1)
 	bool (*isDormant)(Networkable *); // 9
 	int (*getIndex)(Networkable *); // 10
+	PAD(void *, 2)
+	int (*setDestroyedOnRecreateEntities)(Networkable *); // 13
 } NetworkableVMT;
 
 struct Networkable {
@@ -428,7 +435,8 @@ typedef struct {
 
 struct ConVar {
 	ConVarVMT *vmt;
-	PAD(char, 48)
+	PAD(char, 40)
+	void (*changeCallback)(void);
 	ConVar *parent;
 	const char *defaultValue;
 	char *string;

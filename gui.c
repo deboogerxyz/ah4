@@ -1,3 +1,5 @@
+#include "hacks/skinChanger.h"
+
 #include "config.h"
 #include "keyBinds.h"
 
@@ -39,6 +41,13 @@ static void renderMiscTab(struct nk_context *ctx)
 	keyBind(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind);
 	nk_checkbox_label(ctx, "Edge jump", (nk_bool *)&config.misc.edgeJump);
 	keyBind(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind);
+}
+
+static void renderSkinsTab(struct nk_context *ctx)
+{
+	nk_layout_row_dynamic(ctx, 25, 1);
+	if (nk_button_label(ctx, "Force update"))
+		skinChanger_forceUpdate();
 }
 
 static bool confirmationPopUp(struct nk_context *ctx, const char *confirmText, bool *popupActive)
@@ -141,7 +150,7 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	float y = (float)windowHeight / 2 - h / 2;
 
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 3);
+		nk_layout_row_dynamic(ctx, 50, 4);
 
 		if (nk_button_label(ctx, "Backtrack"))
 			currentTab = 0;
@@ -149,13 +158,17 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 		if (nk_button_label(ctx, "Misc"))
 			currentTab = 1;
 
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Skins"))
 			currentTab = 2;
+
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 3;
 
 		switch (currentTab) {
 		case 0: renderBacktrackTab(ctx); break;
 		case 1: renderMiscTab(ctx); break;
-		case 2: renderConfigTab(ctx); break;
+		case 2: renderSkinsTab(ctx); break;
+		case 3: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);

@@ -13,4 +13,5 @@ SRC = \
       keyBinds.c \
       hacks/enginePrediction.c \
       hacks/backtrack.c \
-      hacks/misc.c
+      hacks/misc.c \
+      hacks/skinChanger.c

@@ -5,6 +5,7 @@
 #include "hacks/enginePrediction.h"
 #include "hacks/backtrack.h"
 #include "hacks/misc.h"
+#include "hacks/skinChanger.h"
 
 #include "gui.h"
 #include "interfaces.h"
@@ -165,6 +166,9 @@ static void frameStageNotify(Client *this, FrameStage stage)
 	}
 
 	backtrack_update(stage);
+
+	if (stage == NET_UPDATE_POSTDATAUPDATE_START)
+		skinChanger_run();
 
 	oldClientVMT->frameStageNotify(this, stage);
 }
