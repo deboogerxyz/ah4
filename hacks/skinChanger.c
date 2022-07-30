@@ -85,6 +85,5 @@ void skinChanger_run(void)
 
 void skinChanger_forceUpdate(void)
 {
-	memory.getLocalClient(-1)->deltaTick = -1;
 //	interfaces.cvar->vmt->findVar(interfaces.cvar, "cl_fullupdate")->changeCallback();
 }
