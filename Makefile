@@ -1,7 +1,6 @@
 include config.mk
 
-include files.mk
-
+SRC = $(shell find -name "*.c")
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
