@@ -167,8 +167,8 @@ static void frameStageNotify(Client *this, FrameStage stage)
 
 	backtrack_update(stage);
 
-	if (stage == NET_UPDATE_POSTDATAUPDATE_START)
-		skinChanger_run();
+//	if (stage == NET_UPDATE_POSTDATAUPDATE_START)
+//		skinChanger_run();
 
 	oldClientVMT->frameStageNotify(this, stage);
 }
