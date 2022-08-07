@@ -94,3 +94,74 @@ Vector Entity_getBonePosition(Entity *entity, int bone)
 
 	return Matrix3x4_origin(m[bone]);
 }
+
+bool GlowObjectManager_hasGlow(Entity *entity)
+{
+	for (int i = 0; i < memory.glowObjectManager->objects.size; i++) {
+		GlowObject *glowObject = (GlowObject *)memory.glowObjectManager->objects.memory + i;
+
+		if (glowObject->nextFreeSlot == -2 && glowObject->entity == entity)
+			return true;
+	}
+
+	return false;
+}
+
+int GlowObjectManager_register(Entity *entity)
+{
+	int i = memory.glowObjectManager->firstFreeSlot;
+	if (i == -1)
+		return i;
+
+	GlowObject *glowObject = (GlowObject *)memory.glowObjectManager->objects.memory + i;
+
+	memory.glowObjectManager->firstFreeSlot = glowObject->nextFreeSlot;
+
+	glowObject->entity = entity;
+	glowObject->fullBloom = false;
+	glowObject->fullBloomStencil = 0;
+	glowObject->splitScreenSlot = -1;
+	glowObject->nextFreeSlot = -2;
+
+	return i;
+
+}
+
+void GlowObjectManager_unregister(Entity *entity, int i)
+{
+	GlowObject *glowObject = (GlowObject *)memory.glowObjectManager->objects.memory + i;
+
+	glowObject->nextFreeSlot = memory.glowObjectManager->firstFreeSlot;
+	glowObject->entity = entity;
+	glowObject->occluded = false;
+	glowObject->unoccluded = false;
+
+	memory.glowObjectManager->firstFreeSlot = i;
+}
+
+Color Color_fromHealth(int health)
+{
+	health = MIN(health, 100);
+
+	Color color = {
+		.r = MIN(2.0f * (100 - health) / 100.0f, 1),
+		.g = MIN(2.0f * health / 100.0f, 1),
+		.b = 0
+	};
+
+	return color;
+}
+
+ColorA ColorA_fromHealth(int health)
+{
+	health = MIN(health, 100);
+
+	ColorA colorA = {
+		.r = MIN(2.0f * (100 - health) / 100.0f, 1),
+		.g = MIN(2.0f * health / 100.0f, 1),
+		.b = 0,
+		.a = 1
+	};
+
+	return colorA;
+}

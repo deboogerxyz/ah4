@@ -1,6 +1,7 @@
 #include <dlfcn.h>
 #include <pthread.h>
 
+#include "config.h"
 #include "interfaces.h"
 #include "memory.h"
 #include "netvars.h"
@@ -18,6 +19,8 @@ static void *routine(void *arg)
 	memory_init();
 	netvars_init();
 	hooks_init();
+
+	config_reset();
 
 	return 0;
 }

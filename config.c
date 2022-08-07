@@ -31,11 +31,25 @@
 	if (cJSON_IsNumber(mode)) \
 		var.mode = mode->valueint; }
 
+#define READ_COLORA(json, name, var) \
+	{ int j = 0; \
+	cJSON *colorAJson; \
+	cJSON_ArrayForEach(colorAJson, cJSON_GetObjectItem(json, name)) { \
+		if (cJSON_IsNumber(colorAJson)) \
+			*(&var.r + j) = (float)colorAJson->valuedouble; \
+		j++; \
+	} }
+
 #define WRITE_KEYBIND(json, name, var) \
 	{ cJSON *keyBindJson = cJSON_CreateObject(); \
 	cJSON_AddNumberToObject(keyBindJson, "Key", var.key); \
 	cJSON_AddNumberToObject(keyBindJson, "Mode", var.mode); \
 	cJSON_AddItemToObject(json, name, keyBindJson); }
+
+#define WRITE_COLORA(json, name, var) \
+	{ cJSON *colorAJson = cJSON_AddArrayToObject(json, name); \
+	for (int j = 0; j < 4; j++) \
+		cJSON_AddItemToArray(colorAJson, cJSON_CreateNumber(*(&var.r + j))); } \
 
 Config config;
 
@@ -110,10 +124,19 @@ void config_reset(void)
 	config.backtrack.enabled = false;
 	config.backtrack.timeLimit = 0;
 
-	config.misc.jumpBug = 0;
+	for (int i = 0; i < GlowCategory_Len; i++) {
+		config.glow[i].enabled = false;
+		config.glow[i].healthBased = false;
+		config.glow[i].colorA.r = 0;
+		config.glow[i].colorA.g = 0;
+		config.glow[i].colorA.b = 0;
+		config.glow[i].colorA.a = 1;
+	}
+
+	config.misc.jumpBug = false;
 	config.misc.jumpBugKeyBind.key = 0;
 	config.misc.jumpBugKeyBind.mode = 0;
-	config.misc.edgeJump = 0;
+	config.misc.edgeJump = false;
 	config.misc.edgeJumpKeyBind.key = 0;
 	config.misc.edgeJumpKeyBind.mode = 0;
 }
@@ -157,6 +180,17 @@ void config_load(const char *name)
 		READ_BOOL(backtrackJson, "Enabled", config.backtrack.enabled)
 		READ_INT(backtrackJson, "Time limit", config.backtrack.timeLimit)
 
+		int i = 0;
+		cJSON *glowJson;
+		cJSON_ArrayForEach(glowJson, cJSON_GetObjectItem(json, "Glow")) {
+			READ_BOOL(glowJson, "Enabled", config.glow[i].enabled)
+			READ_BOOL(glowJson, "Health based", config.glow[i].healthBased)
+
+			READ_COLORA(glowJson, "Color", config.glow[i].colorA)
+
+			i++;
+		}
+
 		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
 		READ_BOOL(miscJson, "Jump bug", config.misc.jumpBug)
 		READ_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind);
@@ -198,6 +232,17 @@ void config_save(const char *name)
 		cJSON_AddBoolToObject(backtrackJson, "Enabled", config.backtrack.enabled);
 		cJSON_AddNumberToObject(backtrackJson, "Time limit", config.backtrack.timeLimit);
 		cJSON_AddItemToObject(json, "Backtrack", backtrackJson);
+
+		cJSON *glowJson = cJSON_AddArrayToObject(json, "Glow");
+		for (int i = 0; i < GlowCategory_Len; i++) {
+			cJSON *glowSubJson = cJSON_CreateObject();
+
+			cJSON_AddBoolToObject(glowSubJson, "Enabled", config.glow[i].enabled);
+			cJSON_AddBoolToObject(glowSubJson, "Health based", config.glow[i].healthBased);
+			WRITE_COLORA(glowSubJson, "Color", config.glow[i].colorA)
+
+			cJSON_AddItemToArray(glowJson, glowSubJson);
+		}
 
 		cJSON *miscJson = cJSON_CreateObject();
 		cJSON_AddBoolToObject(miscJson, "Jump bug", config.misc.jumpBug);

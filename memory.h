@@ -10,12 +10,13 @@ typedef struct {
 	ClientMode *clientMode;
 	Input *input;
 	void (*debugMsg)(const char *msg, ...);
-	void (*conColorMsg)(Color *, const char *msg, ...);
+	void (*conColorMsg)(Color8 *, const char *msg, ...);
 	PollEvent *pollEvent;
 	SwapWindow *swapWindow;
 	bool (*isOtherEnemy)(Entity *, Entity *);
 	void (*setClantag)(const char *, const char *);
 	GlobalVars *globalVars;
+	GlowObjectManager *glowObjectManager;
 	MoveData *moveData;
 	MoveHelper *moveHelper;
 	int *predictionRandomSeed;

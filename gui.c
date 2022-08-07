@@ -19,6 +19,18 @@ void gui_handleToggle(struct nk_context *ctx)
 	}
 }
 
+void colorAPicker(struct nk_context *ctx, struct nk_colorf *colorA)
+{
+	nk_layout_row_dynamic(ctx, 120, 1);
+	*colorA = nk_color_picker(ctx, *colorA, NK_RGBA);
+
+	nk_layout_row_dynamic(ctx, 25, 1);
+	colorA->r = nk_propertyf(ctx, "#Red:", 0, colorA->r, 1.0f, 0.01f, 0.005f);
+	colorA->g = nk_propertyf(ctx, "#Green:", 0, colorA->g, 1.0f, 0.01f, 0.005f);
+	colorA->b = nk_propertyf(ctx, "#Blue:", 0, colorA->b, 1.0f, 0.01f, 0.005f);
+	colorA->a = nk_propertyf(ctx, "#Alpha:", 0, colorA->a, 1.0f, 0.01f, 0.005f);
+}
+
 static void keyBind(struct nk_context *ctx, const char *name, KeyBind *keyBind)
 {
 	nk_layout_row_dynamic(ctx, 25, 3);
@@ -32,6 +44,22 @@ static void renderBacktrackTab(struct nk_context *ctx)
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Enabled", (nk_bool *)&config.backtrack.enabled);
 	nk_property_int(ctx, "Time limit [ms]", 0, &config.backtrack.timeLimit, 400, 1, 1);
+}
+
+static void renderGlowTab(struct nk_context *ctx)
+{
+	const char *categories[] = {"Enemies", "Teammates", "Dropped C4", "Planted C4", "Projectiles", "Dropped weapons"};
+
+	nk_layout_row_dynamic(ctx, 25, 1);
+	for (int i = 0; i < GlowCategory_Len; i++)
+		if (nk_tree_push_id(ctx, NK_TREE_NODE, categories[i], NK_MINIMIZED, i)) {
+			nk_checkbox_label(ctx, "Enabled", &config.glow[i].enabled);
+			if (i <= GlowCategory_Teammates)
+				nk_checkbox_label(ctx, "Health based", &config.glow[i].healthBased);
+			colorAPicker(ctx, (struct nk_colorf *)&config.glow[i].colorA);
+
+			nk_tree_pop(ctx);
+		}
 }
 
 static void renderMiscTab(struct nk_context *ctx)
@@ -150,25 +178,29 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	float y = (float)windowHeight / 2 - h / 2;
 
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 4);
+		nk_layout_row_dynamic(ctx, 50, 5);
 
 		if (nk_button_label(ctx, "Backtrack"))
 			currentTab = 0;
 
-		if (nk_button_label(ctx, "Misc"))
+		if (nk_button_label(ctx, "Glow"))
 			currentTab = 1;
 
-		if (nk_button_label(ctx, "Skins"))
+		if (nk_button_label(ctx, "Misc"))
 			currentTab = 2;
 
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Skins"))
 			currentTab = 3;
+
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 4;
 
 		switch (currentTab) {
 		case 0: renderBacktrackTab(ctx); break;
-		case 1: renderMiscTab(ctx); break;
-		case 2: renderSkinsTab(ctx); break;
-		case 3: renderConfigTab(ctx); break;
+		case 1: renderGlowTab(ctx); break;
+		case 2: renderMiscTab(ctx); break;
+		case 3: renderSkinsTab(ctx); break;
+		case 4: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);

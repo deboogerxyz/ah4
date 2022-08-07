@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#include "sdk.h"
+
 typedef struct {
 	int key;
 	int mode;
@@ -15,6 +17,22 @@ typedef struct {
 	int timeLimit;
 } BacktrackConfig;
 
+typedef enum {
+	GlowCategory_Enemies,
+	GlowCategory_Teammates,
+	GlowCategory_DroppedC4,
+	GlowCategory_PlantedC4,
+	GlowCategory_Projectiles,
+	GlowCategory_DroppedWeapons,
+	GlowCategory_Len,
+} GlowCategory;
+
+typedef struct {
+	int enabled;
+	int healthBased;
+	ColorA colorA;
+} GlowConfig;
+
 typedef struct {
 	bool jumpBug;
 	KeyBind jumpBugKeyBind;
@@ -24,6 +42,7 @@ typedef struct {
 
 typedef struct {
 	BacktrackConfig backtrack;
+	GlowConfig glow[GlowCategory_Len];
 	MiscConfig misc;
 } Config;
 

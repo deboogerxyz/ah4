@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "hacks/enginePrediction.h"
 #include "hacks/backtrack.h"
+#include "hacks/enginePrediction.h"
+#include "hacks/glow.h"
 #include "hacks/misc.h"
 #include "hacks/skinChanger.h"
 
@@ -154,6 +155,8 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 static void doPostScreenEffects(ClientMode *this, void *param)
 {
+	glow_render();
+
 	oldClientModeVMT->doPostScreenEffects(this, param);
 }
 

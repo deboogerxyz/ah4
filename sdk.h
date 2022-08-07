@@ -26,7 +26,15 @@
 
 typedef struct {
 	uint8_t r, g, b, a;
+} Color8;
+
+typedef struct {
+	float r, g, b;
 } Color;
+
+typedef struct {
+	float r, g, b, a;
+} ColorA;
 
 typedef struct {
 	float x, y, z;
@@ -587,6 +595,34 @@ typedef struct {
 	const float intervalPerTick;
 } GlobalVars;
 
+typedef struct {
+	int nextFreeSlot;
+	Entity *entity;
+	ColorA colorA;
+	PAD(char, 5)
+	float alphaMax;
+	PAD(char, 4)
+	bool occluded;
+	bool unoccluded;
+	bool fullBloom;
+	int fullBloomStencil;
+	int style;
+	int splitScreenSlot;
+} GlowObject;
+
+typedef struct {
+	void *memory;
+	int count;
+	int growsize;
+	int size;
+	void *elements;
+} UtlVector;
+
+typedef struct {
+	UtlVector objects;
+	int firstFreeSlot;
+} GlowObjectManager;
+
 typedef void *MoveData;
 
 typedef struct GameMovement GameMovement;
@@ -634,5 +670,10 @@ Vector Vector_normalize(Vector v);
 Vector Vector_calculateAngle(Vector start, Vector end, Vector angle);
 Vector Matrix3x4_origin(Matrix3x4 m);
 Vector Entity_getBonePosition(Entity *entity, int bone);
+bool GlowObjectManager_hasGlow(Entity *entity);
+int GlowObjectManager_register(Entity *entity);
+void GlowObjectManager_unregister(Entity *entity, int i);
+Color Color_fromHealth(int health);
+ColorA ColorA_fromHealth(int health);
 
 #endif // SDK_H_
