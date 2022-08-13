@@ -1,10 +1,8 @@
 include config.mk
 
-CSRC   = $(shell find -name "*.c")
-CXXSRC = $(shell find -name "*.cpp")
-
-OBJ = ${CSRC:.c=.o} ${CXXSRC:.cpp=.o}
-DEP = ${OBJ:.o=.d}
+SRC = $(shell find -name "*.c")
+OBJ = ${SRC:.c=.o}
+DEP = ${SRC:.c=.d}
 
 libah4.so: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
@@ -12,12 +10,8 @@ libah4.so: ${OBJ}
 -include ${DEP}
 
 .c.o:
-	${CC} -MM -MT $@ -MF $(patsubst %.o, %.d, $@) ${CFLAGS} $<
+	$(CC) -MM -MT $@ -MF $(patsubst %.o, %.d, $@) ${CFLAGS} $<
 	${CC} -o $@ -c ${CFLAGS} $<
-
-.cpp.o:
-	${CXX} -MM -MT $@ -MF $(patsubst %.o, %.d, $@) ${CXXFLAGS} $<
-	${CXX} -o $@ -c ${CXXFLAGS} $<
 
 ${OBJ}: config.mk Makefile
 
