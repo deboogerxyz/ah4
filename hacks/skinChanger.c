@@ -49,6 +49,7 @@ const char *skinChanger_weapons[] = {
 
 void skinChanger_run(void)
 {
+/*
 	Entity *localPlayer = *memory.localPlayer;
 	if (!localPlayer)
 		return;
@@ -81,6 +82,7 @@ void skinChanger_run(void)
 	strncpy(name, "ah4 on top", 32);
 
 	*itemIDHigh = -1;
+*/
 }
 
 void skinChanger_forceUpdate(void)
