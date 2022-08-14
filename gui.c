@@ -42,7 +42,7 @@ static void keyBind(struct nk_context *ctx, const char *name, KeyBind *keyBind)
 static void renderBacktrackTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
-	nk_checkbox_label(ctx, "Enabled", (nk_bool *)&config.backtrack.enabled);
+	nk_checkbox_label(ctx, "Enabled", &config.backtrack.enabled);
 	nk_property_int(ctx, "Time limit [ms]", 0, &config.backtrack.timeLimit, 400, 1, 1);
 }
 
@@ -65,9 +65,9 @@ static void renderGlowTab(struct nk_context *ctx)
 static void renderMiscTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
-	nk_checkbox_label(ctx, "Jump bug", (nk_bool *)&config.misc.jumpBug);
+	nk_checkbox_label(ctx, "Jump bug", &config.misc.jumpBug);
 	keyBind(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind);
-	nk_checkbox_label(ctx, "Edge jump", (nk_bool *)&config.misc.edgeJump);
+	nk_checkbox_label(ctx, "Edge jump", &config.misc.edgeJump);
 	keyBind(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind);
 }
 

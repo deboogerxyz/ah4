@@ -13,7 +13,7 @@ typedef struct {
 } KeyBind;
 
 typedef struct {
-	bool enabled;
+	int enabled;
 	int timeLimit;
 } BacktrackConfig;
 
@@ -34,9 +34,9 @@ typedef struct {
 } GlowConfig;
 
 typedef struct {
-	bool jumpBug;
+	int jumpBug;
 	KeyBind jumpBugKeyBind;
-	bool edgeJump;
+	int edgeJump;
 	KeyBind edgeJumpKeyBind;
 } MiscConfig;
 
