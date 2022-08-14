@@ -165,3 +165,21 @@ ColorA ColorA_fromHealth(int health)
 
 	return colorA;
 }
+
+NETVARS_IMPL(moveType, "CBaseEntity", "m_nRenderMode", 1, MoveType)
+NETVARS_IMPL(simTime, "CBaseEntity", "m_flSimulationTime", 0, float)
+NETVARS_IMPL(viewModel, "CBasePlayer", "m_hViewModel[0]", 0, int)
+NETVARS_IMPL(health, "CBasePlayer", "m_iHealth", 0, int)
+NETVARS_IMPL(flags, "CBasePlayer", "m_fFlags", 0, int)
+NETVARS_IMPL(spottedByMask, "CBaseEntity", "m_bSpottedByMask", 0, long)
+NETVARS_IMPL(flashDuration, "CCSPlayer", "m_flFlashMaxAlpha", -8, float)
+NETVARS_IMPL(tickBase, "CBasePlayer", "m_nTickBase", 0, int)
+NETVARS_IMPL(velocity, "CBasePlayer", "m_vecVelocity[0]", 0, Vector)
+NETVARS_IMPL(isScoped, "CCSPlayer", "m_bIsScoped", 0, char)
+NETVARS_IMPL(immunity, "CCSPlayer", "m_bGunGameImmunity", 0, char)
+NETVARS_IMPL(shotsFired, "CCSPlayer", "m_iShotsFired", 0, int)
+NETVARS_IMPL(waitForNoAttack, "CCSPlayer", "m_bWaitForNoAttack", 0, char)
+NETVARS_IMPL(nextAttack, "CBaseCombatCharacter", "m_flNextAttack", 0, float)
+NETVARS_IMPL(itemIndex, "CBaseAttributableItem", "m_iItemDefinitionIndex", 0, short)
+NETVARS_IMPL(aimPunchAngle, "CBasePlayer", "m_aimPunchAngle", 0, Vector)
+NETVARS_IMPL(viewPunchAngle, "CBasePlayer", "m_viewPunchAngle", 0, Vector)

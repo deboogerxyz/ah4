@@ -29,8 +29,7 @@ void glow_render(void)
 			if (entity == localPlayer)
 				break;
 
-			bool immunity = *(bool *)((char *)entity + netvars_getOffset("CCSPlayer->m_bGunGameImmunity"));
-			if (immunity)
+			if (*Entity_immunity(entity))
 				break;
 
 			if (!entity->vmt->isAlive(entity))

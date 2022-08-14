@@ -12,7 +12,7 @@ void enginePrediction_run(UserCmd *cmd)
 	if (!localPlayer)
 		return;
 
-	enginePrediction_flags = *(int *)((char *)localPlayer + netvars_getOffset("CBasePlayer->m_fFlags"));
+	enginePrediction_flags = *Entity_flags(localPlayer);
 
 	*memory.predictionRandomSeed = 0;
 

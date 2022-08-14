@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "netvars.h"
+
 #define CLIENT_SO             "csgo/bin/linux64/client_client.so"
 #define ENGINE_SO             "engine_client.so"
 #define FILESYSTEM_SO         "filesystem_stdio_client.so"
@@ -675,5 +677,23 @@ int GlowObjectManager_register(Entity *entity);
 void GlowObjectManager_unregister(Entity *entity, int i);
 Color Color_fromHealth(int health);
 ColorA ColorA_fromHealth(int health);
+
+NETVARS_DECL(moveType, MoveType)
+NETVARS_DECL(simTime, float)
+NETVARS_DECL(viewModel, int)
+NETVARS_DECL(health, int)
+NETVARS_DECL(flags, int)
+NETVARS_DECL(spottedByMask, long)
+NETVARS_DECL(flashDuration, float)
+NETVARS_DECL(tickBase, int)
+NETVARS_DECL(velocity, Vector)
+NETVARS_DECL(isScoped, char)
+NETVARS_DECL(immunity, char)
+NETVARS_DECL(shotsFired, int)
+NETVARS_DECL(waitForNoAttack, char)
+NETVARS_DECL(nextAttack, float)
+NETVARS_DECL(itemIndex, short)
+NETVARS_DECL(aimPunchAngle, Vector)
+NETVARS_DECL(viewPunchAngle, Vector)
 
 #endif // SDK_H_

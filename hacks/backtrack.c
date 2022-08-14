@@ -5,7 +5,6 @@
 #include "../config.h"
 #include "../interfaces.h"
 #include "../memory.h"
-#include "../netvars.h"
 #include "../utils.h"
 
 #include "backtrack.h"
@@ -84,8 +83,7 @@ void backtrack_update(FrameStage stage)
 		if (!memory.isOtherEnemy(localPlayer, entity))
 			continue;
 
-		bool immunity = *(bool *)((char *)entity + netvars_getOffset("CCSPlayer->m_bGunGameImmunity"));
-		if (immunity)
+		if (*Entity_immunity(entity))
 			continue;
 
 		if (!entity->vmt->isAlive(entity))
@@ -95,7 +93,7 @@ void backtrack_update(FrameStage stage)
 		if (networkable->vmt->isDormant(networkable))
 			continue;
 
-		float simTime = *(float *)((char *)entity + netvars_getOffset("CBaseEntity->m_flSimulationTime"));
+		float simTime = *Entity_simTime(entity);
 
 		if (!cvector_empty(records[i]) && cvector_end(records[i])->simTime == simTime)
 			continue;
@@ -149,8 +147,7 @@ void backtrack_run(UserCmd *cmd)
 		if (!memory.isOtherEnemy(localPlayer, entity))
 			continue;
 
-		bool immunity = *(bool *)((char *)entity + netvars_getOffset("CCSPlayer->m_bGunGameImmunity"));
-		if (immunity)
+		if (*Entity_immunity(entity))
 			continue;
 
 		if (!entity->vmt->isAlive(entity))

@@ -22,11 +22,11 @@ void misc_jumpBug(UserCmd *cmd)
 	if (!localPlayer->vmt->isAlive(localPlayer))
 		return;
 
-	MoveType moveType = *(MoveType *)((char *)localPlayer + netvars_getOffset("CBaseEntity->m_nRenderMode") + 1);
+	MoveType moveType = *Entity_moveType(localPlayer);
 	if (moveType == MoveType_Ladder || moveType == MoveType_NoClip)
 		return;
 
-	int flags = *(int *)((char *)localPlayer + netvars_getOffset("CBasePlayer->m_fFlags"));
+	int flags = *Entity_flags(localPlayer);
 	if (flags & 1) {
 		if (!(enginePrediction_flags & 1))
 			cmd->buttons |= IN_DUCK;
@@ -49,11 +49,11 @@ void misc_edgeJump(UserCmd *cmd)
 	if (!localPlayer->vmt->isAlive(localPlayer))
 		return;
 
-	MoveType moveType = *(MoveType *)((char *)localPlayer + netvars_getOffset("CBaseEntity->m_nRenderMode") + 1);
+	MoveType moveType = *Entity_moveType(localPlayer);
 	if (moveType == MoveType_Ladder || moveType == MoveType_NoClip)
 		return;
 
-	int flags = *(int *)((char *)localPlayer + netvars_getOffset("CBasePlayer->m_fFlags"));
+	int flags = *Entity_flags(localPlayer);
 	if ((enginePrediction_flags & 1) && !(flags & 1))
 		cmd->buttons |= IN_JUMP;
 }
