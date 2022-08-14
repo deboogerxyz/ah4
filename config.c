@@ -127,9 +127,9 @@ void config_reset(void)
 	for (int i = 0; i < GlowCategory_Len; i++) {
 		config.glow[i].enabled = false;
 		config.glow[i].healthBased = false;
-		config.glow[i].colorA.r = 0;
-		config.glow[i].colorA.g = 0;
-		config.glow[i].colorA.b = 0;
+		config.glow[i].colorA.r = 1;
+		config.glow[i].colorA.g = 1;
+		config.glow[i].colorA.b = 1;
 		config.glow[i].colorA.a = 1;
 	}
 
