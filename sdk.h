@@ -215,6 +215,7 @@ typedef struct {
 	WeaponType type;
 	PAD(char, 4)
 	int price;
+	PAD(char, 12)
 	float cycleTime;
 	PAD(char, 12)
 	bool fullAuto;
