@@ -67,7 +67,7 @@
 
 #define WRITE_BONES(json, name, var) \
 	{ cJSON *bonesJson = cJSON_AddArrayToObject(json, name); \
-	for (int j = 0; j < 8; j++) \
+	for (int j = 0; j < 6; j++) \
 		cJSON_AddItemToArray(bonesJson, cJSON_CreateBool(var[j])); } \
 
 Config config;
