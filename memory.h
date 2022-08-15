@@ -15,6 +15,7 @@ typedef struct {
 	SwapWindow *swapWindow;
 	bool (*isOtherEnemy)(Entity *, Entity *);
 	void (*setClantag)(const char *, const char *);
+	bool (*lineGoesThroughSmoke)(Vector, Vector, short);
 	GlobalVars *globalVars;
 	GlowObjectManager *glowObjectManager;
 	MoveData *moveData;

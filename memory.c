@@ -78,6 +78,7 @@ void memory_init(void)
 	memory.input                 = **(void ***)relativeToAbsolute(*((void **)interfaces.client->vmt + 16) + 3);
 	*(void **)&memory.isOtherEnemy = relativeToAbsolute(find(CLIENT_SO, "\xE8????\x84\xC0\x44\x89\xE2") + 1);
 	*(void **)&memory.setClantag = relativeToAbsolute(find(ENGINE_SO, "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
+	*(void **)&memory.lineGoesThroughSmoke = find(CLIENT_SO, "\x55\x48\x89\xE5\x41\x56\x41\x55\x41\x54\x53\x48\x83\xEC\x30\x66\x0F\xD6\x45\xD0");
 	*(void **)&memory.globalVars = *(void **)relativeToAbsolute(*((void **)interfaces.client->vmt + 11) + 16);
 	*(void **)&memory.glowObjectManager = (void *)relativeToAbsolute(relativeToAbsolute(find(CLIENT_SO, "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
 	memory.moveData              = **(void ***)relativeToAbsolute(find(CLIENT_SO, "\x4C\x8B\x2D????\x0F\xB6\x93") + 3);

@@ -241,6 +241,97 @@ typedef struct {
 } WeaponInfo;
 
 typedef enum {
+	WeaponID_None = 0,
+	WeaponID_Deagle = 1,
+	WeaponID_Elite,
+	WeaponID_Fiveseven,
+	WeaponID_Glock,
+	WeaponID_Ak47 = 7,
+	WeaponID_Aug,
+	WeaponID_Awp,
+	WeaponID_Famas,
+	WeaponID_G3SG1,
+	WeaponID_GalilAr = 13,
+	WeaponID_M249,
+	WeaponID_M4A1 = 16,
+	WeaponID_Mac10,
+	WeaponID_P90 = 19,
+	WeaponID_ZoneRepulsor,
+	WeaponID_Mp5sd = 23,
+	WeaponID_Ump45,
+	WeaponID_Xm1014,
+	WeaponID_Bizon,
+	WeaponID_Mag7,
+	WeaponID_Negev,
+	WeaponID_Sawedoff,
+	WeaponID_Tec9,
+	WeaponID_Taser,
+	WeaponID_Hkp2000,
+	WeaponID_Mp7,
+	WeaponID_Mp9,
+	WeaponID_Nova,
+	WeaponID_P250,
+	WeaponID_Shield,
+	WeaponID_Scar20,
+	WeaponID_Sg553,
+	WeaponID_Ssg08,
+	WeaponID_GoldenKnife,
+	WeaponID_Knife,
+	WeaponID_Flashbang = 43,
+	WeaponID_HeGrenade,
+	WeaponID_SmokeGrenade,
+	WeaponID_Molotov,
+	WeaponID_Decoy,
+	WeaponID_IncGrenade,
+	WeaponID_C4,
+	WeaponID_Healthshot = 57,
+	WeaponID_KnifeT = 59,
+	WeaponID_M4a1_s,
+	WeaponID_Usp_s,
+	WeaponID_Cz75a = 63,
+	WeaponID_Revolver,
+	WeaponID_TaGrenade = 68,
+	WeaponID_Axe = 75,
+	WeaponID_Hammer,
+	WeaponID_Spanner = 78,
+	WeaponID_GhostKnife = 80,
+	WeaponID_Firebomb,
+	WeaponID_Diversion,
+	WeaponID_FragGrenade,
+	WeaponID_Snowball,
+	WeaponID_BumpMine,
+	WeaponID_Bayonet = 500,
+	WeaponID_ClassicKnife = 503,
+	WeaponID_Flip = 505,
+	WeaponID_Gut,
+	WeaponID_Karambit,
+	WeaponID_M9Bayonet,
+	WeaponID_Huntsman,
+	WeaponID_Falchion = 512,
+	WeaponID_Bowie = 514,
+	WeaponID_Butterfly,
+	WeaponID_Daggers,
+	WeaponID_Paracord,
+	WeaponID_SurvivalKnife,
+	WeaponID_Ursus = 519,
+	WeaponID_Navaja,
+	WeaponID_NomadKnife,
+	WeaponID_Stiletto = 522,
+	WeaponID_Talon,
+	WeaponID_SkeletonKnife = 525,
+	WeaponID_GloveStuddedBrokenfang = 4725,
+	WeaponID_GloveStuddedBloodhound = 5027,
+	WeaponID_GloveT,
+	WeaponID_GloveCT,
+	WeaponID_GloveSporty,
+	WeaponID_GloveSlick,
+	WeaponID_GloveLeatherWrap,
+	WeaponID_GloveMotorcycle,
+	WeaponID_GloveSpecialist,
+	WeaponID_GloveHydra
+} WeaponID;
+
+typedef enum {
 	MoveType_NoClip = 8,
 	MoveType_Ladder = 8,
 } MoveType;
@@ -557,6 +648,61 @@ struct Engine {
 	EngineVMT *vmt;
 };
 
+typedef struct {
+	Vector start;
+	PAD(char, 4)
+	Vector delta;
+	PAD(char, 44)
+	bool isRay;
+	bool isSwept;
+} Ray;
+
+typedef struct TraceFilter TraceFilter;
+
+typedef struct {
+	bool (*shouldHitEntity)(TraceFilter *, Entity *, int); // 0
+	int (*getTraceType)(TraceFilter *); // 1
+} TraceFilterVMT;
+
+struct TraceFilter {
+	TraceFilterVMT *vmt;
+	Entity *skip;
+};
+
+typedef struct {
+	const char *name;
+	short surfaceProps;
+	unsigned short flags;
+} Surface;
+
+typedef struct {
+	Vector start;
+	Vector end;
+	PAD(char, 20)
+	float fraction;
+	int contents;
+	unsigned short dispFlags;
+	bool allSolid;
+	bool startSolid;
+	PAD(char, 4)
+	Surface surface;
+	int hitGroup;
+	PAD(char, 4)
+	Entity *entity;
+	int hitbox;
+} Trace;
+
+typedef struct EngineTrace EngineTrace;
+
+typedef struct {
+	PAD(void *, 5)
+	void (*traceRay)(EngineTrace *, const Ray *, unsigned int mask, const TraceFilter *, Trace *); // 5
+} EngineTraceVMT;
+
+struct EngineTrace {
+	EngineTraceVMT *vmt;
+};
+
 typedef struct EntityList EntityList;
 
 typedef struct {
@@ -668,14 +814,18 @@ struct Prediction {
 float sdk_getServerTime(UserCmd *cmd);
 Vector Vector_add(Vector a, Vector b);
 Vector Vector_sub(Vector a, Vector b);
+Vector Vector_div(Vector v, float f);
 Vector Vector_toAngle(Vector v);
 Vector Vector_normalize(Vector v);
 Vector Vector_calculateAngle(Vector start, Vector end, Vector angle);
+bool Vector_isNull(Vector v);
 Vector Matrix3x4_origin(Matrix3x4 m);
 Vector Entity_getBonePosition(Entity *entity, int bone);
+bool Entity_canSee(Entity *entity, Entity *other, Vector pos);
 bool GlowObjectManager_hasGlow(Entity *entity);
 int GlowObjectManager_register(Entity *entity);
 void GlowObjectManager_unregister(Entity *entity, int i);
+void TraceFilter_init(TraceFilter *filter);
 Color Color_fromHealth(int health);
 ColorA ColorA_fromHealth(int health);
 

@@ -44,7 +44,6 @@ void glow_render(void)
 			if (!glowConfig->enabled)
 				break;
 
-
 			if (glowConfig->healthBased) {
 				glowObject->colorA   = ColorA_fromHealth(entity->vmt->getHealth(entity));
 				glowObject->colorA.a = glowConfig->colorA.a;

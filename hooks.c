@@ -5,6 +5,7 @@
 #include "hacks/backtrack.h"
 #include "hacks/enginePrediction.h"
 #include "hacks/glow.h"
+#include "hacks/legitbot.h"
 #include "hacks/misc.h"
 #include "hacks/skinChanger.h"
 
@@ -142,6 +143,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 	enginePrediction_run(cmd);
 
+	legitbot_run(cmd);
 	backtrack_run(cmd);
 	misc_jumpBug(cmd);
 	misc_edgeJump(cmd);

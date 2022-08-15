@@ -12,6 +12,28 @@ typedef struct {
 	bool lastDown; // Do not save
 } KeyBind;
 
+typedef enum {
+	LegitbotCategory_Pistols,
+	LegitbotCategory_Rifles,
+	LegitbotCategory_AWP,
+	LegitbotCategory_Scout,
+	LegitbotCategory_SMGs,
+	LegitbotCategory_Shotguns,
+	LegitbotCategory_Len,
+} LegitbotCategory;
+
+typedef struct {
+	int enabled;
+	int silent;
+	int visibleCheck;
+	int smokeCheck;
+	int flashCheck;
+	int scopeCheck;
+	float fov;
+	float smooth;
+	int bones[6];
+} LegitbotConfig;
+
 typedef struct {
 	int enabled;
 	int timeLimit;
@@ -41,6 +63,7 @@ typedef struct {
 } MiscConfig;
 
 typedef struct {
+	LegitbotConfig legitbot[LegitbotCategory_Len];
 	BacktrackConfig backtrack;
 	GlowConfig glow[GlowCategory_Len];
 	MiscConfig misc;

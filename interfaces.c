@@ -1,5 +1,7 @@
 #include <dlfcn.h>
 
+#include "sdk.h"
+
 #include "interfaces.h"
 
 Interfaces interfaces;
@@ -22,6 +24,7 @@ void interfaces_init(void)
 	interfaces.client       = find(CLIENT_SO, "VClient018");
 	interfaces.cvar         = find(VSTDLIB_SO, "VEngineCvar007");
 	interfaces.engine       = find(ENGINE_SO, "VEngineClient014");
+	interfaces.engineTrace  = find(ENGINE_SO, "EngineTraceClient004");
 	interfaces.entityList   = find(CLIENT_SO, "VClientEntityList003");
 	interfaces.inputSystem  = find(INPUTSYSTEM_SO, "InputSystemVersion001");
 	interfaces.gameMovement = find(CLIENT_SO, "GameMovement001");

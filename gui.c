@@ -39,6 +39,32 @@ static void keyBind(struct nk_context *ctx, const char *name, KeyBind *keyBind)
 	keyBind->mode = nk_combo(ctx, keyBinds_modes, NK_LEN(keyBinds_modes), keyBind->mode, 25, nk_vec2(200, 200));
 }
 
+void renderLegitbotTab(struct nk_context *ctx)
+{
+	const char *categories[] = {"Pistols", "Rifles", "AWP", "Scout", "SMGs", "Shotguns"};
+
+	for (int i = 0; i < LegitbotCategory_Len; i++)
+		if (nk_tree_push_id(ctx, NK_TREE_NODE, categories[i], NK_MINIMIZED, i)) {
+			nk_checkbox_label(ctx, "Enabled", &config.legitbot[i].enabled);
+			nk_checkbox_label(ctx, "Silent", &config.legitbot[i].silent);
+			nk_checkbox_label(ctx, "Visible check", &config.legitbot[i].visibleCheck);
+			nk_checkbox_label(ctx, "Smoke check", &config.legitbot[i].smokeCheck);
+			nk_checkbox_label(ctx, "Flash check", &config.legitbot[i].flashCheck);
+			if (i > 0 && i < 4)
+				nk_checkbox_label(ctx, "Scope check", &config.legitbot[i].scopeCheck);
+			nk_property_float(ctx, "#FOV:", 0.0f, &config.legitbot[i].fov, 255.0f, 0.025f, 0.025f);
+			if (!config.legitbot[i].silent)
+				nk_property_float(ctx, "#Smooth:", 1.0f, &config.legitbot[i].smooth, 100.0f, 0.1f, 0.1f);
+
+			const char *bones[] = {"Head", "Neck", "Sternum", "Chest", "Stomach", "Pelvis"};
+
+			for (int j = 0; j < 6; j++)
+				nk_checkbox_label(ctx, bones[j], &config.legitbot[i].bones[j]);
+
+			nk_tree_pop(ctx);
+		}
+}
+
 static void renderBacktrackTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
@@ -178,29 +204,33 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	float y = (float)windowHeight / 2 - h / 2;
 
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 5);
+		nk_layout_row_dynamic(ctx, 50, 6);
 
-		if (nk_button_label(ctx, "Backtrack"))
+		if (nk_button_label(ctx, "Legitbot"))
 			currentTab = 0;
 
-		if (nk_button_label(ctx, "Glow"))
+		if (nk_button_label(ctx, "Backtrack"))
 			currentTab = 1;
 
-		if (nk_button_label(ctx, "Misc"))
+		if (nk_button_label(ctx, "Glow"))
 			currentTab = 2;
 
-		if (nk_button_label(ctx, "Skins"))
+		if (nk_button_label(ctx, "Misc"))
 			currentTab = 3;
 
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Skins"))
 			currentTab = 4;
 
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 5;
+
 		switch (currentTab) {
-		case 0: renderBacktrackTab(ctx); break;
-		case 1: renderGlowTab(ctx); break;
-		case 2: renderMiscTab(ctx); break;
-		case 3: renderSkinsTab(ctx); break;
-		case 4: renderConfigTab(ctx); break;
+		case 0: renderLegitbotTab(ctx); break;
+		case 1: renderBacktrackTab(ctx); break;
+		case 2: renderGlowTab(ctx); break;
+		case 3: renderMiscTab(ctx); break;
+		case 4: renderSkinsTab(ctx); break;
+		case 5: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);

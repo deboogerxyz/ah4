@@ -1,3 +1,4 @@
+#include "interfaces.h"
 #include "memory.h"
 #include "netvars.h"
 #include "utils.h"
@@ -44,6 +45,17 @@ Vector Vector_sub(Vector a, Vector b)
 	return c;
 }
 
+Vector Vector_div(Vector v, float f)
+{
+	Vector a = {
+		.x = v.x / f,
+		.y = v.y / f,
+		.z = v.z / f
+	};
+
+	return a;
+}
+
 Vector Vector_toAngle(Vector v)
 {
 	Vector a = {
@@ -74,6 +86,11 @@ Vector Vector_calculateAngle(Vector start, Vector end, Vector angle)
 	return Vector_normalize(b);
 }
 
+bool Vector_isNull(Vector v)
+{
+	return !v.x && !v.y && !v.z;
+}
+
 Vector Matrix3x4_origin(Matrix3x4 m)
 {
 	Vector v = {
@@ -93,6 +110,28 @@ Vector Entity_getBonePosition(Entity *entity, int bone)
 	renderable->vmt->setupBones(renderable, m, 256, 256, 0);
 
 	return Matrix3x4_origin(m[bone]);
+}
+
+bool Entity_canSee(Entity *entity, Entity *other, Vector pos)
+{
+	Vector eyePos = entity->vmt->getEyePosition(entity);
+
+	Ray ray = {
+		.start = eyePos,
+		.delta = Vector_sub(pos, eyePos),
+		.isRay = true,
+		.isSwept = !Vector_isNull(ray.delta)
+	};
+
+	TraceFilter filter = {
+		.skip = entity
+	};
+	TraceFilter_init(&filter);
+
+	Trace trace;
+	interfaces.engineTrace->vmt->traceRay(interfaces.engineTrace, &ray, 0x46004009, &filter, &trace);
+
+	return trace.entity == other || trace.fraction > 0.97f;
 }
 
 bool GlowObjectManager_hasGlow(Entity *entity)
@@ -137,6 +176,26 @@ void GlowObjectManager_unregister(Entity *entity, int i)
 	glowObject->unoccluded = false;
 
 	memory.glowObjectManager->firstFreeSlot = i;
+}
+
+static bool shouldHitEntity(TraceFilter *this, Entity *entity, int unused)
+{
+	return entity != this->skip;
+}
+
+static int getTraceType(TraceFilter *this)
+{
+	return 0;
+}
+
+void TraceFilter_init(TraceFilter *filter)
+{
+	static TraceFilterVMT vmt = {
+		.shouldHitEntity = shouldHitEntity,
+		.getTraceType    = getTraceType
+	};
+
+	filter->vmt = &vmt;
 }
 
 Color Color_fromHealth(int health)

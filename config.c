@@ -22,6 +22,11 @@
 	if (cJSON_IsNumber(item)) \
 		var = item->valueint; }
 
+#define READ_FLOAT(json, name, var) \
+	{ cJSON *item = cJSON_GetObjectItem(json, name); \
+	if (cJSON_IsNumber(item)) \
+		var = (float)item->valuedouble; }
+
 #define READ_KEYBIND(json, name, var) \
 	{ cJSON *keyBindJson = cJSON_GetObjectItem(json, name); \
 	cJSON *key = cJSON_GetObjectItem(keyBindJson, "Key"); \
@@ -40,6 +45,15 @@
 		j++; \
 	} }
 
+#define READ_BONES(json, name, var) \
+	{ int j = 0; \
+	cJSON *boneJson; \
+	cJSON_ArrayForEach(boneJson, cJSON_GetObjectItem(json, name)) { \
+		if (cJSON_IsBool(boneJson)) \
+			var[j] = boneJson->valueint; \
+		j++; \
+	} }
+
 #define WRITE_KEYBIND(json, name, var) \
 	{ cJSON *keyBindJson = cJSON_CreateObject(); \
 	cJSON_AddNumberToObject(keyBindJson, "Key", var.key); \
@@ -50,6 +64,11 @@
 	{ cJSON *colorAJson = cJSON_AddArrayToObject(json, name); \
 	for (int j = 0; j < 4; j++) \
 		cJSON_AddItemToArray(colorAJson, cJSON_CreateNumber(*(&var.r + j))); } \
+
+#define WRITE_BONES(json, name, var) \
+	{ cJSON *bonesJson = cJSON_AddArrayToObject(json, name); \
+	for (int j = 0; j < 8; j++) \
+		cJSON_AddItemToArray(bonesJson, cJSON_CreateBool(var[j])); } \
 
 Config config;
 
@@ -121,6 +140,19 @@ int config_getConfigs(char ***configs)
 
 void config_reset(void)
 {
+	for (int i = 0; i < LegitbotCategory_Len; i++) {
+		config.legitbot[i].enabled = false;
+		config.legitbot[i].silent = false;
+		config.legitbot[i].visibleCheck = true;
+		config.legitbot[i].smokeCheck = true;
+		config.legitbot[i].flashCheck = true;
+		config.legitbot[i].scopeCheck = true;
+		config.legitbot[i].fov = 0;
+		config.legitbot[i].smooth = 1;
+		for (int j = 0; j < 6; j++)
+			config.legitbot[i].bones[j] = true;
+	}
+
 	config.backtrack.enabled = false;
 	config.backtrack.timeLimit = 0;
 
@@ -176,11 +208,27 @@ void config_load(const char *name)
 	if (json) {
 		config_reset();
 
+		int i = 0;
+		cJSON *legitbotJson;
+		cJSON_ArrayForEach(legitbotJson, cJSON_GetObjectItem(json, "Legitbot")) {
+			READ_BOOL(legitbotJson, "Enabled", config.legitbot[i].enabled)
+			READ_BOOL(legitbotJson, "Silent", config.legitbot[i].silent)
+			READ_BOOL(legitbotJson, "Visible check", config.legitbot[i].visibleCheck)
+			READ_BOOL(legitbotJson, "Smoke check", config.legitbot[i].smokeCheck)
+			READ_BOOL(legitbotJson, "Flash check", config.legitbot[i].flashCheck)
+			READ_BOOL(legitbotJson, "Scope check", config.legitbot[i].flashCheck)
+			READ_FLOAT(legitbotJson, "FOV", config.legitbot[i].fov)
+			READ_FLOAT(legitbotJson, "Smooth", config.legitbot[i].smooth)
+			READ_BONES(legitbotJson, "Bones", config.legitbot[i].bones)
+
+			i++;
+		}
+
 		cJSON *backtrackJson = cJSON_GetObjectItem(json, "Backtrack");
 		READ_BOOL(backtrackJson, "Enabled", config.backtrack.enabled)
 		READ_INT(backtrackJson, "Time limit", config.backtrack.timeLimit)
 
-		int i = 0;
+		i = 0;
 		cJSON *glowJson;
 		cJSON_ArrayForEach(glowJson, cJSON_GetObjectItem(json, "Glow")) {
 			READ_BOOL(glowJson, "Enabled", config.glow[i].enabled)
@@ -228,6 +276,23 @@ void config_save(const char *name)
 
 	cJSON *json = cJSON_CreateObject();
 	if (json) {
+		cJSON *legitbotJson = cJSON_AddArrayToObject(json, "Legitbot");
+		for (int i = 0; i < LegitbotCategory_Len; i++) {
+			cJSON *legitbotSubJson = cJSON_CreateObject();
+
+			cJSON_AddBoolToObject(legitbotSubJson, "Enabled", config.legitbot[i].enabled);
+			cJSON_AddBoolToObject(legitbotSubJson, "Silent", config.legitbot[i].silent);
+			cJSON_AddBoolToObject(legitbotSubJson, "Visible check", config.legitbot[i].visibleCheck);
+			cJSON_AddBoolToObject(legitbotSubJson, "Smoke check", config.legitbot[i].smokeCheck);
+			cJSON_AddBoolToObject(legitbotSubJson, "Flash check", config.legitbot[i].flashCheck);
+			cJSON_AddBoolToObject(legitbotSubJson, "Scope check", config.legitbot[i].scopeCheck);
+			cJSON_AddNumberToObject(legitbotSubJson, "FOV", config.legitbot[i].fov);
+			cJSON_AddNumberToObject(legitbotSubJson, "Smooth", config.legitbot[i].smooth);
+			WRITE_BONES(legitbotSubJson, "Bones", config.legitbot[i].bones);
+
+			cJSON_AddItemToArray(legitbotJson, legitbotSubJson);
+		}
+
 		cJSON *backtrackJson = cJSON_CreateObject();
 		cJSON_AddBoolToObject(backtrackJson, "Enabled", config.backtrack.enabled);
 		cJSON_AddNumberToObject(backtrackJson, "Time limit", config.backtrack.timeLimit);
