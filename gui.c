@@ -88,6 +88,12 @@ static void renderGlowTab(struct nk_context *ctx)
 		}
 }
 
+static void renderVisualsTab(struct nk_context *ctx)
+{
+	nk_layout_row_dynamic(ctx, 25, 1);
+	nk_checkbox_label(ctx, "Reveal ranks", &config.visuals.revealRanks);
+}
+
 static void renderMiscTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
@@ -208,7 +214,7 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	float y = (float)windowHeight / 2 - h / 2;
 
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 6);
+		nk_layout_row_dynamic(ctx, 50, 7);
 
 		if (nk_button_label(ctx, "Legitbot"))
 			currentTab = 0;
@@ -219,22 +225,26 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 		if (nk_button_label(ctx, "Glow"))
 			currentTab = 2;
 
-		if (nk_button_label(ctx, "Misc"))
+		if (nk_button_label(ctx, "Visuals"))
 			currentTab = 3;
 
-		if (nk_button_label(ctx, "Skins"))
+		if (nk_button_label(ctx, "Misc"))
 			currentTab = 4;
 
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Skins"))
 			currentTab = 5;
+
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 6;
 
 		switch (currentTab) {
 		case 0: renderLegitbotTab(ctx); break;
 		case 1: renderBacktrackTab(ctx); break;
 		case 2: renderGlowTab(ctx); break;
-		case 3: renderMiscTab(ctx); break;
-		case 4: renderSkinsTab(ctx); break;
-		case 5: renderConfigTab(ctx); break;
+		case 3: renderVisualsTab(ctx); break;
+		case 4: renderMiscTab(ctx); break;
+		case 5: renderSkinsTab(ctx); break;
+		case 6: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);

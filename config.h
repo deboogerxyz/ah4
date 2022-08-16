@@ -56,6 +56,10 @@ typedef struct {
 } GlowConfig;
 
 typedef struct {
+	int revealRanks;
+} VisualsConfig;
+
+typedef struct {
 	int antiAfkKick;
 	int bunnyHop;
 	int jumpBug;
@@ -70,6 +74,7 @@ typedef struct {
 	LegitbotConfig legitbot[LegitbotCategory_Len];
 	BacktrackConfig backtrack;
 	GlowConfig glow[GlowCategory_Len];
+	VisualsConfig visuals;
 	MiscConfig misc;
 } Config;
 

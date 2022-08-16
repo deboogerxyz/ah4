@@ -165,6 +165,8 @@ void config_reset(void)
 		config.glow[i].colorA.a = 1;
 	}
 
+	config.visuals.revealRanks = false;
+
 	config.misc.antiAfkKick = false;
 	config.misc.bunnyHop = false;
 	config.misc.jumpBug = false;
@@ -243,6 +245,9 @@ void config_load(const char *name)
 			i++;
 		}
 
+		cJSON *visualsJson = cJSON_GetObjectItem(json, "Visuals");
+		READ_BOOL(visualsJson, "Reveal ranks", config.visuals.revealRanks)
+
 		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
 		READ_BOOL(miscJson, "Anti AFK kick", config.misc.antiAfkKick)
 		READ_BOOL(miscJson, "Bunny hop", config.misc.bunnyHop)
@@ -316,6 +321,10 @@ void config_save(const char *name)
 
 			cJSON_AddItemToArray(glowJson, glowSubJson);
 		}
+
+		cJSON *visualsJson = cJSON_CreateObject();
+		cJSON_AddBoolToObject(visualsJson, "Reveal ranks", config.visuals.revealRanks);
+		cJSON_AddItemToObject(json, "Visuals", visualsJson);
 
 		cJSON *miscJson = cJSON_CreateObject();
 		cJSON_AddBoolToObject(miscJson, "Anti AFK kick", config.misc.antiAfkKick);
