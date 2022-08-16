@@ -60,6 +60,7 @@ typedef struct {
 	int disableShadows;
 	int forceCrosshair;
 	int grenadePrediction;
+	int revealRadar;
 	int revealRanks;
 	int revealOverwatch;
 } VisualsConfig;

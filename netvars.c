@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
 #include "interfaces.h"
 #include "sdk.h"
 #include "utils.h"
@@ -18,7 +19,20 @@ struct NetVar {
 };
 
 #define NETVARS_LEN 2000
-NetVar *netVars[NETVARS_LEN] = {0};
+static RecvProxy addrSpottedProxy, oldSpottedProxy;
+static NetVar *netVars[NETVARS_LEN] = {0};
+
+static void spottedProxy(RecvProxyData *data, Entity *entity, void *unused)
+{
+	if (config.visuals.revealRadar) {
+		data->val.i = true;
+
+		int localPlayerIndex = interfaces.engine->vmt->getLocalPlayer(interfaces.engine);
+		*Entity_spottedByMask(entity) = 1 << (localPlayerIndex - 1);
+	}
+
+	oldSpottedProxy(data, entity, unused);
+}
 
 static void dump(const char *className, RecvTable *recvTable, int offset)
 {
@@ -43,6 +57,12 @@ static void dump(const char *className, RecvTable *recvTable, int offset)
 		int j = hash(netVar->name) % NETVARS_LEN;
 		netVar->next = netVars[j];
 		netVars[j] = netVar;
+
+		if (!strcmp(netVar->name, "CBaseEntity->m_bSpotted")) {
+			oldSpottedProxy = prop->proxy;
+			addrSpottedProxy = prop->proxy;
+			prop->proxy = spottedProxy;
+		}
 	}
 }
 
@@ -77,4 +97,6 @@ void netvars_cleanUp(void)
 			netVar = next;
 		}
 	}
+
+	addrSpottedProxy = oldSpottedProxy;
 }

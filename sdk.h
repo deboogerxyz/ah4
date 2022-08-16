@@ -56,7 +56,9 @@ typedef struct {
 	} val;
 } RecvProxyData;
 
-typedef void (*RecvProxy)(RecvProxyData *, void *, void *);
+typedef struct Entity Entity;
+
+typedef void (*RecvProxy)(RecvProxyData *, Entity *, void *);
 
 typedef struct RecvTable RecvTable;
 struct RecvProp {
@@ -335,8 +337,6 @@ typedef enum {
 	MoveType_NoClip = 8,
 	MoveType_Ladder = 8,
 } MoveType;
-
-typedef struct Entity Entity;
 
 typedef struct {
 	PAD(void *, 3)
