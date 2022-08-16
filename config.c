@@ -350,6 +350,11 @@ void config_openDirectory(void)
 	if (!dir)
 		return;
 
+	char path[PATH_MAX];
+	snprintf(path, PATH_MAX, "%s/ah4", dir);
+
+	mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
+
 	char cmd[512];
 	snprintf(cmd, 512, "xdg-open \"%s/ah4\" &", dir);
 
