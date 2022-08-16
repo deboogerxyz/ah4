@@ -37,7 +37,7 @@ void visuals_forceCrosshair(FrameStage stage)
 
 	Entity *localPlayer = *memory.localPlayer;
 
-	bool shouldForce = stage == RENDER_START && config.visuals.forceCrosshair && localPlayer && localPlayer->vmt->isAlive(localPlayer) && !Entity_isScoped(localPlayer);
+	bool shouldForce = stage == RENDER_START && config.visuals.forceCrosshair && localPlayer && localPlayer->vmt->isAlive(localPlayer) && !*Entity_isScoped(localPlayer);
 
 	conVar->vmt->setInt(conVar, shouldForce ? 3 : 0);
 }
