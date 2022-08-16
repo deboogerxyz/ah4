@@ -246,4 +246,6 @@ void backtrack_cleanUp(void)
 {
 	for (int i = 0; i < 65; i++)
 		cvector_free(records[i]);
+
+	cvector_free(inSequences);
 }
