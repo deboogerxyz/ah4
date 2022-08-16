@@ -7,6 +7,12 @@
 
 #include "misc.h"
 
+void misc_antiAfk(UserCmd *cmd)
+{
+	if (config.misc.antiAfk && cmd->commandNumber % 2)
+		cmd->buttons |= 1 << 27;
+}
+
 void misc_jumpBug(UserCmd *cmd)
 {
 	if (!config.misc.jumpBug)

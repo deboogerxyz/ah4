@@ -144,6 +144,8 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 		backtrack_updateSequences(networkChannel);
 	}
 
+	misc_antiAfk(cmd);
+
 	enginePrediction_run(cmd);
 
 	legitbot_run(cmd);

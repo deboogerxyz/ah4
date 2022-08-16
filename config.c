@@ -172,6 +172,7 @@ void config_reset(void)
 	config.misc.edgeJumpKeyBind.key = 0;
 	config.misc.edgeJumpKeyBind.mode = 0;
 	config.misc.revealOverwatch = false;
+	config.misc.antiAfk = false;
 }
 
 void config_load(const char *name)
@@ -246,6 +247,7 @@ void config_load(const char *name)
 		READ_BOOL(miscJson, "Edge jump", config.misc.edgeJump)
 		READ_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind);
 		READ_BOOL(miscJson, "Reveal Overwatch", config.misc.revealOverwatch)
+		READ_BOOL(miscJson, "Anti AFK", config.misc.antiAfk)
 
 		cJSON_Delete(json);
 	}
@@ -317,6 +319,7 @@ void config_save(const char *name)
 		cJSON_AddBoolToObject(miscJson, "Edge jump", config.misc.edgeJump);
 		WRITE_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind)
 		cJSON_AddBoolToObject(miscJson, "Reveal Overwatch", config.misc.revealOverwatch);
+		cJSON_AddBoolToObject(miscJson, "Anti AFK", config.misc.antiAfk);
 		cJSON_AddItemToObject(json, "Misc", miscJson);
 
 		fprintf(f, cJSON_Print(json));
