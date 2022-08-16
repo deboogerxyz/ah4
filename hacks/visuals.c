@@ -13,6 +13,18 @@ void visuals_disablePostProcessing(FrameStage stage)
 	conVar->vmt->setInt(conVar, stage == RENDER_START && !config.visuals.disablePostProcessing);
 }
 
+void visuals_disableShadows(void)
+{
+	static ConVar *conVar;
+	if (!conVar)
+		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "cl_csm_enabled");
+
+	if (!conVar)
+		return;
+
+	conVar->vmt->setInt(conVar, !config.visuals.disableShadows);
+}
+
 void visuals_revealRanks(UserCmd *cmd)
 {
 	if (config.visuals.revealRanks && cmd->buttons & IN_SCORE)
