@@ -193,7 +193,7 @@ static DemoPlaybackParameters *getDemoPlaybackParameters(Engine *this)
 {
 	DemoPlaybackParameters *oldParams = oldEngineVMT->getDemoPlaybackParameters(this);
 
-	if (!oldParams || !config.misc.revealOverwatch || __builtin_return_address(0) == memory.demoFileEndReached)
+	if (!oldParams || !config.visuals.revealOverwatch || __builtin_return_address(0) == memory.demoFileEndReached)
 		return oldParams;
 
 	static DemoPlaybackParameters newParams;

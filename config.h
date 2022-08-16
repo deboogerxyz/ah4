@@ -57,6 +57,7 @@ typedef struct {
 
 typedef struct {
 	int revealRanks;
+	int revealOverwatch;
 } VisualsConfig;
 
 typedef struct {
@@ -66,7 +67,6 @@ typedef struct {
 	KeyBind jumpBugKeyBind;
 	int edgeJump;
 	KeyBind edgeJumpKeyBind;
-	int revealOverwatch;
 	int fixMovement;
 } MiscConfig;
 

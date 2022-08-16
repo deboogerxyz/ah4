@@ -92,6 +92,7 @@ static void renderVisualsTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Reveal ranks", &config.visuals.revealRanks);
+	nk_checkbox_label(ctx, "Reveal Overwatch", &config.visuals.revealOverwatch);
 }
 
 static void renderMiscTab(struct nk_context *ctx)
@@ -103,7 +104,6 @@ static void renderMiscTab(struct nk_context *ctx)
 	keyBind(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind);
 	nk_checkbox_label(ctx, "Edge jump", &config.misc.edgeJump);
 	keyBind(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind);
-	nk_checkbox_label(ctx, "Reveal Overwatch", &config.misc.revealOverwatch);
 	nk_checkbox_label(ctx, "Fix movement", &config.misc.fixMovement);
 }
 

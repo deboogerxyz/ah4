@@ -166,6 +166,7 @@ void config_reset(void)
 	}
 
 	config.visuals.revealRanks = false;
+	config.visuals.revealOverwatch = false;
 
 	config.misc.antiAfkKick = false;
 	config.misc.bunnyHop = false;
@@ -175,7 +176,6 @@ void config_reset(void)
 	config.misc.edgeJump = false;
 	config.misc.edgeJumpKeyBind.key = 0;
 	config.misc.edgeJumpKeyBind.mode = 0;
-	config.misc.revealOverwatch = false;
 	config.misc.fixMovement = true;
 }
 
@@ -247,6 +247,7 @@ void config_load(const char *name)
 
 		cJSON *visualsJson = cJSON_GetObjectItem(json, "Visuals");
 		READ_BOOL(visualsJson, "Reveal ranks", config.visuals.revealRanks)
+		READ_BOOL(visualsJson, "Reveal Overwatch", config.visuals.revealOverwatch)
 
 		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
 		READ_BOOL(miscJson, "Anti AFK kick", config.misc.antiAfkKick)
@@ -255,7 +256,6 @@ void config_load(const char *name)
 		READ_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind);
 		READ_BOOL(miscJson, "Edge jump", config.misc.edgeJump)
 		READ_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind);
-		READ_BOOL(miscJson, "Reveal Overwatch", config.misc.revealOverwatch)
 		READ_BOOL(miscJson, "Fix movement", config.misc.fixMovement)
 
 		cJSON_Delete(json);
@@ -324,6 +324,7 @@ void config_save(const char *name)
 
 		cJSON *visualsJson = cJSON_CreateObject();
 		cJSON_AddBoolToObject(visualsJson, "Reveal ranks", config.visuals.revealRanks);
+		cJSON_AddBoolToObject(visualsJson, "Reveal Overwatch", config.visuals.revealOverwatch);
 		cJSON_AddItemToObject(json, "Visuals", visualsJson);
 
 		cJSON *miscJson = cJSON_CreateObject();
@@ -333,7 +334,6 @@ void config_save(const char *name)
 		WRITE_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind)
 		cJSON_AddBoolToObject(miscJson, "Edge jump", config.misc.edgeJump);
 		WRITE_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind)
-		cJSON_AddBoolToObject(miscJson, "Reveal Overwatch", config.misc.revealOverwatch);
 		cJSON_AddBoolToObject(miscJson, "Fix movement", config.misc.fixMovement);
 		cJSON_AddItemToObject(json, "Misc", miscJson);
 
