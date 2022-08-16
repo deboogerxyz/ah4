@@ -3,7 +3,7 @@
 #include "../memory.h"
 #include "../sdk.h"
 
-static LegitbotCategory getCategory(WeaponID weaponID)
+static int getCategory(WeaponID weaponID)
 {
 	switch (weaponID) {
 	case WeaponID_Glock: // FALLTHROUGH
@@ -75,7 +75,7 @@ void legitbot_run(UserCmd *cmd)
 
 	WeaponID weaponID = *Entity_itemIndex(activeWeapon);
 
-	LegitbotCategory legitbotCategory = getCategory(weaponID);
+	int legitbotCategory = getCategory(weaponID);
 	if (legitbotCategory < 0)
 		return;
 
