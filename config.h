@@ -63,6 +63,7 @@ typedef struct {
 	int edgeJump;
 	KeyBind edgeJumpKeyBind;
 	int revealOverwatch;
+	int fixMovement;
 } MiscConfig;
 
 typedef struct {

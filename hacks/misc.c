@@ -4,6 +4,7 @@
 #include "../keyBinds.h"
 #include "../memory.h"
 #include "../netvars.h"
+#include "../utils.h"
 
 #include "misc.h"
 
@@ -81,4 +82,23 @@ void misc_edgeJump(UserCmd *cmd)
 	int flags = *Entity_flags(localPlayer);
 	if ((enginePrediction_flags & 1) && !(flags & 1))
 		cmd->buttons |= IN_JUMP;
+}
+
+void
+misc_fixMovement(UserCmd *cmd, float yaw)
+{
+	if (!config.misc.fixMovement)
+		return;
+
+	float oldYaw = yaw + (yaw < 0 ? 360 : 0);
+	float newYaw = cmd->viewAngles.y + (cmd->viewAngles.y < 0 ? 360 : 0);
+	float delta  = newYaw < oldYaw ? fabsf(newYaw - oldYaw) : 360 - fabsf(newYaw - oldYaw);
+
+	delta = 360 - delta;
+
+	float forwardMove = cmd->forwardMove;
+	float sideMove    = cmd->sideMove;
+
+	cmd->forwardMove = cos(DEG2RAD(delta)) * forwardMove + cos(DEG2RAD(delta + 90)) * sideMove;
+	cmd->sideMove    = sin(DEG2RAD(delta)) * forwardMove + sin(DEG2RAD(delta + 90)) * sideMove;
 }

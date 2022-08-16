@@ -144,6 +144,8 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 		backtrack_updateSequences(networkChannel);
 	}
 
+	Vector currentAngles = cmd->viewAngles;
+
 	misc_antiAfkKick(cmd);
 	misc_bunnyHop(cmd);
 
@@ -153,6 +155,9 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	backtrack_run(cmd);
 	misc_jumpBug(cmd);
 	misc_edgeJump(cmd);
+
+	cmd->viewAngles = Vector_normalize(cmd->viewAngles);
+	misc_fixMovement(cmd, currentAngles.y);
 
 	cmd->viewAngles.x = CLAMP(cmd->viewAngles.x, -89, 89);
 	cmd->viewAngles.y = CLAMP(cmd->viewAngles.y, -180, 180);

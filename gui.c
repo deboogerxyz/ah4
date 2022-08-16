@@ -98,6 +98,7 @@ static void renderMiscTab(struct nk_context *ctx)
 	nk_checkbox_label(ctx, "Edge jump", &config.misc.edgeJump);
 	keyBind(ctx, "Edge jump key bind", &config.misc.edgeJumpKeyBind);
 	nk_checkbox_label(ctx, "Reveal Overwatch", &config.misc.revealOverwatch);
+	nk_checkbox_label(ctx, "Fix movement", &config.misc.fixMovement);
 }
 
 static void renderSkinsTab(struct nk_context *ctx)
