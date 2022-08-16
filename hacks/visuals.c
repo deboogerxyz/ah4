@@ -4,7 +4,7 @@
 
 void visuals_disablePostProcessing(FrameStage stage)
 {
-	static ConVar *conVar;
+	static ConVar *conVar = 0;
 	if (!conVar)
 		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "mat_postprocess_enable");
 
@@ -16,7 +16,7 @@ void visuals_disablePostProcessing(FrameStage stage)
 
 void visuals_disableShadows(void)
 {
-	static ConVar *conVar;
+	static ConVar *conVar = 0;
 	if (!conVar)
 		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "cl_csm_enabled");
 
@@ -28,9 +28,12 @@ void visuals_disableShadows(void)
 
 void visuals_forceCrosshair(FrameStage stage)
 {
-	static ConVar *conVar;
+	static ConVar *conVar = 0;
 	if (!conVar)
 		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "weapon_debug_spread_show");
+
+	if (!conVar)
+		return;
 
 	Entity *localPlayer = *memory.localPlayer;
 
@@ -41,7 +44,7 @@ void visuals_forceCrosshair(FrameStage stage)
 
 void visuals_grenadePrediction(void)
 {
-	static ConVar *conVar;
+	static ConVar *conVar = 0;
 	if (!conVar)
 		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "cl_grenadepreview");
 
