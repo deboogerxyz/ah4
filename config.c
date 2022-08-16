@@ -165,6 +165,7 @@ void config_reset(void)
 		config.glow[i].colorA.a = 1;
 	}
 
+	config.visuals.disablePostProcessing = false;
 	config.visuals.revealRanks = false;
 	config.visuals.revealOverwatch = false;
 
@@ -246,6 +247,7 @@ void config_load(const char *name)
 		}
 
 		cJSON *visualsJson = cJSON_GetObjectItem(json, "Visuals");
+		READ_BOOL(visualsJson, "Disable post-processing", config.visuals.disablePostProcessing)
 		READ_BOOL(visualsJson, "Reveal ranks", config.visuals.revealRanks)
 		READ_BOOL(visualsJson, "Reveal Overwatch", config.visuals.revealOverwatch)
 
@@ -323,6 +325,7 @@ void config_save(const char *name)
 		}
 
 		cJSON *visualsJson = cJSON_CreateObject();
+		cJSON_AddBoolToObject(visualsJson, "Disable post-processing", config.visuals.disablePostProcessing);
 		cJSON_AddBoolToObject(visualsJson, "Reveal ranks", config.visuals.revealRanks);
 		cJSON_AddBoolToObject(visualsJson, "Reveal Overwatch", config.visuals.revealOverwatch);
 		cJSON_AddItemToObject(json, "Visuals", visualsJson);

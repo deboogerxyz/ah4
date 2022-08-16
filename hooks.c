@@ -183,6 +183,7 @@ static void frameStageNotify(Client *this, FrameStage stage)
 		once = true;
 	}
 
+	visuals_disablePostProcessing(stage);
 	backtrack_update(stage);
 
 //	if (stage == NET_UPDATE_POSTDATAUPDATE_START)

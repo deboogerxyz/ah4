@@ -56,6 +56,7 @@ typedef struct {
 } GlowConfig;
 
 typedef struct {
+	int disablePostProcessing;
 	int revealRanks;
 	int revealOverwatch;
 } VisualsConfig;
