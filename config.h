@@ -56,7 +56,7 @@ typedef struct {
 } GlowConfig;
 
 typedef struct {
-	int antiAfk;
+	int antiAfkKick;
 	int bunnyHop;
 	int jumpBug;
 	KeyBind jumpBugKeyBind;
