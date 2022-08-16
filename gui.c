@@ -92,6 +92,7 @@ static void renderVisualsTab(struct nk_context *ctx)
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Disable post-processing", &config.visuals.disablePostProcessing);
 	nk_checkbox_label(ctx, "Disable shadows", &config.visuals.disableShadows);
+	nk_checkbox_label(ctx, "Force crosshair", &config.visuals.forceCrosshair);
 	nk_checkbox_label(ctx, "Reveal ranks", &config.visuals.revealRanks);
 	nk_checkbox_label(ctx, "Reveal Overwatch", &config.visuals.revealOverwatch);
 }

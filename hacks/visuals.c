@@ -1,5 +1,6 @@
 #include "../config.h"
 #include "../interfaces.h"
+#include "../memory.h"
 
 void visuals_disablePostProcessing(FrameStage stage)
 {
@@ -23,6 +24,19 @@ void visuals_disableShadows(void)
 		return;
 
 	conVar->vmt->setInt(conVar, !config.visuals.disableShadows);
+}
+
+void visuals_forceCrosshair(FrameStage stage)
+{
+	static ConVar *conVar;
+	if (!conVar)
+		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "weapon_debug_spread_show");
+
+	Entity *localPlayer = *memory.localPlayer;
+
+	bool shouldForce = stage == RENDER_START && config.visuals.forceCrosshair && localPlayer && localPlayer->vmt->isAlive(localPlayer) && !Entity_isScoped(localPlayer);
+
+	conVar->vmt->setInt(conVar, shouldForce ? 3 : 0);
 }
 
 void visuals_revealRanks(UserCmd *cmd)

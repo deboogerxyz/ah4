@@ -2,4 +2,5 @@
 
 void visuals_disablePostProcessing(FrameStage stage);
 void visuals_disableShadows(void);
+void visuals_forceCrosshair(FrameStage stage);
 void visuals_revealRanks(UserCmd *cmd);
