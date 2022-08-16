@@ -19,7 +19,7 @@ struct NetVar {
 };
 
 #define NETVARS_LEN 2000
-static RecvProxy addrSpottedProxy, oldSpottedProxy;
+static RecvProxy *addrSpottedProxy, oldSpottedProxy;
 static NetVar *netVars[NETVARS_LEN] = {0};
 
 static void spottedProxy(RecvProxyData *data, Entity *entity, void *unused)
@@ -60,7 +60,7 @@ static void dump(const char *className, RecvTable *recvTable, int offset)
 
 		if (!strcmp(netVar->name, "CBaseEntity->m_bSpotted")) {
 			oldSpottedProxy = prop->proxy;
-			addrSpottedProxy = prop->proxy;
+			addrSpottedProxy = &prop->proxy;
 			prop->proxy = spottedProxy;
 		}
 	}
@@ -89,6 +89,8 @@ void netvars_init(void)
 
 void netvars_cleanUp(void)
 {
+	*addrSpottedProxy = oldSpottedProxy;
+
 	for (int i = 0; i < NETVARS_LEN; i++) {
 		NetVar *netVar = netVars[i];
 		while (netVar) {
@@ -97,6 +99,4 @@ void netvars_cleanUp(void)
 			netVar = next;
 		}
 	}
-
-	addrSpottedProxy = oldSpottedProxy;
 }
