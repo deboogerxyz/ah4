@@ -9,9 +9,11 @@
 #include "hacks/misc.h"
 #include "hacks/skinChanger.h"
 
+#include "config.h"
 #include "gui.h"
 #include "interfaces.h"
 #include "memory.h"
+#include "sdk.h"
 #include "utils.h"
 
 #include "hooks.h"
@@ -41,6 +43,7 @@ static SwapWindow oldSwapWindow;
 static ClientVMT *oldClientVMT, *newClientVMT;
 static ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
 static NetworkChannelVMT *oldNetworkChannelVMT, *newNetworkChannelVMT;
+static EngineVMT *oldEngineVMT, *newEngineVMT;
 
 static int getTableLength(void **vmt)
 {
@@ -178,6 +181,20 @@ static void frameStageNotify(Client *this, FrameStage stage)
 	oldClientVMT->frameStageNotify(this, stage);
 }
 
+static DemoPlaybackParameters *getDemoPlaybackParameters(Engine *this)
+{
+	DemoPlaybackParameters *oldParams = oldEngineVMT->getDemoPlaybackParameters(this);
+
+	if (!oldParams || !config.misc.revealOverwatch || __builtin_return_address(0) == memory.demoFileEndReached)
+		return oldParams;
+
+	static DemoPlaybackParameters newParams;
+	newParams = *oldParams;
+	newParams.anonymousPlayerIdentity = false;
+
+	return &newParams;
+}
+
 void hooks_init(void)
 {
 	oldPollEvent = *memory.pollEvent;
@@ -192,6 +209,9 @@ void hooks_init(void)
 	HOOK(ClientModeVMT, memory.clientMode->vmt)
 	newClientModeVMT->createMove = createMove;
 	newClientModeVMT->doPostScreenEffects = doPostScreenEffects;
+
+	HOOK(EngineVMT, interfaces.engine->vmt);
+	newEngineVMT->getDemoPlaybackParameters = getDemoPlaybackParameters;
 }
 
 void hooks_cleanUp(void)
@@ -203,6 +223,7 @@ void hooks_cleanUp(void)
 		UNHOOK(NetworkChannelVMT, networkChannel->vmt)
 
 	UNHOOK(ClientModeVMT, memory.clientMode->vmt)
+	UNHOOK(EngineVMT, interfaces.engine->vmt)
 
 	*memory.swapWindow = oldSwapWindow;
 	*memory.pollEvent  = oldPollEvent;

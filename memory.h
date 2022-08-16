@@ -18,6 +18,7 @@ typedef struct {
 	bool (*lineGoesThroughSmoke)(Vector, Vector, short);
 	GlobalVars *globalVars;
 	GlowObjectManager *glowObjectManager;
+	void *demoFileEndReached;
 	MoveData *moveData;
 	MoveHelper *moveHelper;
 	int *predictionRandomSeed;
