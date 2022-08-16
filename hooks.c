@@ -8,6 +8,7 @@
 #include "hacks/legitbot.h"
 #include "hacks/misc.h"
 #include "hacks/skinChanger.h"
+#include "hacks/visuals.h"
 
 #include "config.h"
 #include "gui.h"
@@ -148,6 +149,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 	misc_antiAfkKick(cmd);
 	misc_bunnyHop(cmd);
+	visuals_revealRanks(cmd);
 
 	enginePrediction_run(cmd);
 
