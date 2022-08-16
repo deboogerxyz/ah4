@@ -76,7 +76,6 @@ static void renderGlowTab(struct nk_context *ctx)
 {
 	const char *categories[] = {"Enemies", "Teammates", "Dropped C4", "Planted C4", "Projectiles", "Dropped weapons"};
 
-	nk_layout_row_dynamic(ctx, 25, 1);
 	for (int i = 0; i < GlowCategory_Len; i++)
 		if (nk_tree_push_id(ctx, NK_TREE_NODE, categories[i], NK_MINIMIZED, i)) {
 			nk_checkbox_label(ctx, "Enabled", &config.glow[i].enabled);
