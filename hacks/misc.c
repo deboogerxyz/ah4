@@ -13,6 +13,25 @@ void misc_antiAfk(UserCmd *cmd)
 		cmd->buttons |= 1 << 27;
 }
 
+void misc_bunnyHop(UserCmd *cmd)
+{
+	static bool wasOnGround = false;
+
+	if (!config.misc.bunnyHop)
+		return;
+
+	Entity *localPlayer = *memory.localPlayer;
+	if (!localPlayer)
+		return;
+
+	MoveType moveType = *Entity_moveType(localPlayer);
+
+	if (!(*Entity_flags(localPlayer) & 1) && moveType != MoveType_Ladder && moveType != MoveType_NoClip && !wasOnGround)
+		cmd->buttons &= ~IN_JUMP;
+
+	wasOnGround = *Entity_flags(localPlayer) & 1;
+}
+
 void misc_jumpBug(UserCmd *cmd)
 {
 	if (!config.misc.jumpBug)

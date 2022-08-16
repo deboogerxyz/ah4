@@ -165,6 +165,8 @@ void config_reset(void)
 		config.glow[i].colorA.a = 1;
 	}
 
+	config.misc.antiAfk = false;
+	config.misc.bunnyHop = false;
 	config.misc.jumpBug = false;
 	config.misc.jumpBugKeyBind.key = 0;
 	config.misc.jumpBugKeyBind.mode = 0;
@@ -172,7 +174,6 @@ void config_reset(void)
 	config.misc.edgeJumpKeyBind.key = 0;
 	config.misc.edgeJumpKeyBind.mode = 0;
 	config.misc.revealOverwatch = false;
-	config.misc.antiAfk = false;
 }
 
 void config_load(const char *name)
@@ -242,12 +243,13 @@ void config_load(const char *name)
 		}
 
 		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
+		READ_BOOL(miscJson, "Anti AFK", config.misc.antiAfk)
+		READ_BOOL(miscJson, "Bunny hop", config.misc.bunnyHop)
 		READ_BOOL(miscJson, "Jump bug", config.misc.jumpBug)
 		READ_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind);
 		READ_BOOL(miscJson, "Edge jump", config.misc.edgeJump)
 		READ_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind);
 		READ_BOOL(miscJson, "Reveal Overwatch", config.misc.revealOverwatch)
-		READ_BOOL(miscJson, "Anti AFK", config.misc.antiAfk)
 
 		cJSON_Delete(json);
 	}
@@ -314,12 +316,13 @@ void config_save(const char *name)
 		}
 
 		cJSON *miscJson = cJSON_CreateObject();
+		cJSON_AddBoolToObject(miscJson, "Anti AFK", config.misc.antiAfk);
+		cJSON_AddBoolToObject(miscJson, "Bunny hop", config.misc.bunnyHop);
 		cJSON_AddBoolToObject(miscJson, "Jump bug", config.misc.jumpBug);
 		WRITE_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind)
 		cJSON_AddBoolToObject(miscJson, "Edge jump", config.misc.edgeJump);
 		WRITE_KEYBIND(miscJson, "Edge jump key bind", config.misc.edgeJumpKeyBind)
 		cJSON_AddBoolToObject(miscJson, "Reveal Overwatch", config.misc.revealOverwatch);
-		cJSON_AddBoolToObject(miscJson, "Anti AFK", config.misc.antiAfk);
 		cJSON_AddItemToObject(json, "Misc", miscJson);
 
 		fprintf(f, cJSON_Print(json));

@@ -145,6 +145,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	}
 
 	misc_antiAfk(cmd);
+	misc_bunnyHop(cmd);
 
 	enginePrediction_run(cmd);
 

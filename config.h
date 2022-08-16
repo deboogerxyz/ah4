@@ -56,12 +56,13 @@ typedef struct {
 } GlowConfig;
 
 typedef struct {
+	int antiAfk;
+	int bunnyHop;
 	int jumpBug;
 	KeyBind jumpBugKeyBind;
 	int edgeJump;
 	KeyBind edgeJumpKeyBind;
 	int revealOverwatch;
-	int antiAfk;
 } MiscConfig;
 
 typedef struct {
