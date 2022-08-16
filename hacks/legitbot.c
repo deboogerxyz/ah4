@@ -80,6 +80,8 @@ void legitbot_run(UserCmd *cmd)
 		return;
 
 	LegitbotConfig *legitbotConfig = &config.legitbot[legitbotCategory];
+	if (!legitbotConfig)
+		return;
 
 	if (!legitbotConfig->enabled)
 		return;

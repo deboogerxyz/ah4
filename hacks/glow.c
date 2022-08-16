@@ -40,6 +40,8 @@ void glow_render(void)
 
 			GlowCategory glowCategory = memory.isOtherEnemy(localPlayer, entity) ? GlowCategory_Enemies : GlowCategory_Teammates;
 			GlowConfig *glowConfig = &config.glow[glowCategory];
+			if (!glowConfig)
+				break;
 
 			if (!glowConfig->enabled)
 				break;
