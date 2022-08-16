@@ -121,7 +121,7 @@ void legitbot_run(UserCmd *cmd)
 		if (!entity->vmt->isAlive(entity))
 			continue;
 
-		for (int j = 0; j < 8; j++) {
+		for (int j = 0; j < 6; j++) {
 			if (!legitbotConfig->bones[j])
 				continue;
 
