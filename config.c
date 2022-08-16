@@ -168,6 +168,7 @@ void config_reset(void)
 	config.visuals.disablePostProcessing = false;
 	config.visuals.disableShadows = false;
 	config.visuals.forceCrosshair = false;
+	config.visuals.grenadePrediction = false;
 	config.visuals.revealRanks = false;
 	config.visuals.revealOverwatch = false;
 
@@ -252,6 +253,7 @@ void config_load(const char *name)
 		READ_BOOL(visualsJson, "Disable post-processing", config.visuals.disablePostProcessing)
 		READ_BOOL(visualsJson, "Disable shadows", config.visuals.disableShadows)
 		READ_BOOL(visualsJson, "Force crosshair", config.visuals.forceCrosshair)
+		READ_BOOL(visualsJson, "Grenade prediction", config.visuals.grenadePrediction)
 		READ_BOOL(visualsJson, "Reveal ranks", config.visuals.revealRanks)
 		READ_BOOL(visualsJson, "Reveal Overwatch", config.visuals.revealOverwatch)
 
@@ -332,6 +334,7 @@ void config_save(const char *name)
 		cJSON_AddBoolToObject(visualsJson, "Disable post-processing", config.visuals.disablePostProcessing);
 		cJSON_AddBoolToObject(visualsJson, "Disable shadows", config.visuals.disableShadows);
 		cJSON_AddBoolToObject(visualsJson, "Force crosshair", config.visuals.forceCrosshair);
+		cJSON_AddBoolToObject(visualsJson, "Grenade prediction", config.visuals.grenadePrediction);
 		cJSON_AddBoolToObject(visualsJson, "Reveal ranks", config.visuals.revealRanks);
 		cJSON_AddBoolToObject(visualsJson, "Reveal Overwatch", config.visuals.revealOverwatch);
 		cJSON_AddItemToObject(json, "Visuals", visualsJson);

@@ -186,6 +186,7 @@ static void frameStageNotify(Client *this, FrameStage stage)
 	visuals_disablePostProcessing(stage);
 	visuals_disableShadows();
 	visuals_forceCrosshair(stage);
+	visuals_grenadePrediction();
 	backtrack_update(stage);
 
 //	if (stage == NET_UPDATE_POSTDATAUPDATE_START)

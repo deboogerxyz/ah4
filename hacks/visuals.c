@@ -39,6 +39,18 @@ void visuals_forceCrosshair(FrameStage stage)
 	conVar->vmt->setInt(conVar, shouldForce ? 3 : 0);
 }
 
+void visuals_grenadePrediction(void)
+{
+	static ConVar *conVar;
+	if (!conVar)
+		conVar = interfaces.cvar->vmt->findVar(interfaces.cvar, "cl_grenadepreview");
+
+	if (!conVar)
+		return;
+
+	conVar->vmt->setInt(conVar, config.visuals.grenadePrediction);
+}
+
 void visuals_revealRanks(UserCmd *cmd)
 {
 	if (config.visuals.revealRanks && cmd->buttons & IN_SCORE)

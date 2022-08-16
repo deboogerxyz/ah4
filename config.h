@@ -59,6 +59,7 @@ typedef struct {
 	int disablePostProcessing;
 	int disableShadows;
 	int forceCrosshair;
+	int grenadePrediction;
 	int revealRanks;
 	int revealOverwatch;
 } VisualsConfig;
