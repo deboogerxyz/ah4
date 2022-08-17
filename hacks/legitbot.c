@@ -1,3 +1,5 @@
+#include "backtrack.h"
+
 #include "../config.h"
 #include "../interfaces.h"
 #include "../memory.h"
@@ -137,6 +139,31 @@ void legitbot_run(UserCmd *cmd)
 				continue;
 
 			if (legitbotConfig->visibleCheck && !Entity_canSee(localPlayer, entity, bonePos))
+				continue;
+
+			bestFov   = fov;
+			bestAngle = angle;
+		}
+	}
+
+	Record *record = backtrack_getClosestRecord(cmd);
+	if (record) {
+		for (int j = 0; j < 6; j++) {
+			if (!legitbotConfig->bones[j])
+				continue;
+
+			Vector bonePos = Matrix3x4_origin(record->boneMatrix[8 - j]);
+			Vector angle   = Vector_calculateAngle(eyePos, bonePos, viewAngles);
+
+			float fov = hypotf(angle.x, angle.y);
+
+			if (!(fov < bestFov))
+				continue;
+
+			if (legitbotConfig->smokeCheck && memory.lineGoesThroughSmoke(eyePos, bonePos, 1))
+				continue;
+
+			if (legitbotConfig->visibleCheck && !Entity_canSee(localPlayer, record->entity, bonePos))
 				continue;
 
 			bestFov   = fov;

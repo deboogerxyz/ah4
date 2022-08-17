@@ -12,12 +12,6 @@
 #define TIME2TICKS(x) ((int)(0.5f + (x) / memory.globalVars->intervalPerTick))
 
 typedef struct {
-	Entity *entity;
-	Vector headPos;
-	float simTime;
-} Record;
-
-typedef struct {
 	int reliableState;
 	int sequenceNumber;
 	float serverTime;
@@ -100,9 +94,11 @@ void backtrack_update(FrameStage stage)
 
 		Record record = {
 			.entity  = entity,
-			.headPos = Entity_getBonePosition(entity, 8),
 			.simTime = simTime
 		};
+
+		Renderable *renderable = (Renderable *)(entity + 1);
+		renderable->vmt->setupBones(renderable, record.boneMatrix, 256, 256, 0);
 
 		cvector_push_back(records[i], record);
 
@@ -115,20 +111,17 @@ void backtrack_update(FrameStage stage)
 	}
 }
 
-void backtrack_run(UserCmd *cmd)
+Record *backtrack_getClosestRecord(UserCmd *cmd)
 {
 	if (!config.backtrack.enabled)
-		return;
-
-	if (!(cmd->buttons & IN_ATTACK))
-		return;
+		return 0;
 
 	Entity *localPlayer = *memory.localPlayer;
 	if (!localPlayer)
-		return;
+		return 0;
 
 	if (!localPlayer->vmt->isAlive(localPlayer))
-		return;
+		return 0;
 
 	Vector eyePos     = localPlayer->vmt->getEyePosition(localPlayer);
 	Vector aimPunch   = localPlayer->vmt->getAimPunch(localPlayer);
@@ -164,7 +157,7 @@ void backtrack_run(UserCmd *cmd)
 			if (!isValid(record->simTime))
 				continue;
 
-			Vector headPos = record->headPos;
+			Vector headPos = Matrix3x4_origin(record->boneMatrix[8]);
 			Vector angle   = Vector_calculateAngle(eyePos, headPos, viewAngles);
 
 			float fov = hypotf(angle.x, angle.y);
@@ -179,9 +172,20 @@ void backtrack_run(UserCmd *cmd)
 	}
 
 	if (!bestEntity)
+		return 0;
+
+	return &records[bestEntityIndex][bestRecordIndex];
+}
+
+void backtrack_run(UserCmd *cmd)
+{
+	if (!config.backtrack.enabled)
 		return;
 
-	Record *record = &records[bestEntityIndex][bestRecordIndex];
+	if (!(cmd->buttons & IN_ATTACK))
+		return;
+
+	Record *record = backtrack_getClosestRecord(cmd);
 	if (!record)
 		return;
 
