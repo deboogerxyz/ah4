@@ -265,8 +265,8 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	int windowWidth, windowHeight;
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
-	const float w = 600;
-	const float h = 500;
+	const float w = 650;
+	const float h = 550;
 
 	float x = (float)windowWidth / 2 - w / 2;
 	float y = (float)windowHeight / 2 - h / 2;
