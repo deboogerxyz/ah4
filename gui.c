@@ -85,28 +85,28 @@ static void keyBind(struct nk_context *ctx, const char *name, KeyBind *keyBind)
 
 void renderLegitbotTab(struct nk_context *ctx)
 {
+	static int i = 0;
 	const char *categories[] = {"Pistols", "Rifles", "AWP", "Scout", "SMGs", "Shotguns"};
 
-	for (int i = 0; i < LegitbotCategory_Len; i++)
-		if (nk_tree_push_id(ctx, NK_TREE_NODE, categories[i], NK_MINIMIZED, i)) {
-			nk_checkbox_label(ctx, "Enabled", &config.legitbot[i].enabled);
-			nk_checkbox_label(ctx, "Silent", &config.legitbot[i].silent);
-			nk_checkbox_label(ctx, "Visible check", &config.legitbot[i].visibleCheck);
-			nk_checkbox_label(ctx, "Smoke check", &config.legitbot[i].smokeCheck);
-			nk_checkbox_label(ctx, "Flash check", &config.legitbot[i].flashCheck);
-			if (i > 0 && i < 4)
-				nk_checkbox_label(ctx, "Scope check", &config.legitbot[i].scopeCheck);
-			nk_property_float(ctx, "#FOV:", 0.0f, &config.legitbot[i].fov, 255.0f, 0.025f, 0.025f);
-			if (!config.legitbot[i].silent)
-				nk_property_float(ctx, "#Smooth:", 1.0f, &config.legitbot[i].smooth, 100.0f, 0.1f, 0.1f);
+	nk_layout_row_dynamic(ctx, 25, 1);
 
-			const char *bones[] = {"Head", "Neck", "Sternum", "Chest", "Stomach", "Pelvis"};
+	i = nk_combo(ctx, categories, LegitbotCategory_Len, i, 25, nk_vec2(200, 200));
 
-			for (int j = 0; j < 6; j++)
-				nk_checkbox_label(ctx, bones[j], &config.legitbot[i].bones[j]);
+	nk_checkbox_label(ctx, "Enabled", &config.legitbot[i].enabled);
+	nk_checkbox_label(ctx, "Silent", &config.legitbot[i].silent);
+	nk_checkbox_label(ctx, "Visible check", &config.legitbot[i].visibleCheck);
+	nk_checkbox_label(ctx, "Smoke check", &config.legitbot[i].smokeCheck);
+	nk_checkbox_label(ctx, "Flash check", &config.legitbot[i].flashCheck);
+	if (i == LegitbotCategory_AWP || i == LegitbotCategory_Scout)
+		nk_checkbox_label(ctx, "Scope check", &config.legitbot[i].scopeCheck);
+	nk_property_float(ctx, "#FOV:", 0.0f, &config.legitbot[i].fov, 255.0f, 0.025f, 0.025f);
+	if (!config.legitbot[i].silent)
+		nk_property_float(ctx, "#Smooth:", 1.0f, &config.legitbot[i].smooth, 100.0f, 0.1f, 0.1f);
 
-			nk_tree_pop(ctx);
-		}
+	const char *bones[] = {"Head", "Neck", "Sternum", "Chest", "Stomach", "Pelvis"};
+
+	for (int j = 0; j < 6; j++)
+		nk_checkbox_label(ctx, bones[j], &config.legitbot[i].bones[j]);
 }
 
 static void renderBacktrackTab(struct nk_context *ctx)
@@ -118,17 +118,17 @@ static void renderBacktrackTab(struct nk_context *ctx)
 
 static void renderGlowTab(struct nk_context *ctx)
 {
+	static int i = 0;
 	const char *categories[] = {"Enemies", "Teammates", "Dropped C4", "Planted C4", "Projectiles", "Dropped weapons"};
 
-	for (int i = 0; i < GlowCategory_Len; i++)
-		if (nk_tree_push_id(ctx, NK_TREE_NODE, categories[i], NK_MINIMIZED, i)) {
-			nk_checkbox_label(ctx, "Enabled", &config.glow[i].enabled);
-			if (i <= GlowCategory_Teammates)
-				nk_checkbox_label(ctx, "Health based", &config.glow[i].healthBased);
-			colorAPicker(ctx, (struct nk_colorf *)&config.glow[i].colorA);
+	nk_layout_row_dynamic(ctx, 25, 1);
 
-			nk_tree_pop(ctx);
-		}
+	i = nk_combo(ctx, categories, GlowCategory_Len, i, 25, nk_vec2(200, 200));
+
+	nk_checkbox_label(ctx, "Enabled", &config.glow[i].enabled);
+	if (i <= GlowCategory_Teammates)
+		nk_checkbox_label(ctx, "Health based", &config.glow[i].healthBased);
+	colorAPicker(ctx, (struct nk_colorf *)&config.glow[i].colorA);
 }
 
 static void renderVisualsTab(struct nk_context *ctx)
