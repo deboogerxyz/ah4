@@ -1,6 +1,8 @@
 #include <dlfcn.h>
 #include <pthread.h>
 
+#include "hacks/glow.h"
+
 #include "config.h"
 #include "interfaces.h"
 #include "memory.h"
@@ -38,4 +40,6 @@ void __attribute__((destructor)) onUnload(void)
 
 	hooks_cleanUp();
 	netvars_cleanUp();
+
+	glow_clearCustomGlowObjects();
 }

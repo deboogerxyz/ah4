@@ -710,7 +710,7 @@ typedef struct {
 	Entity *(*getEntity)(EntityList *, int i); // 3
 	Entity *(*getEntityFromHandle)(EntityList *, int *handle); // 4
 	PAD(void *, 1)
-	int *(*getHighestEntityIndex)(EntityList *); // 6
+	int (*getHighestEntityIndex)(EntityList *); // 6
 } EntityListVMT;
 
 struct EntityList {

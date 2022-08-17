@@ -19,7 +19,7 @@ typedef struct {
 
 static ConVar *updateRate, *maxUpdateRate, *interp, *interpRatio, *minInterpRatio, *maxInterpRatio, *maxUnlag;
 static Record *records[65] = {0};
-static IncomingSequence *inSequences = {0};
+static IncomingSequence *inSequences = 0;
 
 static float getLerp(void)
 {
