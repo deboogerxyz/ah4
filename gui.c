@@ -57,14 +57,18 @@ static void setStyle(struct nk_context *ctx)
 
 static void colorAPicker(struct nk_context *ctx, struct nk_colorf *colorA)
 {
-	nk_layout_row_dynamic(ctx, 120, 1);
-	*colorA = nk_color_picker(ctx, *colorA, NK_RGBA);
+	if (nk_combo_begin_color(ctx, nk_rgb_cf(*colorA), nk_vec2(nk_widget_width(ctx), 400))) {
+		nk_layout_row_dynamic(ctx, 120, 1);
+		*colorA = nk_color_picker(ctx, *colorA, NK_RGBA);
 
-	nk_layout_row_dynamic(ctx, 25, 1);
-	colorA->r = nk_propertyf(ctx, "#Red:", 0, colorA->r, 1.0f, 0.01f, 0.005f);
-	colorA->g = nk_propertyf(ctx, "#Green:", 0, colorA->g, 1.0f, 0.01f, 0.005f);
-	colorA->b = nk_propertyf(ctx, "#Blue:", 0, colorA->b, 1.0f, 0.01f, 0.005f);
-	colorA->a = nk_propertyf(ctx, "#Alpha:", 0, colorA->a, 1.0f, 0.01f, 0.005f);
+		nk_layout_row_dynamic(ctx, 25, 1);
+		colorA->r = nk_propertyf(ctx, "#R:", 0, colorA->r, 1.0f, 0.01f, 0.005f);
+		colorA->g = nk_propertyf(ctx, "#G:", 0, colorA->g, 1.0f, 0.01f, 0.005f);
+		colorA->b = nk_propertyf(ctx, "#B:", 0, colorA->b, 1.0f, 0.01f, 0.005f);
+		colorA->a = nk_propertyf(ctx, "#A:", 0, colorA->a, 1.0f, 0.01f, 0.005f);
+
+		nk_combo_end(ctx);
+	}
 }
 
 static void keyBind(struct nk_context *ctx, const char *name, KeyBind *keyBind)
