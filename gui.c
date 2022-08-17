@@ -19,7 +19,43 @@ void gui_handleToggle(struct nk_context *ctx)
 	}
 }
 
-void colorAPicker(struct nk_context *ctx, struct nk_colorf *colorA)
+static void setStyle(struct nk_context *ctx)
+{
+	struct nk_color table[NK_COLOR_COUNT];
+
+	table[NK_COLOR_TEXT] = nk_rgba(190, 190, 190, 255);
+	table[NK_COLOR_WINDOW] = nk_rgba(30, 33, 40, 240);
+	table[NK_COLOR_HEADER] = nk_rgba(181, 45, 69, 220);
+	table[NK_COLOR_BORDER] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_BUTTON] = nk_rgba(181, 45, 69, 255);
+	table[NK_COLOR_BUTTON_HOVER] = nk_rgba(190, 50, 70, 255);
+	table[NK_COLOR_BUTTON_ACTIVE] = nk_rgba(195, 55, 75, 255);
+	table[NK_COLOR_TOGGLE] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_TOGGLE_HOVER] = nk_rgba(45, 60, 60, 255);
+	table[NK_COLOR_TOGGLE_CURSOR] = nk_rgba(181, 45, 69, 255);
+	table[NK_COLOR_SELECT] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_SELECT_ACTIVE] = nk_rgba(181, 45, 69, 255);
+	table[NK_COLOR_SLIDER] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_SLIDER_CURSOR] = nk_rgba(181, 45, 69, 255);
+	table[NK_COLOR_SLIDER_CURSOR_HOVER] = nk_rgba(186, 50, 74, 255);
+	table[NK_COLOR_SLIDER_CURSOR_ACTIVE] = nk_rgba(191, 55, 79, 255);
+	table[NK_COLOR_PROPERTY] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_EDIT] = nk_rgba(51, 55, 67, 225);
+	table[NK_COLOR_EDIT_CURSOR] = nk_rgba(190, 190, 190, 255);
+	table[NK_COLOR_COMBO] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_CHART] = nk_rgba(51, 55, 67, 255);
+	table[NK_COLOR_CHART_COLOR] = nk_rgba(170, 40, 60, 255);
+	table[NK_COLOR_CHART_COLOR_HIGHLIGHT] = nk_rgba( 255, 0, 0, 255);
+	table[NK_COLOR_SCROLLBAR] = nk_rgba(30, 33, 40, 255);
+	table[NK_COLOR_SCROLLBAR_CURSOR] = nk_rgba(64, 84, 95, 255);
+	table[NK_COLOR_SCROLLBAR_CURSOR_HOVER] = nk_rgba(70, 90, 100, 255);
+	table[NK_COLOR_SCROLLBAR_CURSOR_ACTIVE] = nk_rgba(75, 95, 105, 255);
+	table[NK_COLOR_TAB_HEADER] = nk_rgba(181, 45, 69, 220);
+
+	nk_style_from_table(ctx, table);
+}
+
+static void colorAPicker(struct nk_context *ctx, struct nk_colorf *colorA)
 {
 	nk_layout_row_dynamic(ctx, 120, 1);
 	*colorA = nk_color_picker(ctx, *colorA, NK_RGBA);
@@ -216,6 +252,8 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 
 	float x = (float)windowWidth / 2 - w / 2;
 	float y = (float)windowHeight / 2 - h / 2;
+
+	setStyle(ctx);
 
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
 		nk_layout_row_dynamic(ctx, 50, 7);
