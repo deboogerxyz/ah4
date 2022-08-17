@@ -240,6 +240,19 @@ static void renderConfigTab(struct nk_context *ctx)
 		config_openDirectory();
 }
 
+static struct nk_style_button setButtonStyle(struct nk_context *ctx, int tab)
+{
+	struct nk_style_button oldStyle = ctx->style.button;
+
+	if (tab != currentTab)
+		return oldStyle;
+
+	ctx->style.button.normal = oldStyle.active;
+	ctx->style.button.hover = oldStyle.active;
+
+	return oldStyle;
+}
+
 void gui_render(struct nk_context *ctx, SDL_Window *window)
 {
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_NO_SCROLLBAR;
@@ -258,26 +271,40 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
 		nk_layout_row_dynamic(ctx, 50, 7);
 
+		struct nk_style_button oldStyle = setButtonStyle(ctx, 0);
 		if (nk_button_label(ctx, "Legitbot"))
 			currentTab = 0;
+		ctx->style.button = oldStyle;
 
+		oldStyle = setButtonStyle(ctx, 1);
 		if (nk_button_label(ctx, "Backtrack"))
 			currentTab = 1;
+		ctx->style.button = oldStyle;
 
+		oldStyle = setButtonStyle(ctx, 2);
 		if (nk_button_label(ctx, "Glow"))
 			currentTab = 2;
+		ctx->style.button = oldStyle;
 
+		oldStyle = setButtonStyle(ctx, 3);
 		if (nk_button_label(ctx, "Visuals"))
 			currentTab = 3;
+		ctx->style.button = oldStyle;
 
+		oldStyle = setButtonStyle(ctx, 4);
 		if (nk_button_label(ctx, "Misc"))
 			currentTab = 4;
+		ctx->style.button = oldStyle;
 
+		oldStyle = setButtonStyle(ctx, 5);
 		if (nk_button_label(ctx, "Skins"))
 			currentTab = 5;
+		ctx->style.button = oldStyle;
 
+		oldStyle = setButtonStyle(ctx, 6);
 		if (nk_button_label(ctx, "Config"))
 			currentTab = 6;
+		ctx->style.button = oldStyle;
 
 		switch (currentTab) {
 		case 0: renderLegitbotTab(ctx); break;
