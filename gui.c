@@ -200,15 +200,12 @@ static void renderConfigTab(struct nk_context *ctx)
 
 	nk_layout_row_dynamic(ctx, 250, 1);
 	if (nk_group_begin(ctx, "Config", NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_DYNAMIC)) {
-		static int selected = -1;
 		nk_layout_row_dynamic(ctx, 250, 1);
 		if (nk_group_begin(ctx, "Configs", 0)) {
 			nk_layout_row_static(ctx, 18, 100, 1);
 			for (int i = 0; i < len; i++)
-				if (nk_select_label(ctx, configs[i], NK_TEXT_LEFT, 0)) {
-					selected = (selected == 0) ? -1 : 0;
+				if (nk_select_label(ctx, configs[i], NK_TEXT_LEFT, !strncmp(configs[i], buf, 256)))
 					strncpy(buf, configs[i], 255);
-				}
 
 			nk_group_end(ctx);
 		}
