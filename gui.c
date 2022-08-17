@@ -1,3 +1,5 @@
+#include <SDL2/SDL_mouse.h>
+
 #include "hacks/skinChanger.h"
 
 #include "config.h"
@@ -16,6 +18,7 @@ void gui_handleToggle(struct nk_context *ctx)
 	if (nk_input_is_key_released(in, NK_KEY_TEXT_START)) {
 		gui_isOpen ^= 1;
 		ctx->style.cursor_visible = gui_isOpen;
+		SDL_ShowCursor(!gui_isOpen);
 	}
 }
 
@@ -322,6 +325,4 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 
 		nk_end(ctx);
 	}
-
-	nk_window_show(ctx, "ah4", gui_isOpen);
 }
