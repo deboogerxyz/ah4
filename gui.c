@@ -60,7 +60,8 @@ static void setStyle(struct nk_context *ctx)
 
 static void colorAPicker(struct nk_context *ctx, struct nk_colorf *colorA)
 {
-	if (nk_combo_begin_color(ctx, nk_rgb_cf(*colorA), nk_vec2(nk_widget_width(ctx), 400))) {
+	nk_layout_row_static(ctx, 25, 200, 1);
+	if (nk_combo_begin_color(ctx, nk_rgba_cf(*colorA), nk_vec2(nk_widget_width(ctx), 400))) {
 		nk_layout_row_dynamic(ctx, 120, 1);
 		*colorA = nk_color_picker(ctx, *colorA, NK_RGBA);
 
