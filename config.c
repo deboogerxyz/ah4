@@ -165,6 +165,17 @@ void config_reset(void)
 		config.glow[i].colorA.a = 1;
 	}
 
+	for (int i = 0; i < ChamsCategory_Len; i++) {
+		for (int j = 0; j < ChamsSubCategory_Len; j++) {
+			config.chams[i][j].enabled = false;
+			config.chams[i][j].healthBased = false;
+			config.chams[i][j].colorA.r = 1;
+			config.chams[i][j].colorA.g = 1;
+			config.chams[i][j].colorA.b = 1;
+			config.chams[i][j].colorA.a = 1;
+		}
+	}
+
 	config.visuals.disablePostProcessing = false;
 	config.visuals.disableShadows = false;
 	config.visuals.forceCrosshair = false;
@@ -244,8 +255,25 @@ void config_load(const char *name)
 		cJSON_ArrayForEach(glowJson, cJSON_GetObjectItem(json, "Glow")) {
 			READ_BOOL(glowJson, "Enabled", config.glow[i].enabled)
 			READ_BOOL(glowJson, "Health based", config.glow[i].healthBased)
-
 			READ_COLORA(glowJson, "Color", config.glow[i].colorA)
+
+			i++;
+		}
+
+		i = 0;
+		cJSON *chamsJson;
+		cJSON_ArrayForEach(chamsJson, cJSON_GetObjectItem(json, "Chams")) {
+			cJSON *visible = cJSON_GetObjectItem(chamsJson, "Visible");
+
+			READ_BOOL(visible, "Enabled", config.chams[i][ChamsSubCategory_Visible].enabled)
+			READ_BOOL(visible, "Health based", config.chams[i][ChamsSubCategory_Visible].healthBased)
+			READ_COLORA(visible, "Color", config.chams[i][ChamsSubCategory_Visible].colorA)
+
+			cJSON *occluded = cJSON_GetObjectItem(chamsJson, "Occluded");
+
+			READ_BOOL(occluded, "Enabled", config.chams[i][ChamsSubCategory_Occluded].enabled)
+			READ_BOOL(occluded, "Health based", config.chams[i][ChamsSubCategory_Occluded].healthBased)
+			READ_COLORA(occluded, "Color", config.chams[i][ChamsSubCategory_Occluded].colorA)
 
 			i++;
 		}
@@ -330,6 +358,29 @@ void config_save(const char *name)
 			WRITE_COLORA(glowSubJson, "Color", config.glow[i].colorA)
 
 			cJSON_AddItemToArray(glowJson, glowSubJson);
+		}
+		
+		cJSON *chamsJson = cJSON_AddArrayToObject(json, "Chams");
+		for (int i = 0; i < ChamsCategory_Len; i++) {
+			cJSON *chamsSubJson = cJSON_CreateObject();
+
+			cJSON *visible = cJSON_CreateObject();
+
+			cJSON_AddBoolToObject(visible, "Enabled", config.chams[i][ChamsSubCategory_Visible].enabled);
+			cJSON_AddBoolToObject(visible, "Health based", config.chams[i][ChamsSubCategory_Visible].healthBased);
+			WRITE_COLORA(visible, "Color", config.chams[i][ChamsSubCategory_Visible].colorA)
+
+			cJSON_AddItemToObject(chamsSubJson, "Visible", visible);
+
+			cJSON *occluded = cJSON_CreateObject();
+
+			cJSON_AddBoolToObject(occluded, "Enabled", config.chams[i][ChamsSubCategory_Occluded].enabled);
+			cJSON_AddBoolToObject(occluded, "Health based", config.chams[i][ChamsSubCategory_Occluded].healthBased);
+			WRITE_COLORA(occluded, "Color", config.chams[i][ChamsSubCategory_Occluded].colorA)
+
+			cJSON_AddItemToObject(chamsSubJson, "Occluded", occluded);
+
+			cJSON_AddItemToArray(chamsJson, chamsSubJson);
 		}
 
 		cJSON *visualsJson = cJSON_CreateObject();

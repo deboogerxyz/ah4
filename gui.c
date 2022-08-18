@@ -131,6 +131,25 @@ static void renderGlowTab(struct nk_context *ctx)
 	colorAPicker(ctx, (struct nk_colorf *)&config.glow[i].colorA);
 }
 
+static void renderChamsTab(struct nk_context *ctx)
+{
+	static int i = 0, j = 0;
+	const char *categories[] = {"Enemies", "Teammates"};
+	const char *subCategories[] = {"Visible", "Occluded"};
+
+	nk_layout_row_dynamic(ctx, 25, 1);
+
+	i = nk_combo(ctx, categories, ChamsCategory_Len, i, 25, nk_vec2(200, 200));
+	j = nk_combo(ctx, subCategories, ChamsSubCategory_Len, j, 25, nk_vec2(200, 200));
+
+	ChamsConfig *chamsConfig = &config.chams[i][j];
+
+	nk_checkbox_label(ctx, "Enabled", &chamsConfig->enabled);
+	if (i <= GlowCategory_Teammates)
+		nk_checkbox_label(ctx, "Health based", &chamsConfig->healthBased);
+	colorAPicker(ctx, (struct nk_colorf *)&chamsConfig->colorA);
+}
+
 static void renderVisualsTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
@@ -292,33 +311,39 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 		ctx->style.button = oldStyle;
 
 		oldStyle = setButtonStyle(ctx, 3);
-		if (nk_button_label(ctx, "Visuals"))
+		if (nk_button_label(ctx, "Chams"))
 			currentTab = 3;
 		ctx->style.button = oldStyle;
 
 		oldStyle = setButtonStyle(ctx, 4);
-		if (nk_button_label(ctx, "Misc"))
+		if (nk_button_label(ctx, "Visuals"))
 			currentTab = 4;
 		ctx->style.button = oldStyle;
 
 		oldStyle = setButtonStyle(ctx, 5);
-		if (nk_button_label(ctx, "Skins"))
+		if (nk_button_label(ctx, "Misc"))
 			currentTab = 5;
 		ctx->style.button = oldStyle;
 
 		oldStyle = setButtonStyle(ctx, 6);
-		if (nk_button_label(ctx, "Config"))
+		if (nk_button_label(ctx, "Skins"))
 			currentTab = 6;
+		ctx->style.button = oldStyle;
+
+		oldStyle = setButtonStyle(ctx, 7);
+		if (nk_button_label(ctx, "Config"))
+			currentTab = 7;
 		ctx->style.button = oldStyle;
 
 		switch (currentTab) {
 		case 0: renderLegitbotTab(ctx); break;
 		case 1: renderBacktrackTab(ctx); break;
 		case 2: renderGlowTab(ctx); break;
-		case 3: renderVisualsTab(ctx); break;
-		case 4: renderMiscTab(ctx); break;
-		case 5: renderSkinsTab(ctx); break;
-		case 6: renderConfigTab(ctx); break;
+		case 3: renderChamsTab(ctx); break;
+		case 4: renderVisualsTab(ctx); break;
+		case 5: renderMiscTab(ctx); break;
+		case 6: renderSkinsTab(ctx); break;
+		case 7: renderConfigTab(ctx); break;
 		}
 
 		nk_end(ctx);

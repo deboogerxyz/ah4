@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "hacks/backtrack.h"
+#include "hacks/chams.h"
 #include "hacks/enginePrediction.h"
 #include "hacks/glow.h"
 #include "hacks/legitbot.h"
@@ -45,6 +46,7 @@ static ClientVMT *oldClientVMT, *newClientVMT;
 static ClientModeVMT *oldClientModeVMT, *newClientModeVMT;
 static NetworkChannelVMT *oldNetworkChannelVMT, *newNetworkChannelVMT;
 static EngineVMT *oldEngineVMT, *newEngineVMT;
+static ModelRenderVMT *oldModelRenderVMT, *newModelRenderVMT;
 
 static int getTableLength(void **vmt)
 {
@@ -209,6 +211,19 @@ static DemoPlaybackParameters *getDemoPlaybackParameters(Engine *this)
 	return &newParams;
 }
 
+static void drawModelExecute(ModelRender *this, void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *customBoneToWorld)
+{
+	if (StudioRender_isForcedMaterialOverride()) {
+		oldModelRenderVMT->drawModelExecute(this, ctx, state, info, customBoneToWorld);
+		return;
+	}
+
+	if (!chams_render(ctx, state, info, customBoneToWorld, oldModelRenderVMT))
+		oldModelRenderVMT->drawModelExecute(this, ctx, state, info, customBoneToWorld);
+
+	interfaces.studioRender->vmt->forcedMaterialOverride(interfaces.studioRender, 0, OverrideType_Normal, -1);
+}
+
 void hooks_init(void)
 {
 	oldPollEvent = *memory.pollEvent;
@@ -224,8 +239,11 @@ void hooks_init(void)
 	newClientModeVMT->createMove = createMove;
 	newClientModeVMT->doPostScreenEffects = doPostScreenEffects;
 
-	HOOK(EngineVMT, interfaces.engine->vmt);
+	HOOK(EngineVMT, interfaces.engine->vmt)
 	newEngineVMT->getDemoPlaybackParameters = getDemoPlaybackParameters;
+
+	HOOK(ModelRenderVMT, interfaces.modelRender->vmt)
+	newModelRenderVMT->drawModelExecute = drawModelExecute;
 }
 
 void hooks_cleanUp(void)
@@ -238,6 +256,7 @@ void hooks_cleanUp(void)
 
 	UNHOOK(ClientModeVMT, memory.clientMode->vmt)
 	UNHOOK(EngineVMT, interfaces.engine->vmt)
+	UNHOOK(ModelRenderVMT, interfaces.modelRender->vmt)
 
 	*memory.swapWindow = oldSwapWindow;
 	*memory.pollEvent  = oldPollEvent;

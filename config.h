@@ -55,6 +55,24 @@ typedef struct {
 	ColorA colorA;
 } GlowConfig;
 
+typedef enum {
+	ChamsCategory_Enemies,
+	ChamsCategory_Teammates,
+	ChamsCategory_Len
+} ChamsCategory;
+
+typedef enum {
+	ChamsSubCategory_Visible,
+	ChamsSubCategory_Occluded,
+	ChamsSubCategory_Len
+} ChamsSubCategory;
+
+typedef struct {
+	int enabled;
+	int healthBased;
+	ColorA colorA;
+} ChamsConfig;
+
 typedef struct {
 	int disablePostProcessing;
 	int disableShadows;
@@ -79,6 +97,7 @@ typedef struct {
 	LegitbotConfig legitbot[LegitbotCategory_Len];
 	BacktrackConfig backtrack;
 	GlowConfig glow[GlowCategory_Len];
+	ChamsConfig chams[ChamsCategory_Len][ChamsSubCategory_Len];
 	VisualsConfig visuals;
 	MiscConfig misc;
 } Config;

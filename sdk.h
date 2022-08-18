@@ -732,6 +732,76 @@ struct InputSystem {
 	InputSystemVMT *vmt;
 };
 
+typedef struct MaterialVar MaterialVar;
+
+typedef struct {
+	PAD(void *, 4)
+	void (*setValue)(MaterialVar *, float); // 4
+	PAD(void *, 7)
+	void (*setVectorValue)(MaterialVar *, float x, float y, float z); // 12
+	PAD(void *, 13)
+	void (*setVectorComponentValue)(MaterialVar *, float value, int component); // 26
+} MaterialVarVMT;
+
+struct MaterialVar {
+	MaterialVarVMT *vmt;
+};
+
+typedef enum {
+	NO_DRAW = 1 << 2,
+	IGNOREZ = 1 << 15,
+	WIREFRAME = 1 << 28
+} MaterialVarFlag;
+
+typedef struct Material Material;
+
+typedef struct {
+	const char *(*getName)(Material *); // 0
+	const char *(*getTextureGroupName)(Material *); // 1
+	PAD(void *, 9)
+	MaterialVar *(*findVar)(Material *, const char *name, bool *found, bool complain); // 11
+	PAD(void *, 15)
+	void (*alphaModulate)(Material *, float alpha); // 27
+	void (*colorModulate)(Material *, float r, float g, float b); // 28
+	void (*setMaterialVarFlag)(Material *, MaterialVarFlag flag, bool on); // 29
+	PAD(void *, 40)
+	bool (*isPrecached)(Material *); // 70
+} MaterialVMT;
+
+struct Material {
+	MaterialVMT *vmt;
+};
+
+typedef void *KeyValues;
+
+typedef struct MaterialSystem MaterialSystem;
+
+typedef struct {
+	PAD(void *, 83)
+	Material *(*createMaterial)(MaterialSystem *, const char *materialName, KeyValues *keyValues); // 83
+	Material *(*findMaterial)(MaterialSystem *, const char *materialName, const char *textureGroupName, bool complain, const char *complainPrefix); // 84
+	PAD(void *, 1)
+	short (*firstMaterial)(MaterialSystem *); // 86
+	short (*nextMaterial)(MaterialSystem *, short handle); // 87
+	short (*invalidMaterial)(MaterialSystem *); // 88
+	Material *(*getMaterial)(MaterialSystem *, short handle); // 89
+} MaterialSystemVMT;
+
+struct MaterialSystem {
+	MaterialSystemVMT *vmt;
+};
+
+typedef struct ModelRender ModelRender;
+
+typedef struct {
+	PAD(void *, 21)
+	void (*drawModelExecute)(ModelRender *, void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *customBoneToWorld); // 21
+} ModelRenderVMT;
+
+struct ModelRender {
+	ModelRenderVMT *vmt;
+};
+
 typedef struct {
 	const float realTime;
 	int frameCount;
@@ -811,6 +881,29 @@ struct Prediction {
 	PredictionVMT *vmt;
 };
 
+typedef enum {
+	OverrideType_Normal,
+	OverrideType_BuildShadows,
+	OverrideType_DepthWrite,
+	OverrideType_CustomMaterial,
+	OverrideType_SsaoDepthWrite
+} OverrideType;
+
+typedef struct StudioRender StudioRender;
+
+typedef struct {
+	PAD(void *, 33)
+	void (*forcedMaterialOverride)(StudioRender *, Material *, OverrideType type, int i); // 33
+} StudioRenderVMT;
+
+struct StudioRender {
+	StudioRenderVMT *vmt;
+	PAD(char, 592)
+	Material *materialOverride;
+	PAD(char, 24)
+	OverrideType overrideType;
+};
+
 float sdk_getServerTime(UserCmd *cmd);
 Vector Vector_add(Vector a, Vector b);
 Vector Vector_sub(Vector a, Vector b);
@@ -828,6 +921,7 @@ void GlowObjectManager_unregister(Entity *entity, int i);
 void TraceFilter_init(TraceFilter *filter);
 Color Color_fromHealth(int health);
 ColorA ColorA_fromHealth(int health);
+bool StudioRender_isForcedMaterialOverride(void);
 
 NETVARS_DECL(moveType, MoveType)
 NETVARS_DECL(simTime, float)

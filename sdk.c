@@ -225,6 +225,17 @@ ColorA ColorA_fromHealth(int health)
 	return colorA;
 }
 
+bool StudioRender_isForcedMaterialOverride(void)
+{
+	Material *materialOverride = interfaces.studioRender->materialOverride;
+	OverrideType overrideType = interfaces.studioRender->overrideType;
+
+	if (!materialOverride)
+		return overrideType == OverrideType_DepthWrite || overrideType == OverrideType_SsaoDepthWrite;
+
+	return !strncmp("dev/glow", materialOverride->vmt->getName(materialOverride), strlen("dev/glow"));
+}
+
 NETVARS_IMPL(moveType, "CBaseEntity", "m_nRenderMode", 1, MoveType)
 NETVARS_IMPL(simTime, "CBaseEntity", "m_flSimulationTime", 0, float)
 NETVARS_IMPL(viewModel, "CBasePlayer", "m_hViewModel[0]", 0, int)

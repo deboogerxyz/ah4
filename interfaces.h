@@ -7,8 +7,11 @@ typedef struct {
 	EngineTrace *engineTrace;
 	EntityList *entityList;
 	InputSystem *inputSystem;
+	MaterialSystem *materialSystem;
+	ModelRender *modelRender;
 	GameMovement *gameMovement;
 	Prediction *prediction;
+	StudioRender *studioRender;
 } Interfaces;
 
 extern Interfaces interfaces;
