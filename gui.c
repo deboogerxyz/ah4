@@ -293,7 +293,7 @@ void gui_render(struct nk_context *ctx, SDL_Window *window)
 	setStyle(ctx);
 
 	if (nk_begin(ctx, "ah4", nk_rect(x, y, w, h), flags)) {
-		nk_layout_row_dynamic(ctx, 50, 7);
+		nk_layout_row_dynamic(ctx, 50, 8);
 
 		struct nk_style_button oldStyle = setButtonStyle(ctx, 0);
 		if (nk_button_label(ctx, "Legitbot"))
