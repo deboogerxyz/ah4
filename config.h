@@ -69,6 +69,7 @@ typedef enum {
 
 typedef struct {
 	int enabled;
+	int material;
 	int healthBased;
 	ColorA colorA;
 } ChamsConfig;

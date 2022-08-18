@@ -136,6 +136,7 @@ static void renderChamsTab(struct nk_context *ctx)
 	static int i = 0, j = 0;
 	const char *categories[] = {"Enemies", "Teammates"};
 	const char *subCategories[] = {"Visible", "Occluded"};
+	const char *materials[] = {"Normal", "Flat", "Pearl", "Metal", "Glow"};
 
 	nk_layout_row_dynamic(ctx, 25, 1);
 
@@ -145,6 +146,7 @@ static void renderChamsTab(struct nk_context *ctx)
 	ChamsConfig *chamsConfig = &config.chams[i][j];
 
 	nk_checkbox_label(ctx, "Enabled", &chamsConfig->enabled);
+	chamsConfig->material = nk_combo(ctx, materials, NK_LEN(materials), chamsConfig->material, 25, nk_vec2(200, 200));
 	if (i <= GlowCategory_Teammates)
 		nk_checkbox_label(ctx, "Health based", &chamsConfig->healthBased);
 	colorAPicker(ctx, (struct nk_colorf *)&chamsConfig->colorA);

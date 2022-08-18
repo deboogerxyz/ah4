@@ -82,8 +82,11 @@ void memory_init(void)
 	*(void **)&memory.globalVars = *(void **)relativeToAbsolute(*((void **)interfaces.client->vmt + 11) + 16);
 	*(void **)&memory.glowObjectManager = (void *)relativeToAbsolute(relativeToAbsolute(find(CLIENT_SO, "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
 	memory.demoFileEndReached    = find(CLIENT_SO, "\x48\x85\xC0\x0F\x84????\x80\x78\x10?\x74\x7F");
+	*(void **)&memory.predictionRandomSeed = *(int **)relativeToAbsolute(find(CLIENT_SO, "\x41\x8D\x56\xFF\x31\xC9") - 14);
 	memory.moveData              = **(void ***)relativeToAbsolute(find(CLIENT_SO, "\x4C\x8B\x2D????\x0F\xB6\x93") + 3);
 	memory.moveHelper            = **(void ***)relativeToAbsolute(find(CLIENT_SO, "\x48\x8B\x05????\x44\x89\x85????\x48\x8B\x38") + 3);
-	*(void **)&memory.predictionRandomSeed = *(int **)relativeToAbsolute(find(CLIENT_SO, "\x41\x8D\x56\xFF\x31\xC9") - 14);
+	*(void **)&memory.keyValuesFromString = relativeToAbsolute(find(CLIENT_SO, "\xE8????\x48\x89\xDF\x48\x89\x45\xE0") + 1);
+	*(void **)&memory.keyValuesFindKey = relativeToAbsolute(find(CLIENT_SO, "\xE8????\x48\x85\xC0\x75\x24") + 1);
+	*(void **)&memory.keyValuesSetString = relativeToAbsolute(find(CLIENT_SO, "\xE8????\x4C\x89\xE6\x4C\x89\xFF\xE8????\x48\x8B\x03") + 1);
 	memory.localPlayer           = relativeToAbsolute(find(CLIENT_SO, "\x83\xFF\xFF\x48\x8B\x05") + 6);
 }

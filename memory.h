@@ -19,9 +19,12 @@ typedef struct {
 	GlobalVars *globalVars;
 	GlowObjectManager *glowObjectManager;
 	void *demoFileEndReached;
+	int *predictionRandomSeed;
 	MoveData *moveData;
 	MoveHelper *moveHelper;
-	int *predictionRandomSeed;
+	KeyValues *(*keyValuesFromString)(const char *name, const char *value, const char **);
+	KeyValues *(*keyValuesFindKey)(KeyValues *, const char *name, bool create);
+	void (*keyValuesSetString)(KeyValues *, const char *value);
 	Entity **localPlayer;
 } Memory;
 

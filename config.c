@@ -168,6 +168,7 @@ void config_reset(void)
 	for (int i = 0; i < ChamsCategory_Len; i++) {
 		for (int j = 0; j < ChamsSubCategory_Len; j++) {
 			config.chams[i][j].enabled = false;
+			config.chams[i][j].material = 0;
 			config.chams[i][j].healthBased = false;
 			config.chams[i][j].colorA.r = 1;
 			config.chams[i][j].colorA.g = 1;
@@ -266,12 +267,14 @@ void config_load(const char *name)
 			cJSON *visible = cJSON_GetObjectItem(chamsJson, "Visible");
 
 			READ_BOOL(visible, "Enabled", config.chams[i][ChamsSubCategory_Visible].enabled)
+			READ_INT(visible, "Material", config.chams[i][ChamsSubCategory_Visible].material)
 			READ_BOOL(visible, "Health based", config.chams[i][ChamsSubCategory_Visible].healthBased)
 			READ_COLORA(visible, "Color", config.chams[i][ChamsSubCategory_Visible].colorA)
 
 			cJSON *occluded = cJSON_GetObjectItem(chamsJson, "Occluded");
 
 			READ_BOOL(occluded, "Enabled", config.chams[i][ChamsSubCategory_Occluded].enabled)
+			READ_INT(occluded, "Material", config.chams[i][ChamsSubCategory_Occluded].material)
 			READ_BOOL(occluded, "Health based", config.chams[i][ChamsSubCategory_Occluded].healthBased)
 			READ_COLORA(occluded, "Color", config.chams[i][ChamsSubCategory_Occluded].colorA)
 
@@ -367,6 +370,7 @@ void config_save(const char *name)
 			cJSON *visible = cJSON_CreateObject();
 
 			cJSON_AddBoolToObject(visible, "Enabled", config.chams[i][ChamsSubCategory_Visible].enabled);
+			cJSON_AddNumberToObject(visible, "Material", config.chams[i][ChamsSubCategory_Visible].enabled);
 			cJSON_AddBoolToObject(visible, "Health based", config.chams[i][ChamsSubCategory_Visible].healthBased);
 			WRITE_COLORA(visible, "Color", config.chams[i][ChamsSubCategory_Visible].colorA)
 
@@ -375,6 +379,7 @@ void config_save(const char *name)
 			cJSON *occluded = cJSON_CreateObject();
 
 			cJSON_AddBoolToObject(occluded, "Enabled", config.chams[i][ChamsSubCategory_Occluded].enabled);
+			cJSON_AddNumberToObject(occluded, "Material", config.chams[i][ChamsSubCategory_Occluded].enabled);
 			cJSON_AddBoolToObject(occluded, "Health based", config.chams[i][ChamsSubCategory_Occluded].healthBased);
 			WRITE_COLORA(occluded, "Color", config.chams[i][ChamsSubCategory_Occluded].colorA)
 
