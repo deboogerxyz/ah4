@@ -21,7 +21,7 @@ void misc_bunnyHop(UserCmd *cmd)
 	if (!config.misc.bunnyHop)
 		return;
 
-	if (config.misc.jumpBug && keyBinds_isOn(&config.misc.edgeJumpKeyBind))
+	if (config.misc.jumpBug && keyBinds_isOn(&config.misc.jumpBugKeyBind))
 		return;
 
 	Entity *localPlayer = *memory.localPlayer;
