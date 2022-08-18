@@ -73,6 +73,10 @@ void glow_render(void)
 			continue;
 
 		Networkable *networkable = (Networkable *)(entity + 2);
+
+		if (networkable->vmt->isDormant(networkable))
+			continue;
+
 		ClassID classID = networkable->vmt->getClientClass(networkable)->classID;
 
 		switch (classID) {
@@ -84,9 +88,6 @@ void glow_render(void)
 				break;
 
 			if (!entity->vmt->isAlive(entity))
-				break;
-
-			if (networkable->vmt->isDormant(networkable))
 				break;
 
 			GlowCategory glowCategory = memory.isOtherEnemy(localPlayer, entity) ? GlowCategory_Enemies : GlowCategory_Teammates;
