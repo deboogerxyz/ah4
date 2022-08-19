@@ -101,7 +101,7 @@ void legitbot_run(UserCmd *cmd)
 	if (*Entity_shotsFired(localPlayer) > 0 && !weaponInfo->fullAuto)
 		return;
 
-	if (*Entity_shotsFired(localPlayer) <= legitbotConfig->minShotsFired)
+	if (*Entity_shotsFired(localPlayer) < legitbotConfig->minShotsFired)
 		return;
 
 	Vector eyePos     = localPlayer->vmt->getEyePosition(localPlayer);
