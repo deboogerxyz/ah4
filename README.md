@@ -46,9 +46,9 @@ make -j10
 ## Usage
 
 ```sh
-./load.sh   # Reloads if cheat is already loaded
-./unload.sh
-./debug.sh  # load.sh, but leaves GDB attached
+sudo ./load.sh   # Reloads if cheat is already loaded
+sudo ./unload.sh
+sudo ./debug.sh  # load.sh, but leaves GDB attached
 ```
 
 When loaded, open the GUI using the <kbd>HOME</kbd> key.
