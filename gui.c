@@ -95,6 +95,7 @@ void renderLegitbotTab(struct nk_context *ctx)
 	nk_checkbox_label(ctx, "Enabled", &config.legitbot[i].enabled);
 	nk_checkbox_label(ctx, "Silent", &config.legitbot[i].silent);
 	nk_property_int(ctx, "#Minimum shots fired:", 0, &config.legitbot[i].minShotsFired, 150, 1, 1);
+	nk_property_int(ctx, "#Maximum shots fired:", 0, &config.legitbot[i].maxShotsFired, 150, 1, 1);
 	nk_checkbox_label(ctx, "Visible check", &config.legitbot[i].visibleCheck);
 	nk_checkbox_label(ctx, "Smoke check", &config.legitbot[i].smokeCheck);
 	nk_checkbox_label(ctx, "Flash check", &config.legitbot[i].flashCheck);

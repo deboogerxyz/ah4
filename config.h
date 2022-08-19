@@ -26,6 +26,7 @@ typedef struct {
 	int enabled;
 	int silent;
 	int minShotsFired;
+	int maxShotsFired;
 	int visibleCheck;
 	int smokeCheck;
 	int flashCheck;

@@ -144,6 +144,7 @@ void config_reset(void)
 		config.legitbot[i].enabled = false;
 		config.legitbot[i].silent = false;
 		config.legitbot[i].minShotsFired = 0;
+		config.legitbot[i].maxShotsFired = 0;
 		config.legitbot[i].visibleCheck = true;
 		config.legitbot[i].smokeCheck = true;
 		config.legitbot[i].flashCheck = true;
@@ -238,6 +239,7 @@ void config_load(const char *name)
 			READ_BOOL(legitbotJson, "Enabled", config.legitbot[i].enabled)
 			READ_BOOL(legitbotJson, "Silent", config.legitbot[i].silent)
 			READ_INT(legitbotJson, "Minimum shots fired", config.legitbot[i].minShotsFired)
+			READ_INT(legitbotJson, "Maximum shots fired", config.legitbot[i].maxShotsFired)
 			READ_BOOL(legitbotJson, "Visible check", config.legitbot[i].visibleCheck)
 			READ_BOOL(legitbotJson, "Smoke check", config.legitbot[i].smokeCheck)
 			READ_BOOL(legitbotJson, "Flash check", config.legitbot[i].flashCheck)
@@ -339,6 +341,7 @@ void config_save(const char *name)
 			cJSON_AddBoolToObject(legitbotSubJson, "Enabled", config.legitbot[i].enabled);
 			cJSON_AddBoolToObject(legitbotSubJson, "Silent", config.legitbot[i].silent);
 			cJSON_AddNumberToObject(legitbotSubJson, "Minimum shots fired", config.legitbot[i].minShotsFired);
+			cJSON_AddNumberToObject(legitbotSubJson, "Maximum shots fired", config.legitbot[i].maxShotsFired);
 			cJSON_AddBoolToObject(legitbotSubJson, "Visible check", config.legitbot[i].visibleCheck);
 			cJSON_AddBoolToObject(legitbotSubJson, "Smoke check", config.legitbot[i].smokeCheck);
 			cJSON_AddBoolToObject(legitbotSubJson, "Flash check", config.legitbot[i].flashCheck);
