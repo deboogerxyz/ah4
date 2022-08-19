@@ -22,16 +22,18 @@ struct NetVar {
 static RecvProxy *addrSpottedProxy, oldSpottedProxy;
 static NetVar *netVars[NETVARS_LEN] = {0};
 
-static void spottedProxy(RecvProxyData *data, Entity *entity, void *unused)
+static void spottedProxy(RecvProxyData *data, void *arg2, void *arg3)
 {
 	if (config.visuals.revealRadar) {
 		data->val.i = true;
 
+		Entity *entity = arg2;
 		int localPlayerIndex = interfaces.engine->vmt->getLocalPlayer(interfaces.engine);
-		*Entity_spottedByMask(entity) = 1 << (localPlayerIndex - 1);
+
+		*Entity_spottedByMask(entity) |= 1 << (localPlayerIndex - 1);
 	}
 
-	oldSpottedProxy(data, entity, unused);
+	oldSpottedProxy(data, arg2, arg3);
 }
 
 static void dump(const char *className, RecvTable *recvTable, int offset)
