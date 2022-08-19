@@ -66,4 +66,4 @@ make -j10
 
 Project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or later version.
 
-Includes projects licensed under other licenses. See `libs/*.LICENSE` files for more information.
+Project includes projects licensed under other licenses. See `libs/*.LICENSE` files for more information.
