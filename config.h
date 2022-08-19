@@ -25,6 +25,7 @@ typedef enum {
 typedef struct {
 	int enabled;
 	int silent;
+	int minShotsFired;
 	int visibleCheck;
 	int smokeCheck;
 	int flashCheck;
