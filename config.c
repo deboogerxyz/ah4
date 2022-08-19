@@ -431,5 +431,5 @@ void config_openDirectory(void)
 
 	free(dir);
 
-	(void)system(cmd);
+	system(cmd);
 }
