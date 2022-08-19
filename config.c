@@ -408,7 +408,7 @@ void config_save(const char *name)
 		cJSON_AddBoolToObject(miscJson, "Fix movement", config.misc.fixMovement);
 		cJSON_AddItemToObject(json, "Misc", miscJson);
 
-		fprintf(f, cJSON_Print(json));
+		fprintf(f, "%s", cJSON_Print(json));
 		fclose(f);
 
 		cJSON_Delete(json);
@@ -431,5 +431,5 @@ void config_openDirectory(void)
 
 	free(dir);
 
-	system(cmd);
+	(void)system(cmd);
 }
