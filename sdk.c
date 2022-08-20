@@ -13,7 +13,7 @@ float sdk_getServerTime(UserCmd *cmd)
 	if (cmd) {
 		Entity *localPlayer = *memory.localPlayer;
 		if (localPlayer && (!lastCmd || lastCmd->hasBeenPredicted))
-			tick = *(int *)((char *)localPlayer + netvars_getOffset("CBasePlayer->m_nTickBase"));
+			tick = *Entity_tickBase(localPlayer);
 		else
 			tick++;
 
