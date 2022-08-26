@@ -18,7 +18,7 @@ struct NetVar {
 	NetVar *next;
 };
 
-#define NETVARS_LEN 2000
+#define NETVARS_LEN 2500
 static RecvProxy *addrSpottedProxy, oldSpottedProxy;
 static NetVar *netVars[NETVARS_LEN] = {0};
 
