@@ -58,7 +58,7 @@ typedef struct {
 
 typedef struct Entity Entity;
 
-typedef void (*RecvProxy)(RecvProxyData *, void *, void *);
+typedef void (*RecvProxy)(RecvProxyData *data, void *outStruct, void *out);
 
 typedef struct RecvTable RecvTable;
 struct RecvProp {
