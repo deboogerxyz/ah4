@@ -28,9 +28,11 @@ static void spottedProxy(RecvProxyData *data, void *outStruct, void *out)
 		data->val.i = true;
 
 		Entity *entity = outStruct;
-		int localPlayerIndex = interfaces.engine->vmt->getLocalPlayer(interfaces.engine);
 
-		*Entity_spottedByMask(entity) |= 1 << (localPlayerIndex - 1);
+		int index = interfaces.engine->vmt->getLocalPlayer(interfaces.engine);
+
+		if (index > 0 && index <= 32)
+			*Entity_spottedByMask(entity) |= 1 << (index - 1);
 	}
 
 	oldSpottedProxy(data, outStruct, out);
