@@ -189,6 +189,7 @@ void config_reset(void)
 
 	config.misc.antiAfkKick = false;
 	config.misc.fastDuck = false;
+	config.misc.slideWalk = false;
 	config.misc.bunnyHop = false;
 	config.misc.jumpBug = false;
 	config.misc.jumpBugKeyBind.key = 0;
@@ -298,6 +299,7 @@ void config_load(const char *name)
 		cJSON *miscJson = cJSON_GetObjectItem(json, "Misc");
 		READ_BOOL(miscJson, "Anti AFK kick", config.misc.antiAfkKick)
 		READ_BOOL(miscJson, "Fast duck", config.misc.fastDuck)
+		READ_BOOL(miscJson, "Slide walk", config.misc.slideWalk)
 		READ_BOOL(miscJson, "Bunny hop", config.misc.bunnyHop)
 		READ_BOOL(miscJson, "Jump bug", config.misc.jumpBug)
 		READ_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind);
@@ -409,6 +411,7 @@ void config_save(const char *name)
 		cJSON *miscJson = cJSON_CreateObject();
 		cJSON_AddBoolToObject(miscJson, "Anti AFK kick", config.misc.antiAfkKick);
 		cJSON_AddBoolToObject(miscJson, "Fast duck", config.misc.fastDuck);
+		cJSON_AddBoolToObject(miscJson, "Slide walk", config.misc.slideWalk);
 		cJSON_AddBoolToObject(miscJson, "Bunny hop", config.misc.bunnyHop);
 		cJSON_AddBoolToObject(miscJson, "Jump bug", config.misc.jumpBug);
 		WRITE_KEYBIND(miscJson, "Jump bug key bind", config.misc.jumpBugKeyBind)

@@ -151,6 +151,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 
 	misc_antiAfkKick(cmd);
 	misc_fastDuck(cmd);
+	misc_slideWalk(cmd);
 	misc_bunnyHop(cmd);
 	visuals_revealRanks(cmd);
 

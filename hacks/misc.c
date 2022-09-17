@@ -20,6 +20,18 @@ void misc_fastDuck(UserCmd *cmd)
 		cmd->buttons |= IN_BULLRUSH;
 }
 
+void misc_slideWalk(UserCmd *cmd)
+{
+	Entity *localPlayer = *memory.localPlayer;
+	if (!localPlayer)
+		return;
+
+	MoveType moveType = *Entity_moveType(localPlayer);
+
+	if (config.misc.slideWalk && moveType != MoveType_Ladder)
+		cmd->buttons ^= IN_FORWARD | IN_BACK | IN_MOVELEFT | IN_MOVERIGHT;
+}
+
 void misc_bunnyHop(UserCmd *cmd)
 {
 	static bool wasOnGround = false;
