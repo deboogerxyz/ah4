@@ -14,6 +14,12 @@ void misc_antiAfkKick(UserCmd *cmd)
 		cmd->buttons |= 1 << 27;
 }
 
+void misc_fastDuck(UserCmd *cmd)
+{
+	if (config.misc.fastDuck)
+		cmd->buttons |= IN_BULLRUSH;
+}
+
 void misc_bunnyHop(UserCmd *cmd)
 {
 	static bool wasOnGround = false;

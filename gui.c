@@ -170,6 +170,7 @@ static void renderMiscTab(struct nk_context *ctx)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Anti AFK kick", &config.misc.antiAfkKick);
+	nk_checkbox_label(ctx, "Fast duck", &config.misc.fastDuck);
 	nk_checkbox_label(ctx, "Bunny hop", &config.misc.bunnyHop);
 	nk_checkbox_label(ctx, "Jump bug", &config.misc.jumpBug);
 	keyBind(ctx, "Jump bug key bind", &config.misc.jumpBugKeyBind);

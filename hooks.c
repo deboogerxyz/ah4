@@ -150,6 +150,7 @@ static bool createMove(ClientMode *this, float inputSampleTime, UserCmd *cmd)
 	Vector currentAngles = cmd->viewAngles;
 
 	misc_antiAfkKick(cmd);
+	misc_fastDuck(cmd);
 	misc_bunnyHop(cmd);
 	visuals_revealRanks(cmd);
 

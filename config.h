@@ -88,6 +88,7 @@ typedef struct {
 
 typedef struct {
 	int antiAfkKick;
+	int fastDuck;
 	int bunnyHop;
 	int jumpBug;
 	KeyBind jumpBugKeyBind;
