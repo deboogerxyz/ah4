@@ -15,7 +15,7 @@ Most used features have already been ported.
 ### Arch (Artix, Manjaro, etc.)
 
 ```sh
-sudo pacman -S git make gcc cjson sdl2 glew
+sudo pacman -S git make gcc cjson sdl2 glew gdb
 ```
 
 ### Debian (Ubuntu, etc.)
