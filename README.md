@@ -62,7 +62,7 @@ make -j10
 
 ## License
 
-> Copyright (c) 2022 debooger
+> Copyright (c) 2022-2023 debooger
 
 Project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or later version.
 
